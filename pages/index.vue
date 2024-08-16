@@ -1,35 +1,36 @@
+
+
+<script setup>
+definePageMeta({
+   layout: 'login'
+});
+
+</script>
+
 <template>
-   <div>
-       <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <!-- Logo placeholder -->
-            <a class="navbar-brand" href="#">
-                <p>Philippine Society of Information Technology Students - Region XII</p>
-            </a>
-            <!-- Toggle button for mobile view -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!-- Navbar links -->
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">News</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacts</a>
-                    </li>
-                </ul>
-                <!-- Call to action buttons -->
-                <div class="d-flex">
-                    <a class="btn btn-outline-primary me-2" href="#">Login</a>
-                    <a class="btn btn-primary" href="#">Sign-Up</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+   <div class="container-sm d-flex flex-column align-items-center mb-5">
+      <div class="text-center mb-5">
+         <div class="fs-1 lh-1">Welcome!</div>
+         <p>Sign in and start your session</p> 
+      </div>
+      <form class="mb-5">
+         <div class="mb-3">
+            <label for="user-email" class="form-label">Email</label>
+            <input type="email" class="form-control border-none" id="user-email" placeholder="Enter your email here">
+         </div>
+         <div class="mb-5">
+            <label for="user-password" class="form-label">Password</label>
+            <input type="email" class="form-control border-none" id="user-password" placeholder="Enter your password here">
+         </div>
+         <button type="submit" class="btn btn-primary w-100 py-2 mb-1">Sign in</button>
+         <div class="text-primary text-end"><u>Forgot password?</u></div>
+      </form>
+      <div class="text-center mb-5">Are you a participating school? <u class="text-primary fw-bold">Register here.</u></div>
    </div>
 </template>
+
+<style scope>
+   form {
+      width: 524px;
+   }
+</style>
