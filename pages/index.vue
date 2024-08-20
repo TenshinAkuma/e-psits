@@ -1,6 +1,6 @@
 <script setup>
    definePageMeta({
-      layout: 'login'
+      layout: 'access'
    });
 </script>
 
@@ -28,11 +28,6 @@
 
 
 <style scoped>
-   form {
-      width: 532px;
-      margin-left: auto;
-      margin-right: auto;
-   }
    .sign-in-btn {
       background-color: #46468f;
    }

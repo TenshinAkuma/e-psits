@@ -1,6 +1,6 @@
 <script setup>
    definePageMeta({
-      layout: 'login'
+      layout: 'access'
    });
 </script>
 
@@ -30,22 +30,15 @@
          </div>
          <div class="col-3">
             <NuxtLink to="/">
-            <Button class="btn w-100" style="background-color: #c4c4db; color: #46468f;">Back</Button>
-         </NuxtLink>
+               <Button class="btn w-100" style="background-color: #c4c4db; color: #46468f;">Back</Button>
+            </NuxtLink>
          </div>
          <div class="col-9">
             <NuxtLink to="/register/contact-person">
-            <Button class="btn text-light w-100" style="background-color: #46468f;">Next</Button>
-         </NuxtLink>
+               <Button class="btn text-light w-100" style="background-color: #46468f;">Next</Button>
+            </NuxtLink>
          </div>
       </div>
    </form>
    
 </template>
-
-<style scoped>
-   form {
-      width: 532px;
-      margin: 0 auto;
-   }
-</style>

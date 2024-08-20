@@ -1,6 +1,6 @@
 <script setup>
    definePageMeta({
-      layout: 'login'
+      layout: 'access'
    });
 </script>
 
@@ -47,10 +47,3 @@
    </form>
    
 </template>
-
-<style scoped>
-   form {
-      width: 532px;
-      margin: 0 auto;
-   }
-</style>
