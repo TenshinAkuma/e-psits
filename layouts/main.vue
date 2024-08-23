@@ -7,8 +7,8 @@
          <div class="col-10 d-flex justify-content-between align-items-center px-5">
             <div class="fs-5 text-secondary">Administrator account</div>
             <div class="d-flex">
-               <div class="btn text-secondary px-3">Notification</div>
-               <div class="btn px-3">Logout</div>
+               <div class="text-secondary px-3 py-2">Notification</div>
+               <NuxtLink to="/" class="logout-btn border rounded px-4 py-2">Logout</NuxtLink>
             </div>
          </div>
       </div>
@@ -17,12 +17,12 @@
          <div class="sidebar-bg col-2 ps-5 py-5 border-end">
             <div class="d-flex flex-column justify-content-between h-100">
                <div class="d-flex flex-column">
-                  <NuxtLink to="dashboard" class="text-decoration-none sidebar-text py-3">Dashboard</NuxtLink>
-                  <NuxtLink to="schools" class="text-decoration-none sidebar-text py-3">Schools</NuxtLink>
-                  <NuxtLink to="events" class="text-decoration-none sidebar-text py-3">Events</NuxtLink>
-                  <NuxtLink to="participants" class="text-decoration-none sidebar-text py-3">Participants</NuxtLink>
-                  <NuxtLink to="registration" class="text-decoration-none sidebar-text py-3">Registration</NuxtLink>
-                  <NuxtLink to="entryForms" class="text-decoration-none sidebar-text py-3">Entry Forms</NuxtLink>
+                  <NuxtLink to="/dashboard" class="text-decoration-none sidebar-text py-3">Dashboard</NuxtLink>
+                  <NuxtLink to="/university" class="text-decoration-none sidebar-text py-3">Universities</NuxtLink>
+                  <NuxtLink to="/events" class="text-decoration-none sidebar-text py-3">Events</NuxtLink>
+                  <NuxtLink to="/participants" class="text-decoration-none sidebar-text py-3">Participants</NuxtLink>
+                  <NuxtLink to="/registration" class="text-decoration-none sidebar-text py-3">Registration</NuxtLink>
+                  <NuxtLink to="/entryForms" class="text-decoration-none sidebar-text py-3">Entry Forms</NuxtLink>
                </div>
                <div>
                   <NuxtLink to="/" class="text-decoration-none"><div class="sidebar-text py-3">Account settings</div></NuxtLink>
@@ -47,7 +47,11 @@
    }
 
    .router-link-active {
-      font-size: 1.5rem;   
+      font-size: 1.2rem;   
       color: white !important;
+   }
+   .logout-btn {
+      color: #46468f;
+      text-decoration: none;
    }
 </style>
