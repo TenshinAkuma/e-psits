@@ -1,6 +1,6 @@
 export function useContactPersons() {
-   const contact_person = {
-      20001: {
+   const contact_person = reactive({
+         20001: {
          name: "Maria Clara",
          positionTitle: "Registrar",
          email: "maria.clara@sksu.edu.ph",
@@ -18,7 +18,7 @@ export function useContactPersons() {
          email: "andres.bonifacio@usm.edu.ph",
          phoneNumber: "09345678901"
       }
-   };
+   });
 
    return { contact_person };
 }

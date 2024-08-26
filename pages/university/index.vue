@@ -1,6 +1,6 @@
 <template>
    <div>
-      <div class="fs-5 mb-5" style="color:#46468f;">List of Universities</div>
+      <div class="fs-5 mb-5" style="color:#46468f;">List of universities</div>
       <table class="table table-hover">
          <thead>
             <tr>
