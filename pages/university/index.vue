@@ -49,7 +49,7 @@
       background-color: #46468f;
    }
    .remove-btn {
-      color: #46468f;
-      background-color: #c4c4db;
+      color: #ed5176;
+      border-color: #ed5176;
    }
 </style>
