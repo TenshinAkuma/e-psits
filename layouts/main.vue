@@ -1,57 +1,45 @@
 <template>
-   <div class="window">
-      <div class="row m-0 border-bottom" style="height: 10%">
-         <div class="sidebar-bg col-2 d-flex align-items-center border-end ps-5">
-            <img src="public\img\logo-white.png" class="logo" alt="white psits logo">
-         </div>
-         <div class="col-10 d-flex justify-content-between align-items-center px-5">
-            <div class="fs-5 text-secondary">Administrator account</div>
-            <div class="d-flex">
-               <div class="text-secondary px-3 py-2">Notification</div>
-               <NuxtLink to="/" class="logout-btn border rounded px-4 py-2">Logout</NuxtLink>
-            </div>
-         </div>
+  <div class="container-sm p-3">
+    <div class="d-flex">
+      <div class="d-flex flex-column align-items-start border rounded-3">
+        <div class="fs-4 fw-bold border-bottom p-3">E-PSITS</div>
+        <NuxtLink
+          to="/dashboard"
+          class="text-decoration-none text-secondary px-5 py-3 w-100"
+          >Dashboard</NuxtLink
+        >
+        <NuxtLink
+          to="/events"
+          class="text-decoration-none text-secondary px-5 py-3 w-100"
+          >Events</NuxtLink
+        >
+        <NuxtLink
+          to="/participants"
+          class="text-decoration-none text-secondary px-5 py-3 w-100"
+          >Participants</NuxtLink
+        >
+        <NuxtLink
+          to="/registration"
+          class="text-decoration-none text-secondary px-5 py-3 w-100"
+          >Registration</NuxtLink
+        >
+        <NuxtLink
+          to="/entryForms"
+          class="text-decoration-none text-secondary px-5 py-3 w-100"
+          >Forms</NuxtLink
+        >
       </div>
-
-      <div class="row m-0" style="height: 90%">
-         <div class="sidebar-bg col-2 ps-5 py-5 border-end">
-            <div class="d-flex flex-column justify-content-between h-100">
-               <div class="d-flex flex-column">
-                  <NuxtLink to="/dashboard" class="text-decoration-none sidebar-text py-3">Dashboard</NuxtLink>
-                  <NuxtLink to="/university" class="text-decoration-none sidebar-text py-3">Universities</NuxtLink>
-                  <NuxtLink to="/events" class="text-decoration-none sidebar-text py-3">Events</NuxtLink>
-                  <NuxtLink to="/participants" class="text-decoration-none sidebar-text py-3">Participants</NuxtLink>
-                  <NuxtLink to="/registration" class="text-decoration-none sidebar-text py-3">Registration</NuxtLink>
-                  <NuxtLink to="/entryForms" class="text-decoration-none sidebar-text py-3">Entry Forms</NuxtLink>
-               </div>
-               <div>
-                  <NuxtLink to="/" class="text-decoration-none"><div class="sidebar-text py-3">Account settings</div></NuxtLink>
-               </div>
-            </div>
-         </div>
-         <div class="col-10 p-5">
-            <slot />
-         </div>
-      </div>
-   
-   </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-   .sidebar-bg {
-      background-color: #46468f;
-   }
-
-   .sidebar-text {
-      color: #8a8ac5;
-   }
-
-   .router-link-active {
-      font-size: 1.2rem;   
-      color: white !important;
-   }
-   .logout-btn {
-      color: #46468f;
-      text-decoration: none;
-   }
+.router-link-active {
+  color: #121212 !important;
+  font-weight: bold;
+}
+.logout-btn {
+  color: #46468f;
+  text-decoration: none;
+}
 </style>

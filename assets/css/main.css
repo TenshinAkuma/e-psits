@@ -1,9 +1,8 @@
 * {
-  font-family: Helvetica, sans-serif;
+  font-family: "Nunito", sans-serif;
 }
-.window {
+
+#__nuxt {
   height: 100vh;
-}
-.logo {
-  width: 180px;
+  overflow: hidden;
 }

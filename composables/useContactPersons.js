@@ -1,5 +1,5 @@
 export function useContactPersons() {
-   const contact_person = reactive({
+   var contact_person = reactive({
          20001: {
          name: "Maria Clara",
          positionTitle: "Registrar",
