@@ -1,8 +1,13 @@
 <template>
   <div>
-    <div class="d-flex justify-content-start align-items-center mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
       <div class="fs-5 me-3" style="color: #46468f">List of events</div>
-      <div class="add-event-btn btn px-4 py-2 me-4">Add event</div>
+      <NuxtLink
+        to="/"
+        class="add-event-btn d-flex align-items-center gap-2 btn px-3"
+        ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Add
+        event</NuxtLink
+      >
     </div>
     <table class="table table-hover">
       <thead>
@@ -12,7 +17,6 @@
           <th scope="col">Date</th>
           <th scope="col">Location</th>
           <th scope="col">Registration deadline</th>
-          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -22,18 +26,6 @@
           <td>{{ event.date }}</td>
           <td>{{ event.location }}</td>
           <td>{{ event.registrationDeadline }}</td>
-          <td>
-            <div class="d-flex justify-content-center column-gap-2">
-              <NuxtLink
-                :to="`/events/${id}`"
-                class="view-btn d-flex align-items-center btn text-light"
-                ><Icon name="material-symbols:visibility-outline-rounded"
-              /></NuxtLink>
-              <NuxtLink to="/" class="remove-btn d-flex align-items-center btn"
-                ><Icon name="material-symbols:delete-outline-rounded"
-              /></NuxtLink>
-            </div>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -44,7 +36,6 @@
 definePageMeta({
   layout: "main",
 });
-
 const { events } = useEvents();
 </script>
 
