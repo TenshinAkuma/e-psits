@@ -25,7 +25,7 @@
         <tr
           v-for="(participant, id) in participants"
           class="table-row"
-          @click="toEventDetails(id)"
+          @click="toParticipantProfile(id)"
         >
           <td>{{ participant.name }}</td>
           <td>{{ getParticipantSchool(participant.school) }}</td>
@@ -55,6 +55,10 @@ function getParticipantSchool(schoolID) {
 function getParticipantEvent(eventID) {
   return events[eventID]?.title || "Attendee";
 }
+
+const toParticipantProfile = async (participantID) => {
+  await navigateTo(`/participants/${participantID}`);
+};
 </script>
 
 <style scoped>
