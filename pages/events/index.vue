@@ -4,7 +4,8 @@
       <div class="fs-5 me-3" style="color: #46468f">List of events</div>
       <NuxtLink
         to="/"
-        class="add-event-btn d-flex align-items-center gap-2 btn px-3"
+        class="d-flex align-items-center gap-2 btn px-3"
+        style="color: #46468f; border-color: #46468f"
         ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Add
         event</NuxtLink
       >
@@ -20,7 +21,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(event, id) in events">
+        <tr
+          v-for="(event, id) in events"
+          class="table-row"
+          @click="toEventDetails(id)"
+        >
           <td>{{ event.title }}</td>
           <td>{{ event.duration }}</td>
           <td>{{ event.date }}</td>
@@ -36,7 +41,11 @@
 definePageMeta({
   layout: "main",
 });
+
 const { events } = useEvents();
+const toEventDetails = async (eventID) => {
+  await navigateTo(`/events/${eventID}`);
+};
 </script>
 
 <style scoped>
@@ -47,8 +56,8 @@ const { events } = useEvents();
   color: #ed5176;
   border-color: #ed5176;
 }
-.add-event-btn {
-  color: #46468f;
-  border-color: #46468f;
+
+.table-row:hover {
+  cursor: pointer;
 }
 </style>
