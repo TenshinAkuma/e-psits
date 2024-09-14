@@ -42,19 +42,6 @@
         </div>
       </div>
     </div>
-    <div class="">
-      <div
-        class="btn text-light px-5 py-2 me-4"
-        style="background-color: #ed5176"
-      >
-        Remove
-      </div>
-      <NuxtLink :to="`/university/${uniID}/update`">
-        <div class="btn text-light px-5 py-2" style="background-color: #46468f">
-          Update
-        </div>
-      </NuxtLink>
-    </div>
   </div>
 </template>
 

@@ -82,7 +82,7 @@ const Menus = [
         <div
           id="page-slot"
           class="border rounded p-5 mt-3"
-          style="height: 100vh; overflow-y: scroll"
+          style="overflow-y: hidden"
         >
           <slot />
         </div>
