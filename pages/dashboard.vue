@@ -31,7 +31,6 @@ const dashboard_actions = [
   </div>
   <div class="d-flex justify-content-between align-items-center">
     <div class="fs-5 fw-bold mb-2">Quick actions</div>
-    <Icon />
   </div>
   <div class="row">
     <DashboardCard
