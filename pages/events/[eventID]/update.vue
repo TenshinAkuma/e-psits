@@ -82,47 +82,6 @@
             </div>
           </div>
         </div>
-        <div class="col-12">
-          <div class="row">
-            <div class="fw-bold text-secondary mb-3">
-              Participant requirements
-            </div>
-            <div class="col-12 mb-3">
-              <label for="participant-eligibility" class="text-secondary"
-                >Eligibility</label
-              >
-              <textarea
-                type="text"
-                class="form-control"
-                id="participant-eligibility"
-              >
- {{ eligibility }}</textarea
-              >
-            </div>
-            <div class="col-6 mb-3">
-              <label for="participant-number" class="text-secondary"
-                >Num. of participant</label
-              >
-              <input
-                type="number"
-                class="form-control"
-                id="participant-number"
-                v-model="participant"
-              />
-            </div>
-            <div class="col-6 mb-3">
-              <label for="registration-deadline" class="text-secondary"
-                >Deadline of registration</label
-              >
-              <input
-                type="date"
-                class="form-control"
-                id="registration-deadline"
-                v-model="deadline"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
     <div class="">

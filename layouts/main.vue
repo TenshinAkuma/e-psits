@@ -35,7 +35,7 @@ const Menus = [
 
 <template>
   <div class="container-xxl pt-3 h-100">
-    <div class="row gap-3">
+    <div class="row">
       <div class="col-2 align-items-start">
         <div
           class="d-flex justify-content-between align-items-center px-3 mb-5 w-100"
@@ -63,7 +63,7 @@ const Menus = [
           <div>{{ menu.selection }}</div></NuxtLink
         >
       </div>
-      <div class="col-9">
+      <div class="col-10">
         <div
           class="d-flex justify-content-between align-items-center px-3 border rounded"
           style="height: 72px"
@@ -84,7 +84,7 @@ const Menus = [
           class="border rounded p-5 mt-3"
           style="height: 100vh; overflow-y: scroll"
         >
-          <slot />
+          <slot />  
         </div>
       </div>
     </div>
