@@ -4,7 +4,7 @@
       <div class="fs-5 me-3" style="color: #46468f">List of events</div>
       <NuxtLink
         to="/"
-        class="d-flex align-items-center gap-2 btn px-3"
+        class="d-flex align-items-center gap-3 btn px-4"
         style="color: #46468f; border-color: #46468f"
         ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Add
         event</NuxtLink

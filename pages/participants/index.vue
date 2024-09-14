@@ -4,7 +4,7 @@
       <div class="fs-5 me-3" style="color: #46468f">List of participants</div>
       <NuxtLink
         to="/"
-        class="add-event-btn d-flex align-items-center gap-2 btn px-3"
+        class="add-event-btn d-flex align-items-center gap-3 btn px-4"
         style="color: #46468f; border-color: #46468f"
         ><Icon name="material-symbols:person-add-outline-rounded" />Register a
         participant</NuxtLink
