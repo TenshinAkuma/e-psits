@@ -57,7 +57,7 @@ function getParticipantEvent(eventID) {
 }
 
 const toParticipantProfile = async (participantID) => {
-  await navigateTo(`/participants/${participantID}`);
+  await navigateTo(`/admin/participants/${participantID}`);
 };
 </script>
 

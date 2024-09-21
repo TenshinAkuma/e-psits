@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div class="fs-2 fw-bold">{{ school.schoolName }}</div>
           <NuxtLink
-            :to="`/university/${uniID}/update`"
+            :to="`/admin/university/${uniID}/update`"
             class="text-decoration-none text-secondary d-flex align-items-center gap-2 px-2"
             ><Icon name="material-symbols:edit-outline-rounded" />Edit</NuxtLink
           >

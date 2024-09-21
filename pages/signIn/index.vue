@@ -12,7 +12,7 @@
           class="form-control"
           id="user-email"
           placeholder="Enter your email here"
-          :value="email"
+          v-model="email"
           require
         />
       </div>
@@ -23,7 +23,7 @@
           class="form-control"
           id="user-password"
           placeholder="Enter your password here"
-          :value="password"
+          v-model="password"
           required
         />
       </div>
@@ -34,28 +34,40 @@
       >
         Sign in
       </button>
+      <div>{{ errMsg }}</div>
     </form>
-    <div>{{ (email, password) }}</div>
   </div>
 </template>
 
 <script setup>
-import { useAuthSignIn } from "~/composables/useAuthSignIn";
+import { ref } from "vue";
 
 definePageMeta({
-  layout: "access",
+  layout: "auth",
 });
 
-const { signIn, error } = useAuthSignIn();
-const email = ref();
-const password = ref();
+const client = useSupabaseClient();
+const user = useSupabaseUser();
+const email = ref("");
+const password = ref("");
+const errMsg = ref("");
+
+watchEffect(async () => {
+  if (user.value) {
+    await navigateTo("/admin");
+  }
+});
 
 const handleSignIn = async () => {
-  signIn(email.value, password.value);
-  try {
-    await navigateTo("/dashboard");
-  } catch (error) {
-    console.log(error.message);
+  const { error } = await client.auth.signInWithPassword({
+    email: email.value,
+    password: password.value,
+  });
+  if (error) {
+    errMsg.value = "Cannot sign in";
+    setTimeout(() => {
+      errMsg.value = "";
+    }, 5000);
   }
 };
 </script>

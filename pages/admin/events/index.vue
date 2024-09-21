@@ -44,7 +44,7 @@ definePageMeta({
 
 const { events } = useEvents();
 const toEventDetails = async (eventID) => {
-  await navigateTo(`/events/${eventID}`);
+  await navigateTo(`/admin/events/${eventID}`);
 };
 </script>
 

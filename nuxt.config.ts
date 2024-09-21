@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     head: {
       link: [
         {
+          // bootstrap stylesheet cdn
           rel: "stylesheet",
           href: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css",
           integrity:
@@ -14,6 +15,7 @@ export default defineNuxtConfig({
           crossorigin: "anonymous",
         },
         {
+          // google fonts configuration
           rel: "preconnect",
           href: "https://fonts.googleapis.com",
         },
@@ -29,6 +31,7 @@ export default defineNuxtConfig({
       ],
       script: [
         {
+          // bootstrap script cdn
           src: "https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js",
           integrity:
             "sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz",
@@ -40,14 +43,8 @@ export default defineNuxtConfig({
 
   modules: ["@nuxt/icon", "@nuxtjs/supabase"],
 
+  // disable supabase feature that automatically redirects to /login
   supabase: {
     redirect: false,
-  },
-
-  runtimeConfig: {
-    public: {
-      supabaseUrl: process.env.SUPABASE_URL,
-      supabaseKey: process.env.SUPABASE_KEY,
-    },
   },
 });

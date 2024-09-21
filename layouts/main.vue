@@ -2,7 +2,7 @@
 const Menus = [
   {
     selection: "Dashboard",
-    route: "dashboard",
+    route: "#",
     icon: "material-symbols:space-dashboard-outline-rounded",
   },
   {
@@ -57,7 +57,7 @@ const Menus = [
         </div>
         <NuxtLink
           v-for="menu in Menus"
-          :to="`/${menu.route}`"
+          :to="`/admin/${menu.route}`"
           class="d-flex align-items-center text-decoration-none text-secondary p-3 w-100"
           ><Icon :name="`${menu.icon}`" class="me-3" />
           <div>{{ menu.selection }}</div></NuxtLink
