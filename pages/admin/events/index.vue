@@ -30,7 +30,7 @@
           <td>{{ event.duration }}</td>
           <td>{{ event.date }}</td>
           <td>{{ event.location }}</td>
-          <td>{{ event.registrationDeadline }}</td>
+          <td>{{ event.registrationEnd.toLocaleDateString() }}</td>
         </tr>
       </tbody>
     </table>
