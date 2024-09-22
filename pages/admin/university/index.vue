@@ -50,7 +50,7 @@ function getContactPersonName(contact_person_id) {
 }
 
 const toUniversityProfile = async (universityID) => {
-  await navigateTo(`/university/${universityID}`);
+  await navigateTo(`/admin/university/${universityID}`);
 };
 </script>
 

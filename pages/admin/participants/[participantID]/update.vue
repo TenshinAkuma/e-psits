@@ -5,14 +5,14 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb fs-5 mb-5">
             <NuxtLink
-              to="/participants"
+              to="admin/participants"
               class="breadcrumb-item text-decoration-none"
               style="color: #46468f"
             >
               List of participants
             </NuxtLink>
             <NuxtLink
-              :to="`/participants/${participantID}`"
+              :to="`admin/participants/${participantID}`"
               class="breadcrumb-item text-decoration-none"
               style="color: #46468f"
             >
