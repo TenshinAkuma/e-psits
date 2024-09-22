@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 372px">
+  <div class="d-flex flex-column justify-content-start" style="width: 372px">
     <div class="text-center">
       <div class="fs-1 fw-bold">Welcome!</div>
       <p>Sign in and start your session</p>
@@ -34,7 +34,7 @@
       >
         Sign in
       </button>
-      <div>{{ errMsg }}</div>
+      <div class="text-center text-danger">{{ errMsg }}</div>
     </form>
   </div>
 </template>
@@ -64,7 +64,7 @@ const handleSignIn = async () => {
     password: password.value,
   });
   if (error) {
-    errMsg.value = "Cannot sign in";
+    errMsg.value = error.message;
     setTimeout(() => {
       errMsg.value = "";
     }, 5000);

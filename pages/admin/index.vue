@@ -20,7 +20,6 @@
 <script setup>
 definePageMeta({
   layout: "main",
-  middleware: "auth",
 });
 
 const dashboard_actions = [

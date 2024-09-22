@@ -5,13 +5,11 @@
         <div class="fs-5">Update event details</div>
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div class="fs-2 fw-bold">{{ title }}</div>
-          <NuxtLink
-            :to="`/events/${eventID}/update`"
-            class="text-decoration-none text-danger d-flex align-items-center gap-2 px-2"
-            ><Icon
-              name="material-symbols:delete-outline-rounded"
-            />Remove</NuxtLink
+          <button
+            class="text-decoration-none btn btn-link text-danger d-flex align-items-center gap-2"
           >
+            <Icon name="material-symbols:delete-outline-rounded" />Remove
+          </button>
         </div>
       </div>
       <div>
@@ -85,23 +83,18 @@
       </div>
     </div>
     <div class="">
-      <NuxtLink :to="`/events/${eventID}`">
-        <div
-          class="btn px-5 py-2 me-4"
-          style="background-color: #e5e5e5; color: #46468f"
-        >
-          Cancel
-        </div>
-      </NuxtLink>
-      <NuxtLink :to="`/university/${uniID}`">
-        <button
-          @click="updateSchoolAndContactPerson()"
-          class="btn text-light px-5 py-2"
-          style="background-color: #46468f"
-        >
-          Confirm
-        </button>
-      </NuxtLink>
+      <button
+        class="btn px-5 py-2 me-4"
+        style="background-color: #e5e5e5; color: #46468f"
+      >
+        Cancel
+      </button>
+      <button
+        class="btn text-light px-5 py-2"
+        style="background-color: #46468f"
+      >
+        Confirm
+      </button>
     </div>
   </div>
 </template>
