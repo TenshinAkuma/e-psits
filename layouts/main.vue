@@ -33,7 +33,7 @@
           class="d-flex justify-content-between align-items-center px-3 border rounded"
           style="height: 72px"
         >
-          <div class="fs-5 text-secondary">Administrator Panel</div>
+          <div class="text-secondary">Administrator Panel</div>
           <button
             class="d-flex align-items-center btn btn-link text-decoration-none text-secondary px-3"
             @click="handleLogout()"
