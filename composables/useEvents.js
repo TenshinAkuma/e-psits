@@ -4,10 +4,10 @@ export function useEvents() {
       title: "National Hackathon Challenge",
       description:
         "This 24-hour coding competition challenges teams to build innovative software solutions from scratch. Participants will tackle real-world problems and present their work to a panel of judges. The event fosters creativity, teamwork, and technical skills under intense time pressure.",
-      category: "Hackathon",
+      category: "Competition",
       duration: "24 hours",
       date: "2024-10-15",
-      location: "General Santos City, SM Convention Center",
+      location: "General Santos City, SM Conve  ntion Center",
       registrationStart: new Date("2024-09-01"), // Registration starts on September 1st, 2024
       registrationEnd: new Date("2024-10-01"), // Registration ends on October 1st, 2024
     },
@@ -15,7 +15,7 @@ export function useEvents() {
       title: "Start-up Pitching Competition",
       description:
         "This event invites students to pitch their start-up ideas to a panel of potential investors. Participants will have the opportunity to showcase their business acumen and innovative thinking. The competition offers valuable feedback and networking opportunities with industry leaders.",
-      category: "Pitching",
+      category: "Competition",
       duration: "1 day",
       date: "2024-11-05",
       location: "General Santos City, KCC Mall Event Hall",
@@ -26,7 +26,7 @@ export function useEvents() {
       title: "Capture the Flag (CTF) Competition",
       description:
         "This cybersecurity challenge involves solving a series of security-related puzzles and tasks. Participants will test their hacking skills in a controlled environment to capture digital flags. The competition aims to promote learning and mastery of cybersecurity concepts.",
-      category: "Cybersecurity",
+      category: "Competition",
       duration: "12 hours",
       date: "2024-09-20",
       location: "General Santos City, MSU Gymnasium",
@@ -37,7 +37,7 @@ export function useEvents() {
       title: "IT Quiz Bee",
       description:
         "This quiz competition is designed to test participants' knowledge of IT fundamentals and concepts. Teams will compete against each other in a series of rounds, answering questions on various IT topics. The event encourages quick thinking and deep understanding of the subject matter.",
-      category: "Quiz",
+      category: "Competition",
       duration: "3 hours",
       date: "2024-12-10",
       location: "General Santos City, Notre Dame Auditorium",
@@ -48,7 +48,7 @@ export function useEvents() {
       title: "Software Development Challenge",
       description:
         "In this two-day competition, teams will develop a complete software application from concept to implementation. Participants will demonstrate their coding, design, and project management skills. The challenge provides a platform to showcase innovative solutions and collaborate with peers.",
-      category: "Development",
+      category: "Competition",
       duration: "2 days",
       date: "2024-12-20",
       location: "General Santos City, UM Event Center",

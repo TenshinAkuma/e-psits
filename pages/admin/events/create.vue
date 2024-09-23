@@ -2,7 +2,7 @@
   <div class="h-100 d-flex flex-column justify-content-between">
     <div>
       <div>
-        <div class="fw-bold text-secondary">Update event details</div>
+        <div class="fw-bold text-secondary">Create event</div>
         <div
           class="d-flex justify-content-between align-items-center mb-4"
         ></div>
@@ -86,28 +86,21 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-between">
-      <div class="hstack gap-3">
-        <button
-          class="btn d-flex align-items-center gap-2 px-5"
-          style="background-color: #e5e5e5; color: #46468f"
-          @click="checkCategoryInput()"
-        >
-          <Icon name="material-symbols:close-rounded" />
-          Cancel
-        </button>
-        <button
-          class="btn text-light d-flex align-items-center gap-2 px-5"
-          style="background-color: #46468f"
-        >
-          <Icon name="line-md:confirm" />
-          Confirm
-        </button>
-      </div>
+    <div class="d-flex gap-3">
       <button
-        class="btn btn-outline-danger d-flex align-items-center gap-2 px-5"
+        class="btn d-flex align-items-center gap-2 px-5"
+        style="background-color: #e5e5e5; color: #46468f"
+        @click="checkCategoryInput()"
       >
-        <Icon name="material-symbols:delete-outline-rounded" />Remove
+        <Icon name="material-symbols:close-rounded" />
+        Cancel
+      </button>
+      <button
+        class="btn text-light d-flex align-items-center gap-2 px-5"
+        style="background-color: #46468f"
+      >
+        <Icon name="material-symbols:calendar-add-on-outline-rounded" />
+        Create
       </button>
     </div>
   </div>
@@ -119,10 +112,6 @@ definePageMeta({
 });
 
 const route = useRoute();
-const eventID = route.params.eventID;
-
-const { events } = useEvents();
-const event = events[eventID];
 
 const eventCategories = [
   "Competition",
@@ -131,12 +120,12 @@ const eventCategories = [
   "Keynote speech",
 ];
 
-const title = ref(event.title);
-const description = ref(event.description);
-const category = ref(event.category);
-const duration = ref(event.duration);
-const date = ref(event.date);
-const location = ref(event.location);
+const title = ref("");
+const description = ref("");
+const category = ref("");
+const duration = ref("");
+const date = ref("");
+const location = ref("");
 
 const checkCategoryInput = () => {
   return isValidOption(category.value, eventCategories);
