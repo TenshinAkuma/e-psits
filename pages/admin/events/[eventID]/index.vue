@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="fw-bold text-secondary">Event details</div>
+    <h3 class="fw-bold">Event details</h3>
+    <hr />
     <div class="row gx-5">
       <div class="col-9">
         <div>
@@ -15,7 +16,6 @@
             >
           </div>
         </div>
-        <hr />
         <dl class="row">
           <!-- description -->
           <dt class="col-2">Description:</dt>
@@ -59,6 +59,27 @@
             class="forms text-secondary hstack justify-content-between align-items-center"
           >
             Registration form <Icon name="material-symbols:download-rounded" />
+          </li>
+        </ul>
+        <hr />
+        <ul class="list-unstyled vstack gap-2">
+          <li class="fw-bold">Quick actions</li>
+          <li
+            class="forms text-secondary hstack justify-content-between align-items-center"
+          >
+            View results <Icon name="material-symbols:arrow-outward-rounded" />
+          </li>
+          <li
+            class="forms text-secondary hstack justify-content-between align-items-center"
+          >
+            Create another event
+            <Icon name="material-symbols:arrow-outward-rounded" />
+          </li>
+          <li
+            class="forms text-secondary hstack justify-content-between align-items-center"
+          >
+            FAQs
+            <Icon name="material-symbols:arrow-outward-rounded" />
           </li>
         </ul>
       </div>

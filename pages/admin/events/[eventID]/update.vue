@@ -2,7 +2,8 @@
   <div class="h-100 d-flex flex-column justify-content-between">
     <div>
       <div>
-        <div class="fw-bold text-secondary">Update event details</div>
+        <h3 class="fw-bold">Update event details</h3>
+        <hr />
         <div
           class="d-flex justify-content-between align-items-center mb-4"
         ></div>
