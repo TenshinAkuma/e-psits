@@ -125,26 +125,19 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-between">
-      <div class="hstack gap-3">
-        <button
-          class="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-2 px-5"
-        >
-          <Icon name="material-symbols:close-rounded" />
-          Cancel
-        </button>
-        <button
-          class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
-        >
-          <Icon name="material-symbols:add-rounded" />
-          Create
-        </button>
-      </div>
-      <!-- <button
-        class="btn btn-outline-danger btn-sm fw-bold d-flex align-items-center gap-2 px-5"
+    <div class="d-flex justify-content-end gap-2">
+      <button
+        class="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-2 px-5"
       >
-        <Icon name="material-symbols:delete-outline-rounded" />Remove
-      </button> -->
+        <Icon name="material-symbols:close-rounded" />
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
+      >
+        <Icon name="material-symbols:add-rounded" />
+        Create
+      </button>
     </div>
   </div>
 </template>

@@ -1,39 +1,40 @@
 <template>
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="fw-bold" style="color: #46468f">List of events</div>
+      <h3 class="fw-bold m-0">List of events</h3>
       <NuxtLink
-        to="/"
-        class="d-flex align-items-center gap-2 btn btn-sm rounded-pill px-4"
-        style="color: #46468f; border-color: #46468f"
+        to="events/create"
+        class="d-flex align-items-center gap-2 btn btn-outline-primary btn-sm rounded-pill px-4"
         ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Create
         event</NuxtLink
       >
     </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Title</th>
-          <th scope="col">Duration</th>
-          <th scope="col">Date</th>
-          <th scope="col">Location</th>
-          <th scope="col">Registration deadline</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(event, id) in events"
-          class="table-row"
-          @click="toEventDetails(id)"
-        >
-          <td>{{ event.title }}</td>
-          <td>{{ event.duration }}</td>
-          <td>{{ event.date }}</td>
-          <td>{{ event.location }}</td>
-          <td>{{ event.registrationEnd.toLocaleDateString() }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Date</th>
+            <th scope="col">Location</th>
+            <th scope="col">Registration deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(event, id) in events"
+            class="table-row"
+            @click="toEventDetails(id)"
+          >
+            <td>{{ event.title }}</td>
+            <td>{{ event.duration }}</td>
+            <td>{{ event.date }}</td>
+            <td>{{ event.location }}</td>
+            <td>{{ event.registrationEnd.toLocaleDateString() }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
