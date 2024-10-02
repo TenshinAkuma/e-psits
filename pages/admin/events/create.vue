@@ -2,7 +2,7 @@
   <div class="h-100 d-flex flex-column justify-content-between">
     <div>
       <div>
-        <h3 class="fw-bold">Update event details</h3>
+        <h3 class="fw-bold">Create an event</h3>
         <hr />
         <div
           class="d-flex justify-content-between align-items-center mb-4"
@@ -125,25 +125,18 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-between">
-      <div class="hstack gap-3">
-        <button
-          class="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-2 px-5"
-        >
-          <Icon name="material-symbols:close-rounded" />
-          Cancel
-        </button>
-        <button
-          class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
-        >
-          <Icon name="line-md:confirm" />
-          Confirm
-        </button>
-      </div>
+    <div class="d-flex justify-content-end gap-2">
       <button
-        class="btn btn-outline-danger btn-sm fw-bold d-flex align-items-center gap-2 px-5"
+        class="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-2 px-5"
       >
-        <Icon name="material-symbols:delete-outline-rounded" />Remove
+        <Icon name="material-symbols:close-rounded" />
+        Cancel
+      </button>
+      <button
+        class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
+      >
+        <Icon name="material-symbols:add-rounded" />
+        Create
       </button>
     </div>
   </div>
@@ -155,10 +148,6 @@ definePageMeta({
 });
 
 const route = useRoute();
-const eventID = route.params.eventID;
-
-const { events } = useEvents();
-const event = events[eventID];
 
 const eventCategories = [
   "Competition",
@@ -167,14 +156,14 @@ const eventCategories = [
   "Keynote speech",
 ];
 
-const title = ref(event.title);
-const description = ref(event.description);
-const category = ref(event.category);
-const duration = ref(event.duration);
-const date = ref(event.date);
-const location = ref(event.location);
-const registration_start = ref(event.registrationStart);
-const registration_end = ref(event.registrationEnd);
+const title = ref("");
+const description = ref("");
+const category = ref("");
+const duration = ref("");
+const date = ref("");
+const location = ref("");
+const registration_start = ref();
+const registration_end = ref();
 
 const checkCategoryInput = () => {
   return isValidOption(category.value, eventCategories);
