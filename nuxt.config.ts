@@ -47,6 +47,15 @@ export default defineNuxtConfig({
 
   // disable supabase feature that automatically redirects to /login
   supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_SUPABASE_KEY,
     redirect: false,
+  },
+
+  runtimeConfig: {
+    public: {
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    },
+    supabaseKey: process.env.NUXT_SUPABASE_KEY,
   },
 });
