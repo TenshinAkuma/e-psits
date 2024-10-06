@@ -13,26 +13,6 @@
           v-model="title"
         />
       </div>
-
-      <!-- EVENT DATE -->
-      <div class="col-3 mb-3">
-        <label for="event-date" class="fw-bold">Date</label>
-        <input
-          type="date"
-          class="form-control"
-          id="event-date"
-          v-model="date"
-        />
-      </div>
-
-      <!-- DESCRIPTION -->
-      <div class="col-12 mb-3">
-        <label for="event-description" class="fw-bold">Description</label>
-        <textarea class="form-control" id="event-description" wrap="hard">{{
-          description
-        }}</textarea>
-      </div>
-
       <!-- CATEGORY -->
       <div class="col-3 mb-3">
         <label for="event-category" class="fw-bold">Category</label>
@@ -61,6 +41,33 @@
         </select>
       </div>
 
+      <!-- DESCRIPTION -->
+      <div class="col-12 mb-3">
+        <label for="event-description" class="fw-bold">Description</label>
+        <textarea class="form-control" id="event-description" wrap="hard">{{
+          description
+        }}</textarea>
+      </div>
+
+      <!-- EVENT DATE -->
+      <div class="col-6 mb-3">
+        <label for="event-date" class="fw-bold">Date</label>
+        <input
+          type="date"
+          class="form-control"
+          id="event-date"
+          v-model="date"
+        />
+      </div>
+
+      <!-- EVENT TIME -->
+      <div class="col-6 mb-3">
+        <label for="event-time" class="fw-bold">Time</label>
+        <div class="hstack align-items-center gap-2">
+          <input type="time" class="form-control" v-model="time" />
+        </div>
+      </div>
+
       <!-- REGISTRATION DATE -->
       <div class="col-5 mb-3">
         <label for="event-date" class="fw-bold">Registration date</label>
@@ -68,30 +75,12 @@
           <input
             type="date"
             class="form-control"
-            id="event-date"
             v-model="registration_start"
           />
           <div>
             <Icon name="material-symbols:arrow-right-alt-rounded"></Icon>
           </div>
-          <input
-            type="date"
-            class="form-control"
-            id="event-date"
-            v-model="registration_end"
-          />
-        </div>
-      </div>
-
-      <!-- EVENT DURATION -->
-      <div class="col-4 mb-3">
-        <label for="event-location" class="fw-bold">Duration</label>
-        <div class="hstack align-items-center gap-2">
-          <input type="time" class="form-control" v-model="time_start" />
-          <div>
-            <Icon name="material-symbols:arrow-right-alt-rounded"></Icon>
-          </div>
-          <input type="time" class="form-control" v-model="time_end" />
+          <input type="date" class="form-control" v-model="registration_end" />
         </div>
       </div>
 
@@ -157,9 +146,8 @@ const eventCategories = [
 const title = ref("");
 const description = ref("");
 const category = ref("");
-const time_start = ref("");
-const time_end = ref("");
-const date = ref("");
+const time = ref();
+const date = ref();
 const venue = ref("");
 const address = ref("");
 const registration_start = ref();
@@ -169,8 +157,10 @@ const addEvent = async () => {
   const { data: events, error } = await client
     .from("events")
     .insert({
-      title: title.value,
-      description: description.value,
+      date: date.value,
+      time: time.value,
+      // registration_start: registration_start.value,
+      // registration_end: registration_end.value,
     })
     .select();
 
