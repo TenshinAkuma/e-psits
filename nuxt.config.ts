@@ -58,4 +58,8 @@ export default defineNuxtConfig({
     },
     supabaseKey: process.env.NUXT_SUPABASE_KEY,
   },
+
+  imports: {
+    dirs: ["./types"],
+  },
 });
