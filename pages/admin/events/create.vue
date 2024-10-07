@@ -49,9 +49,13 @@
       <!-- DESCRIPTION -->
       <div class="col-12 mb-5">
         <label for="event-description" class="fw-bold">Description</label>
-        <textarea class="form-control" id="event-description" wrap="hard">{{
-          description
-        }}</textarea>
+        <textarea
+          v-model="description"
+          name="description"
+          class="form-control"
+          id="event-description"
+          wrap="hard"
+        />
       </div>
 
       <!-- EVENT DATE -->
@@ -167,10 +171,16 @@ const addEvent = async () => {
   const { data: events, error } = await client
     .from("events")
     .insert({
+      title: title.value,
+      category: category.value,
+      modality: modality.value,
+      description: description.value,
       date: date.value,
       time: time.value,
       registration_start: registration_start.value,
       registration_end: registration_end.value,
+      venue: venue.value,
+      address: address.value,
     })
     .select();
 
