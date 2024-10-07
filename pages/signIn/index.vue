@@ -59,7 +59,7 @@ watchEffect(async () => {
 });
 
 const handleSignIn = async () => {
-  const { error } = await client.auth.signInWithPassword({
+  const { data, error } = await client.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });
@@ -68,6 +68,8 @@ const handleSignIn = async () => {
     setTimeout(() => {
       errMsg.value = "";
     }, 5000);
+  } else {
+    console.log(data);
   }
 };
 </script>

@@ -13,6 +13,7 @@
       class="col-6 p-1"
       :action_shortcut="action.shortcut"
       :action_icon="action.icon"
+      :link="action.link"
     />
   </div>
 </template>
@@ -26,18 +27,22 @@ const dashboard_actions = [
   {
     shortcut: "Membership applications",
     icon: "material-symbols:card-membership-outline-rounded",
+    link: "/admin",
   },
   {
     shortcut: "Create an event",
     icon: "material-symbols:calendar-add-on-outline-rounded",
+    link: "admin/events/create",
   },
   {
     shortcut: "Participant registration",
     icon: "material-symbols:person-add-outline-rounded",
+    link: "/admin",
   },
   {
     shortcut: "Event results",
     icon: "material-symbols:award-star-outline-rounded",
+    link: "/admin",
   },
 ];
 </script>

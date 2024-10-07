@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NuxtLink to="/" class="text-decoration-none">
+    <NuxtLink :to="`${link}`" class="text-decoration-none">
       <div
         class="dashboard-card text-secondary d-flex justify-content-between align-items-center border rounded gap-2 p-3"
       >
@@ -17,6 +17,7 @@
 const props = defineProps({
   action_shortcut: String,
   action_icon: String,
+  link: String,
 });
 </script>
 

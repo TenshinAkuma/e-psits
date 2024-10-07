@@ -2,22 +2,18 @@
   <div class="h-100 d-flex flex-column justify-content-between">
     <div>
       <div>
-        <div class="fs-5">Update event details</div>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="fs-2 fw-bold">{{ title }}</div>
-          <button
-            class="text-decoration-none btn btn-link text-danger d-flex align-items-center gap-2"
-          >
-            <Icon name="material-symbols:delete-outline-rounded" />Remove
-          </button>
-        </div>
+        <h3 class="fw-bold">Update event details</h3>
+        <hr />
+        <div
+          class="d-flex justify-content-between align-items-center mb-4"
+        ></div>
       </div>
       <div>
+        <!-- TITLE -->
         <div class="col-12 mb-3">
           <div class="row mb-5">
-            <div class="fw-bold text-secondary mb-3">Event details</div>
-            <div class="col-12 mb-3">
-              <label for="event_title" class="text-secondary">Title</label>
+            <div class="col-9 mb-3">
+              <label for="event_title" class="fw-bold">Title</label>
               <input
                 type="text"
                 class="form-control"
@@ -25,30 +21,10 @@
                 v-model="title"
               />
             </div>
-            <div class="col-12 mb-3">
-              <label for="event-description" class="text-secondary"
-                >Description</label
-              >
-              <textarea
-                class="form-control"
-                id="event-description"
-                wrap="hard"
-                >{{ description }}</textarea
-              >
-            </div>
-            <div class="col-4 mb-3">
-              <label for="event-category" class="text-secondary"
-                >Category</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="event-category"
-                v-model="category"
-              />
-            </div>
-            <div class="col-4 mb-3">
-              <label for="event-date" class="text-secondary">Date</label>
+
+            <!-- EVENT DATE -->
+            <div class="col-3 mb-3">
+              <label for="event-date" class="fw-bold">Date</label>
               <input
                 type="date"
                 class="form-control"
@@ -56,44 +32,118 @@
                 v-model="date"
               />
             </div>
-            <div class="col-4 mb-3">
-              <label for="event-location" class="text-secondary"
-                >Duration</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                id="event-location"
-                v-model="duration"
-              />
-            </div>
+
+            <!-- DESCRIPTION -->
             <div class="col-12 mb-3">
-              <label for="event-location" class="text-secondary"
-                >Location</label
-              >
-              <input
-                type="text"
+              <label for="event-description" class="fw-bold">Description</label>
+              <textarea
                 class="form-control"
-                id="event-location"
-                v-model="location"
+                id="event-description"
+                wrap="hard"
+                >{{ description }}</textarea
+              >
+            </div>
+
+            <!-- CATEGORY -->
+            <div class="col-4 mb-3">
+              <label for="event-category" class="fw-bold">Category</label>
+              <!-- <input
+                type=""
+                class="form-control"
+                id="event-category"
+                list="eventCategoryOptions"
+                v-model="category"
+                placeholder="Choose event category"
               />
+              <datalist id="eventCategoryOptions">
+                <option v-for="category in eventCategories" :value="category" />
+              </datalist> -->
+
+              <select
+                class="form-select"
+                name="event-category"
+                id="event-category"
+              >
+                <option selected="selected" hidden="true">
+                  Select event category
+                </option>
+                <option v-for="category in eventCategories" :value="category">
+                  {{ category }}
+                </option>
+              </select>
+            </div>
+
+            <!-- REGISTRATION DATE -->
+            <div class="col-5 mb-3">
+              <label for="event-date" class="fw-bold">Registration date</label>
+              <div class="hstack align-items-center text-secondary gap-2">
+                <input
+                  type="date"
+                  class="form-control"
+                  id="event-date"
+                  v-model="registration_start"
+                />
+                <div>
+                  <Icon name="material-symbols:arrow-right-alt-rounded"></Icon>
+                </div>
+                <input
+                  type="date"
+                  class="form-control"
+                  id="event-date"
+                  v-model="registration_end"
+                />
+              </div>
+            </div>
+
+            <!-- EVENT DURATION -->
+            <div class="col-3 mb-3">
+              <label for="event-location" class="fw-bold">Duration</label>
+              <div class="input-group">
+                <input
+                  type="number"
+                  class="form-control"
+                  id="event-location"
+                  v-model="duration"
+                />
+                <span class="input-group-text">Hours</span>
+              </div>
+            </div>
+
+            <!-- LOCATION -->
+            <div class="col-12 mb-3">
+              <label for="event-location" class="fw-bold">Location</label>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="event-location"
+                  v-model="location"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="">
+    <div class="d-flex justify-content-between">
+      <div class="hstack gap-3">
+        <button
+          class="btn btn-outline-primary btn-sm fw-bold d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="material-symbols:close-rounded" />
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary btn-sm d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="line-md:confirm" />
+          Confirm
+        </button>
+      </div>
       <button
-        class="btn px-5 py-2 me-4"
-        style="background-color: #e5e5e5; color: #46468f"
+        class="btn btn-outline-danger btn-sm fw-bold d-flex align-items-center gap-2 px-5"
       >
-        Cancel
-      </button>
-      <button
-        class="btn text-light px-5 py-2"
-        style="background-color: #46468f"
-      >
-        Confirm
+        <Icon name="material-symbols:delete-outline-rounded" />Remove
       </button>
     </div>
   </div>
@@ -110,15 +160,25 @@ const eventID = route.params.eventID;
 const { events } = useEvents();
 const event = events[eventID];
 
+const eventCategories = [
+  "Competition",
+  "Workshop",
+  "Career fair",
+  "Keynote speech",
+];
+
 const title = ref(event.title);
 const description = ref(event.description);
 const category = ref(event.category);
 const duration = ref(event.duration);
 const date = ref(event.date);
 const location = ref(event.location);
-const eligibility = ref(event.eligibility);
-const participant = ref(event.requiredParticipants);
-const deadline = ref(event.registrationDeadline);
+const registration_start = ref(event.registrationStart);
+const registration_end = ref(event.registrationEnd);
+
+const checkCategoryInput = () => {
+  return isValidOption(category.value, eventCategories);
+};
 </script>
 
 <style scoped>
