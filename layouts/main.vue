@@ -1,5 +1,5 @@
 <template>
-  <div class="container-xxl pt-3 h-100">
+  <div class="container-xxl pt-3">
     <div class="row">
       <div class="col-2 align-items-start">
         <div
@@ -48,7 +48,7 @@
         <div
           id="page-slot"
           class="border rounded p-5 mt-3"
-          style="overflow-y: hidden"
+          style="overflow-y: auto; height: 85vh"
         >
           <slot />
         </div>
