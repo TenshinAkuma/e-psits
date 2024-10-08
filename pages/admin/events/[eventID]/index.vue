@@ -3,7 +3,7 @@
     <h3 class="fw-bold">Event details</h3>
     <hr />
     <div class="row gx-5">
-      <!-- <div class="col-9">
+      <div class="col-9">
         <div>
           <div class="d-flex justify-content-start align-items-start">
             <div class="fs-2 fw-bold">{{ event.title }}</div>
@@ -16,28 +16,41 @@
             >
           </div>
         </div>
-        <dl class="row">
-          <dt class="col-2">Description:</dt>
-          <dd class="col-10">{{ event.description }}</dd>
-          <dt class="col-2">Category:</dt>
-          <dd class="col-10">{{ event.category }}</dd>
-          <dt class="col-2">Duration:</dt>
-          <dd class="col-10">{{ event.duration }}</dd>
-          <dt class="col-2">Date:</dt>
-          <dd class="col-10">{{ event.date }}</dd>
-          <dt class="col-2">Location:</dt>
-          <dd class="col-10">{{ event.location }}</dd>
-          <dt class="col-2">Registration:</dt>
-          <dd class="col-10">
-            {{
-              formatRegistrationPeriod(
-                event.registrationStart,
-                event.registrationEnd
-              )
-            }}
-          </dd>
-        </dl>
-      </div> -->
+        <div v-if="isLoading">
+          <dl class="row">
+            <dt class="col-2">Description:</dt>
+            <dd class="col-10">{{ event.description }}</dd>
+
+            <dt class="col-2">Category:</dt>
+            <dd class="col-10">{{ event.category }}</dd>
+
+            <dt class="col-2">Modality:</dt>
+            <dd class="col-10">{{ event.modality }}</dd>
+
+            <dt class="col-2">Date:</dt>
+            <dd class="col-10">{{ event.date }}</dd>
+
+            <dt class="col-2">Time:</dt>
+            <dd class="col-10">{{ event.duration }}</dd>
+
+            <dt class="col-2">Venue:</dt>
+            <dd class="col-10">{{ event.venue }}</dd>
+
+            <dt class="col-2">Address:</dt>
+            <dd class="col-10">{{ event.address }}</dd>
+
+            <dt class="col-2">Registration:</dt>
+            <dd class="col-10">
+              {{ (event.registration_start, event.registration_end) }}
+            </dd>
+          </dl>
+        </div>
+        <div v-else>
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
       <!-- <div class="vr"></div> -->
       <div class="col-3">
         <ul class="list-unstyled vstack gap-2">
@@ -94,8 +107,11 @@ const client = useSupabaseClient();
 const eventID = route.params.eventID;
 const event = ref({});
 const error_message = ref("");
+const isLoading = ref(false);
 
 const fetchEvent = async (eventID) => {
+  isLoading.value = false;
+
   const { data: _events, error } = await client
     .from("events")
     .select("*")
@@ -108,6 +124,9 @@ const fetchEvent = async (eventID) => {
 
   if (_events != null) {
     event.value = _events;
+    setTimeout(() => {
+      isLoading.value = true;
+    }, 500);
   } else {
     console.log("event is empty");
   }
