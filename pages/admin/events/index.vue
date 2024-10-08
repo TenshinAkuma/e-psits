@@ -22,7 +22,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(event, id) in events" class="table-row">
+          <tr
+            v-for="event in events"
+            class="table-row"
+            @click="toEventDetails(event.id)"
+          >
             <td>{{ event.title }}</td>
             <td>{{ event.category }}</td>
             <td>{{ event.modality }}</td>
@@ -44,6 +48,7 @@ const client = useSupabaseClient();
 
 const events = ref([]);
 const error_message = ref();
+const isLoading = true;
 
 const fetchEvents = async () => {
   const { data: _events, error } = await client.from("events").select("*");
@@ -58,9 +63,10 @@ const fetchEvents = async () => {
   }
   console.log(_events);
 };
-// const toEventDetails = async (eventID) => {
-//   await navigateTo(`/admin/events/${eventID}`);
-// };
+
+const toEventDetails = async (eventID) => {
+  await navigateTo(`/admin/events/${eventID}`);
+};
 
 onMounted(() => {
   fetchEvents();
