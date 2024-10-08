@@ -1,5 +1,5 @@
 <template>
-  <div class="container-xxl pt-3">
+  <div class="pt-3">
     <div class="row">
       <div class="col-2 align-items-start">
         <div
