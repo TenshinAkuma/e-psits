@@ -16,30 +16,40 @@
             >
           </div>
         </div>
-        <dl class="row">
-          <!-- description -->
-          <dt class="col-2">Description:</dt>
-          <dd class="col-10">{{ event.description }}</dd>
-          <!-- category -->
-          <dt class="col-2">Category:</dt>
-          <dd class="col-10">{{ event.category }}</dd>
-          <!-- duration -->
-          <dt class="col-2">Duration:</dt>
-          <dd class="col-10">{{ event.duration }}</dd>
-          <dt class="col-2">Date:</dt>
-          <dd class="col-10">{{ event.date }}</dd>
-          <dt class="col-2">Location:</dt>
-          <dd class="col-10">{{ event.location }}</dd>
-          <dt class="col-2">Registration:</dt>
-          <dd class="col-10">
-            {{
-              formatRegistrationPeriod(
-                event.registrationStart,
-                event.registrationEnd
-              )
-            }}
-          </dd>
-        </dl>
+        <div v-if="isLoading">
+          <dl class="row">
+            <dt class="col-2">Description:</dt>
+            <dd class="col-10">{{ event.description }}</dd>
+
+            <dt class="col-2">Category:</dt>
+            <dd class="col-10">{{ event.category }}</dd>
+
+            <dt class="col-2">Modality:</dt>
+            <dd class="col-10">{{ event.modality }}</dd>
+
+            <dt class="col-2">Date:</dt>
+            <dd class="col-10">{{ event.date }}</dd>
+
+            <dt class="col-2">Time:</dt>
+            <dd class="col-10">{{ event.duration }}</dd>
+
+            <dt class="col-2">Venue:</dt>
+            <dd class="col-10">{{ event.venue }}</dd>
+
+            <dt class="col-2">Address:</dt>
+            <dd class="col-10">{{ event.address }}</dd>
+
+            <dt class="col-2">Registration:</dt>
+            <dd class="col-10">
+              {{ (event.registration_start, event.registration_end) }}
+            </dd>
+          </dl>
+        </div>
+        <div v-else>
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </div>
       <!-- <div class="vr"></div> -->
       <div class="col-3">
@@ -93,10 +103,39 @@ definePageMeta({
 });
 
 const route = useRoute();
+const client = useSupabaseClient();
 const eventID = route.params.eventID;
+const event = ref({});
+const error_message = ref("");
+const isLoading = ref(false);
 
-const { events } = useEvents();
-const event = events[eventID];
+const fetchEvent = async (eventID) => {
+  isLoading.value = false;
+
+  const { data: _events, error } = await client
+    .from("events")
+    .select("*")
+    .eq("id", eventID)
+    .single();
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  if (_events != null) {
+    event.value = _events;
+    setTimeout(() => {
+      isLoading.value = true;
+    }, 500);
+  } else {
+    console.log("event is empty");
+  }
+  console.log(_events);
+};
+
+onMounted(() => {
+  fetchEvent(eventID);
+});
 </script>
 
 <style scoped>
