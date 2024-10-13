@@ -1,22 +1,28 @@
 <template>
   <div>
-    <h3 class="fw-bold">Event details</h3>
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="fw-bold m-0">Event details</h3>
+      <NuxtLink
+        :to="`/admin/events/${eventID}/update`"
+        class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
+        ><Icon name="material-symbols:edit-outline-rounded" />Edit</NuxtLink
+      >
+    </div>
     <hr />
     <div class="row gx-5">
       <div class="col-9">
-        <div>
-          <div class="d-flex justify-content-start align-items-start">
-            <div class="fs-2 fw-bold">{{ event.title }}</div>
-            <NuxtLink
-              :to="`/admin/events/${eventID}/update`"
-              class="text-decoration-none text-secondary d-flex align-items-center gap-2 px-2"
-              ><Icon
-                name="material-symbols:edit-outline-rounded"
-              />Edit</NuxtLink
-            >
+        <!-- event title -->
+        <div class="fs-2 fw-bold">{{ event.title }}</div>
+
+        <!-- loading state -->
+        <div v-if="isLoading" class="d-flex justify-content-center pt-5 mt-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
         </div>
-        <div v-if="isLoading">
+
+        <!-- loaded state -->
+        <div v-else>
           <dl class="row">
             <dt class="col-2">Description:</dt>
             <dd class="col-10">{{ event.description }}</dd>
@@ -45,13 +51,8 @@
             </dd>
           </dl>
         </div>
-        <div v-else>
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
       </div>
-      <!-- <div class="vr"></div> -->
+
       <div class="col-3">
         <ul class="list-unstyled vstack gap-2">
           <li class="fw-bold">Document and forms</li>
@@ -104,13 +105,14 @@ definePageMeta({
 
 const route = useRoute();
 const client = useSupabaseClient();
+
 const eventID = route.params.eventID;
+
 const event = ref({});
-const error_message = ref("");
-const isLoading = ref(false);
+const isLoading = ref();
 
 const fetchEvent = async (eventID) => {
-  isLoading.value = false;
+  isLoading.value = true;
 
   const { data: _events, error } = await client
     .from("events")
@@ -124,13 +126,13 @@ const fetchEvent = async (eventID) => {
 
   if (_events != null) {
     event.value = _events;
-    setTimeout(() => {
-      isLoading.value = true;
-    }, 500);
   } else {
     console.log("event is empty");
   }
-  console.log(_events);
+
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 500);
 };
 
 onMounted(() => {
