@@ -165,6 +165,8 @@ const toEventDetails = async (eventID) => {
   await navigateTo(`/admin/events/${eventID}`);
 };
 
+const event_modalities = ["Face-to-face", "Virtual"];
+
 const updateEvent = async () => {
   const { error } = await client
     .from("events")
