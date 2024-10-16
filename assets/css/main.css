@@ -1,8 +1,9 @@
 * {
   font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
 }
 
 #__nuxt {
   height: 100vh;
-  overflow: hidden;
+  width: 100vw;
 }

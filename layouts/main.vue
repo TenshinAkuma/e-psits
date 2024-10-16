@@ -1,57 +1,47 @@
 <template>
-  <div class="pt-3">
-    <div class="row">
-      <div class="col-2 align-items-start">
-        <div
-          class="d-flex justify-content-between align-items-center px-3 mb-5 w-100"
-          style="height: 72px"
+  <div class="d-flex" style="height: 100%">
+    <!-- SIDEBAR -->
+    <div id="side-bar" class="border-end" style="width: 300px">
+      <div class="hstack border-bottom px-3" style="height: 56px">
+        <NuxtLink
+          to="/#"
+          class="fs-4 fw-bold text-decoration-none"
+          style="color: #46468f"
+          >E-PSITS</NuxtLink
         >
-          <NuxtLink
-            to="/#"
-            class="fs-4 fw-bold text-decoration-none"
-            style="color: #46468f"
-            >E-PSITS</NuxtLink
-          >
-          <Icon
-            name="material-symbols:keyboard-backspace-rounded"
-            size="1.5rem"
-            class="text-secondary"
-            @click="$router.back()"
-            style="cursor: pointer"
-          />
-        </div>
+      </div>
+      <div class="p-3">
         <NuxtLink
           v-for="menu in Menus"
           :to="`/admin/${menu.route}`"
-          class="d-flex align-items-center text-decoration-none text-secondary p-3 w-100"
+          class="d-flex align-items-center text-decoration-none text-secondary py-3 w-100"
           ><Icon :name="`${menu.icon}`" class="me-3" />
           <div>{{ menu.selection }}</div></NuxtLink
         >
       </div>
-      <div class="col-10">
-        <div
-          class="d-flex justify-content-between align-items-center px-3 border rounded"
-          style="height: 72px"
+    </div>
+
+    <!-- BODY CONTENT -->
+    <div id="content-body" class="h-100 w-100">
+      <!-- HEADER -->
+      <div
+        class="d-flex justify-content-between align-items-center border-bottom p-3"
+        style="height: 56px"
+      >
+        <div class="text-dark">Administrator Panel</div>
+        <button
+          class="d-flex align-items-center btn btn-link text-decoration-none text-dark px-3"
+          @click="handleLogout()"
         >
-          <div class="text-secondary">Administrator Panel</div>
-          <button
-            class="d-flex align-items-center btn btn-link text-decoration-none text-secondary px-3"
-            @click="handleLogout()"
-          >
-            <Icon
-              name="material-symbols:power-settings-new-outline-rounded"
-              class="me-2"
-            />
-            <div>Logout</div>
-          </button>
-        </div>
-        <div
-          id="page-slot"
-          class="border rounded p-5 mt-3"
-          style="overflow-y: auto; height: 85vh"
-        >
-          <slot />
-        </div>
+          <Icon
+            name="material-symbols:power-settings-new-outline-rounded"
+            class="me-2"
+          />
+          <div>Logout</div>
+        </button>
+      </div>
+      <div id="page-slot" class="p-5">
+        <slot />
       </div>
     </div>
   </div>

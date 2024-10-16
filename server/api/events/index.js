@@ -9,8 +9,6 @@ export default defineEventHandler(async (event) => {
     if (error) {
       return { statusCode: 500, body: { message: error.message } };
     }
-
-    console.log(_events);
     return { statusCode: 200, body: _events };
   } catch (err) {
     return { statusCode: 500, body: { message: "Server error" } };
