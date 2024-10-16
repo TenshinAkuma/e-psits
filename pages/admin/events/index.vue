@@ -2,9 +2,9 @@
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3 class="fw-bold m-0">List of events</h3>
-      <div v-if="error_message">{{ error_message }}</div>
+      <div v-if="error">{{ error }}</div>
       <NuxtLink
-        to="events/create"
+        to="/admin/events/create"
         class="d-flex align-items-center gap-2 btn btn-outline-primary btn-sm rounded-pill px-4"
         ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Create
         event</NuxtLink
@@ -24,6 +24,7 @@
         <tbody>
           <tr
             v-for="event in events"
+            :key="event.id"
             class="table-row"
             @click="toEventDetails(event.id)"
           >
@@ -44,25 +45,7 @@ definePageMeta({
   layout: "main",
 });
 
-const client = useSupabaseClient();
-
-const events = ref([]);
-const error_message = ref();
-const isLoading = true;
-
-const fetchEvents = async () => {
-  const { data: _events, error } = await client.from("events").select("*");
-
-  if (error) {
-    error_message.value = error.message;
-    console.log(error_message);
-  }
-
-  if (_events != null) {
-    events.value = _events;
-  }
-  console.log(_events);
-};
+const { events, loading, error, fetchEvents } = useEvents();
 
 const toEventDetails = async (eventID) => {
   await navigateTo(`/admin/events/${eventID}`);
