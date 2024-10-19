@@ -5,6 +5,7 @@
 export const useCreateEvent = () => {
   // useState is used to store the response from the API
   const eventResponse = useState("eventResponse", () => null);
+  const isLoading = ref(false);
 
   /**
    * Calls the create event API to store a new event.
@@ -12,6 +13,7 @@ export const useCreateEvent = () => {
    * @returns {Promise<void>}
    */
   const createEvent = async (eventDetails) => {
+    isLoading = true;
     try {
       // Call the API using Nuxt's built-in fetch
       const response = await $fetch("/api/events", {
@@ -31,6 +33,8 @@ export const useCreateEvent = () => {
       console.error("Error while creating event", error);
       eventResponse.value = { success: false, error: error.message };
     }
+
+    isLoading = false;
   };
 
   return {

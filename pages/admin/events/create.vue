@@ -173,8 +173,6 @@ const addEvent = () => {
   };
 
   createEvent(eventDetails);
-
-  console.log(eventDetails);
 };
 const event_categories = [
   "Competition",
