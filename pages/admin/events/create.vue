@@ -145,17 +145,6 @@ definePageMeta({
   layout: "main",
 });
 
-const client = useSupabaseClient();
-
-const event_categories = [
-  "Competition",
-  "Workshop",
-  "Career fair",
-  "Keynote speech",
-];
-
-const event_modalities = ["Face-to-face", "Virtual"];
-
 const title = ref("");
 const description = ref("");
 const category = ref("");
@@ -167,29 +156,34 @@ const address = ref("");
 const registration_start = ref();
 const registration_end = ref();
 
-const addEvent = async () => {
-  const { data: events, error } = await client
-    .from("events")
-    .insert({
-      title: title.value,
-      category: category.value,
-      modality: modality.value,
-      description: description.value,
-      date: date.value,
-      time: time.value,
-      registration_start: registration_start.value,
-      registration_end: registration_end.value,
-      venue: venue.value,
-      address: address.value,
-    })
-    .select();
+const { createEvent, eventResponse } = useCreateEvent();
 
-  if (error) {
-    console.log(error);
-  } else {
-    console.log(events);
-  }
+const addEvent = () => {
+  const eventDetails = {
+    title: title.value,
+    description: description.value,
+    category: category.value,
+    modality: modality.value,
+    time: date.value,
+    date: date.value,
+    venue: venue.value,
+    address: address.value,
+    registration_start: registration_start.value,
+    registration_end: registration_end.value,
+  };
+
+  createEvent(eventDetails);
+
+  console.log(eventDetails);
 };
+const event_categories = [
+  "Competition",
+  "Workshop",
+  "Career fair",
+  "Keynote speech",
+];
+
+const event_modalities = ["Face-to-face", "Virtual"];
 </script>
 
 <style scoped>
