@@ -34,7 +34,7 @@ export const useCreateEvent = () => {
       eventResponse.value = { success: false, error: error.message };
     }
 
-    isLoading = false;
+    isLoading.value = false;
   };
 
   return {
