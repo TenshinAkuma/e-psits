@@ -32,7 +32,7 @@ const dashboard_actions = [
   {
     shortcut: "Create an event",
     icon: "material-symbols:calendar-add-on-outline-rounded",
-    link: "admin/events/create",
+    link: "/admin/events/create",
   },
   {
     shortcut: "Participant registration",
