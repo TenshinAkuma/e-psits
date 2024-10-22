@@ -13,7 +13,7 @@
         <Icon name="material-symbols:menu-rounded" size="1.5rem" />
       </button>
       <NuxtLink
-        to="/#"
+        to="/admin"
         class="fs-4 fw-bold text-decoration-none"
         style="color: #46468f"
         >E-PSITS</NuxtLink
