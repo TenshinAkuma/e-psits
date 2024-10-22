@@ -1,8 +1,15 @@
 <template>
-  <div id="side-bar" class="border-end" style="width: 300px">
+  <div
+    style="width: 300px"
+    class="offcanvas offcanvas-start border-end"
+    data-bs-scroll="true"
+    tabindex="-1"
+    id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel"
+  >
     <div class="hstack border-bottom px-3" style="height: 56px">
       <NuxtLink
-        to="/#"
+        to="/admin"
         class="fs-4 fw-bold text-decoration-none"
         style="color: #46468f"
         >E-PSITS</NuxtLink
