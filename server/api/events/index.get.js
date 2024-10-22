@@ -8,10 +8,7 @@ export default defineEventHandler(async (event) => {
   const offset = (page - 1) * itemsPerPage;
 
   try {
-    const { data: _events, error } = await client
-      .from("events")
-      .select("*")
-      .range(offset, offset + itemsPerPage - 1);
+    const { data: _events, error } = await client.from("events").select("*");
 
     if (error) throw error;
 
