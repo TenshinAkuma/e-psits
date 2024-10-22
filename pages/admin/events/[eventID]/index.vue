@@ -15,7 +15,7 @@
         <div class="fs-2 fw-bold">{{ event.title }}</div>
 
         <!-- loading state -->
-        <div v-if="isLoading" class="d-flex justify-content-center pt-5 mt-5">
+        <div v-if="loading" class="d-flex justify-content-center pt-5 mt-5">
           <div class="spinner-border" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
@@ -104,39 +104,11 @@ definePageMeta({
 });
 
 const route = useRoute();
-const client = useSupabaseClient();
-
 const eventID = route.params.eventID;
-
-const event = ref({});
-const isLoading = ref();
-
-const fetchEvent = async (eventID) => {
-  isLoading.value = true;
-
-  const { data: _events, error } = await client
-    .from("events")
-    .select("*")
-    .eq("id", eventID)
-    .single();
-
-  if (error) {
-    console.log(error.message);
-  }
-
-  if (_events != null) {
-    event.value = _events;
-  } else {
-    console.log("event is empty");
-  }
-
-  setTimeout(() => {
-    isLoading.value = false;
-  }, 500);
-};
+const { event, loading, getEvent } = useGetEvent();
 
 onMounted(() => {
-  fetchEvent(eventID);
+  getEvent(eventID);
 });
 </script>
 

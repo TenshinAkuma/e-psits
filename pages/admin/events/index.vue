@@ -10,7 +10,7 @@
       >
     </div>
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-hover h-100">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Title</th>

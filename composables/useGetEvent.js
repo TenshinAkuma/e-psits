@@ -1,17 +1,18 @@
-export const useEvents = () => {
-  const events = useState("events", () => []);
+export const useGetEvent = () => {
+  const event = ref({});
   const loading = ref(false);
 
-  const fetchEvents = async () => {
+  const getEvent = async (eventID) => {
     loading.value = true;
 
     try {
-      const response = await $fetch("/api/events", {
+      const response = await $fetch(`/api/events/${eventID}`, {
         headers: useRequestHeaders(["cookie"]),
         method: "GET",
       });
 
-      events.value = response.body;
+      event.value = response.body;
+      console.log(event.value);
     } catch (err) {
       console.log("Failed to fetch events:", err);
     } finally {
@@ -20,8 +21,8 @@ export const useEvents = () => {
   };
 
   return {
-    events,
+    event,
     loading,
-    fetchEvents,
+    getEvent,
   };
 };
