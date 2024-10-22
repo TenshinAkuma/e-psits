@@ -10,7 +10,7 @@
       >
     </div>
     <div v-if="!loading" class="table-responsive">
-      <table class="table table-hover">
+      <table class="table table-hover h-100">
         <thead>
           <tr>
             <th scope="col">Title</th>
@@ -20,7 +20,7 @@
             <th scope="col">Description</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="h-50s overflow-y-auto">
           <tr
             v-for="event in events"
             :key="event.id"
