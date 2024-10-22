@@ -1,20 +1,20 @@
 export const useEvents = () => {
   const events = useState("events", () => []);
   const loading = ref(false);
-  const error = ref(null);
 
   const fetchEvents = async () => {
     loading.value = true;
-    error.value = null;
 
     try {
       const response = await $fetch("/api/events", {
         headers: useRequestHeaders(["cookie"]),
+        method: "GET",
       });
 
       events.value = response.body;
+      console.log(events.value);
     } catch (err) {
-      error.value = err.message;
+      console.log("Failed to fetch events:", err);
     } finally {
       loading.value = false;
     }
@@ -23,7 +23,6 @@ export const useEvents = () => {
   return {
     events,
     loading,
-    error,
     fetchEvents,
   };
 };

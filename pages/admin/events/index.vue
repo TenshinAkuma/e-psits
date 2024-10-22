@@ -2,7 +2,6 @@
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3 class="fw-bold m-0">List of events</h3>
-      <div v-if="error">{{ error }}</div>
       <NuxtLink
         to="/admin/events/create"
         class="d-flex align-items-center gap-2 btn btn-outline-primary btn-sm rounded-pill px-4"
@@ -10,7 +9,7 @@
         event</NuxtLink
       >
     </div>
-    <div class="table-responsive">
+    <div v-if="!loading" class="table-responsive">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -37,6 +36,9 @@
         </tbody>
       </table>
     </div>
+    <div v-else class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
   </div>
 </template>
 
@@ -45,7 +47,7 @@ definePageMeta({
   layout: "main",
 });
 
-const { events, loading, error, fetchEvents } = useEvents();
+const { events, loading, fetchEvents } = useEvents();
 
 const toEventDetails = async (eventID) => {
   await navigateTo(`/admin/events/${eventID}`);
