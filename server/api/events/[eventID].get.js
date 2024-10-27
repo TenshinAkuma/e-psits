@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
       .single();
 
     if (error) throw error;
-
     return {
       status: 200,
       body: _event,

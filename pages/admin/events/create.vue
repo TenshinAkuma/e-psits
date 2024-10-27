@@ -1,10 +1,10 @@
 <template>
   <h3 class="fw-bold">Create an event</h3>
   <hr />
-  <form @submit.prevent="addEvent">
-    <div class="row mb-5">
+  <form @submit.prevent="AddEvent">
+    <div class="row mb-3">
       <!-- TITLE -->
-      <div class="col-12 mb-5">
+      <div class="col-12 mb-3">
         <label for="event_title" class="fw-bold">Title</label>
         <input
           type="text"
@@ -15,7 +15,7 @@
       </div>
 
       <!-- CATEGORY -->
-      <div class="col-6 mb-5">
+      <div class="col-6 mb-3">
         <label for="event-category" class="fw-bold">Category</label>
         <select
           class="form-select"
@@ -31,7 +31,7 @@
       </div>
 
       <!-- MODALITY -->
-      <div class="col-6 mb-5">
+      <div class="col-6 mb-3">
         <label for="event-modality" class="fw-bold">Modality</label>
         <select
           class="form-select"
@@ -47,19 +47,21 @@
       </div>
 
       <!-- DESCRIPTION -->
-      <div class="col-12 mb-5">
+      <div class="col-12 mb-3">
         <label for="event-description" class="fw-bold">Description</label>
         <textarea
           v-model="description"
           name="description"
           class="form-control"
+          rows="3"
+          style="resize: none"
           id="event-description"
           wrap="hard"
         />
       </div>
 
       <!-- EVENT DATE -->
-      <div class="col-6 mb-5">
+      <div class="col-6 mb-3">
         <label for="event-date" class="fw-bold">Date</label>
         <input
           type="date"
@@ -70,13 +72,13 @@
       </div>
 
       <!-- EVENT TIME -->
-      <div class="col-6 mb-5">
+      <div class="col-6 mb-3">
         <label for="event-time" class="fw-bold">Time</label>
         <input type="time" class="form-control" v-model="time" />
       </div>
 
       <!-- REGISTRATION DATE -->
-      <div class="col-7 mb-5">
+      <div class="col-7 mb-3">
         <label for="event-registration" class="fw-bold"
           >Registration date</label
         >
@@ -96,7 +98,7 @@
       <div class="col-5"></div>
 
       <!-- VENUE -->
-      <div class="col-4 mb-5">
+      <div class="col-4">
         <label for="event-location" class="fw-bold">Venue</label>
         <div class="input-group">
           <input
@@ -109,7 +111,7 @@
       </div>
 
       <!-- ADDRESS -->
-      <div class="col-8 mb-5">
+      <div class="col-8">
         <label for="event-location" class="fw-bold">Address</label>
         <div class="input-group">
           <input
@@ -156,9 +158,9 @@ const address = ref("");
 const registration_start = ref();
 const registration_end = ref();
 
-const { createEvent, eventResponse } = useCreateEvent();
+const { PostEvent } = useCreateEvent();
 
-const addEvent = () => {
+const AddEvent = () => {
   const eventDetails = {
     title: title.value,
     description: description.value,
@@ -172,7 +174,7 @@ const addEvent = () => {
     registration_end: registration_end.value,
   };
 
-  createEvent(eventDetails);
+  PostEvent(eventDetails);
 };
 const event_categories = [
   "Competition",
@@ -183,10 +185,3 @@ const event_categories = [
 
 const event_modalities = ["Face-to-face", "Virtual"];
 </script>
-
-<style scoped>
-textarea {
-  resize: none;
-  height: 10rem;
-}
-</style>

@@ -2,7 +2,7 @@ export const useEvents = () => {
   const events = useState("events", () => []);
   const loading = ref(false);
 
-  const fetchEvents = async () => {
+  const GetAllEvents = async () => {
     loading.value = true;
 
     try {
@@ -22,6 +22,6 @@ export const useEvents = () => {
   return {
     events,
     loading,
-    fetchEvents,
+    GetAllEvents,
   };
 };

@@ -37,7 +37,7 @@
             <dd class="col-10">{{ event.date }}</dd>
 
             <dt class="col-2">Time:</dt>
-            <dd class="col-10">{{ event.duration }}</dd>
+            <dd class="col-10">{{ event.time }}</dd>
 
             <dt class="col-2">Venue:</dt>
             <dd class="col-10">{{ event.venue }}</dd>

@@ -5,18 +5,21 @@ export default defineEventHandler(async (event) => {
   const client = await serverSupabaseClient(event);
 
   try {
-    const { data, error } = await client.from("events").insert(body).single();
+    const { data, error } = await client
+      .from("events")
+      .insert(body)
+      .select()
+      .single();
 
     if (error) throw error;
-
     return {
-      success: true,
-      data,
+      status: 201,
+      body: data,
     };
-  } catch (error) {
+  } catch (err) {
     return {
-      success: false,
-      message: error.message || `Failed to create event: ${error.message}`,
+      status: 500,
+      body: { message: err.message },
     };
   }
 });
