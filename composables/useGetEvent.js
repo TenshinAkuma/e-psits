@@ -12,9 +12,8 @@ export const useGetEvent = () => {
       });
 
       event.value = response.body;
-      console.log(event.value);
     } catch (err) {
-      console.log("Failed to fetch events:", err);
+      console.log("Failed to fetch events", err);
     } finally {
       loading.value = false;
     }

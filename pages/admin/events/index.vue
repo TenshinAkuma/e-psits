@@ -5,9 +5,10 @@
       <NuxtLink
         to="/admin/events/create"
         class="d-flex align-items-center gap-2 btn btn-outline-primary btn-sm rounded-pill px-4"
-        ><Icon name="material-symbols:calendar-add-on-outline-rounded" />Create
-        event</NuxtLink
       >
+        <Icon name="material-symbols:calendar-add-on-outline-rounded" />Create
+        event
+      </NuxtLink>
     </div>
     <div v-if="!loading" class="table-responsive">
       <table class="table table-hover">
@@ -47,14 +48,14 @@ definePageMeta({
   layout: "main",
 });
 
-const { events, loading, fetchEvents } = useEvents();
+const { events, loading, GetAllEvents } = useEvents();
 
 const toEventDetails = async (eventID) => {
   await navigateTo(`/admin/events/${eventID}`);
 };
 
 onMounted(() => {
-  fetchEvents();
+  GetAllEvents();
 });
 </script>
 

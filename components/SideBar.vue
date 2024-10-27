@@ -4,16 +4,22 @@
     class="offcanvas offcanvas-start border-end"
     data-bs-scroll="true"
     tabindex="-1"
-    id="offcanvasWithBothOptions"
-    aria-labelledby="offcanvasWithBothOptionsLabel"
+    id="sideBarNavigation"
+    aria-labelledby="sideBarNavigation"
   >
-    <div class="hstack border-bottom px-3" style="height: 56px">
+    <div class="offcanvas-header border-bottom px-3" style="height: 56px">
       <NuxtLink
         to="/admin"
         class="fs-4 fw-bold text-decoration-none"
         style="color: #46468f"
         >E-PSITS</NuxtLink
       >
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
     </div>
     <div class="p-3">
       <NuxtLink

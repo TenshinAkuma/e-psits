@@ -1,44 +1,35 @@
-/**
- * Composable to create a new event using the API.
- * @returns {Object} - `createEvent` function and `eventResponse` state.
- */
 export const useCreateEvent = () => {
-  // useState is used to store the response from the API
-  const eventResponse = useState("eventResponse", () => null);
-  const isLoading = ref(false);
+  const loading = ref(false);
+  const errorMessage = ref(null);
+  const isSuccess = ref(false);
+  const eventId = ref(null);
 
-  /**
-   * Calls the create event API to store a new event.
-   * @param {Object} eventDetails - Object containing event details.
-   * @returns {Promise<void>}
-   */
-  const createEvent = async (eventDetails) => {
-    isLoading = true;
+  const PostEvent = async (eventDetails) => {
+    loading.value = true;
+    isSuccess.value = false;
+
     try {
       // Call the API using Nuxt's built-in fetch
       const response = await $fetch("/api/events", {
+        headers: useRequestHeaders(["cookie"]),
         method: "POST",
         body: eventDetails,
       });
 
-      // Store the response in the `eventResponse` state for use in the component
-      eventResponse.value = response;
-
-      if (response.success) {
-        console.log("Event created successfully", response.data);
-      } else {
-        console.error("Failed to create event", response.error);
-      }
-    } catch (error) {
-      console.error("Error while creating event", error);
-      eventResponse.value = { success: false, error: error.message };
+      isSuccess.value = true;
+      eventId.value = response.body.id;
+    } catch (err) {
+      console.error("Error while creating event", err);
+    } finally {
+      loading.value = false;
     }
-
-    isLoading.value = false;
   };
 
   return {
-    createEvent,
-    eventResponse,
+    PostEvent,
+    loading,
+    errorMessage,
+    isSuccess,
+    eventId,
   };
 };

@@ -7,8 +7,8 @@
       <button
         class="btn btn-link d-flex align-items-center text-secondary border rounded p-1"
         data-bs-toggle="offcanvas"
-        data-bs-target="#offcanvasWithBothOptions"
-        aria-controls="offcanvasWithBothOptions"
+        data-bs-target="#sideBarNavigation"
+        aria-controls="sideBarNavigation"
       >
         <Icon name="material-symbols:menu-rounded" size="1.5rem" />
       </button>
@@ -31,6 +31,8 @@
       <div>Logout</div>
     </button>
   </div>
+
+  <Sidebar />
 </template>
 
 <script setup>
