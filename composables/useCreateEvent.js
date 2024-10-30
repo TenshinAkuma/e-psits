@@ -2,7 +2,7 @@ export const useCreateEvent = () => {
   const loading = ref(false);
   const errorMessage = ref(null);
   const isSuccess = ref(false);
-  const eventId = ref(null);
+  const eventId = ref(0);
 
   const PostEvent = async (eventDetails) => {
     loading.value = true;
@@ -16,8 +16,11 @@ export const useCreateEvent = () => {
         body: eventDetails,
       });
 
-      isSuccess.value = true;
-      eventId.value = response.body.id;
+      if (response.status === 201) {
+        isSuccess.value = true;
+        eventId.value = response.body.id;
+        console.log(eventId.value);
+      }
     } catch (err) {
       console.error("Error while creating event", err);
     } finally {

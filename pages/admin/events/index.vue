@@ -21,7 +21,7 @@
             <th scope="col">Description</th>
           </tr>
         </thead>
-        <tbody class="h-50s overflow-y-auto">
+        <tbody style="height: 50vh; overflow: auto">
           <tr
             v-for="event in events"
             :key="event.id"

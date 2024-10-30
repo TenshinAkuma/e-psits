@@ -1,31 +1,11 @@
 <template>
-  <div
-    style="width: 300px"
-    class="offcanvas offcanvas-start border-end"
-    data-bs-scroll="true"
-    tabindex="-1"
-    id="sideBarNavigation"
-    aria-labelledby="sideBarNavigation"
-  >
-    <div class="offcanvas-header border-bottom px-3" style="height: 56px">
-      <NuxtLink
-        to="/admin"
-        class="fs-4 fw-bold text-decoration-none"
-        style="color: #46468f"
-        >E-PSITS</NuxtLink
-      >
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="offcanvas"
-        aria-label="Close"
-      ></button>
-    </div>
+  <div style="width: 300px" class="border-end mt-5">
     <div class="p-3">
       <NuxtLink
         v-for="menu in Menus"
         :to="`/admin/${menu.route}`"
         class="d-flex align-items-center text-decoration-none text-secondary py-3 w-100"
+        data-bs-dismiss="true"
         ><Icon :name="`${menu.icon}`" class="me-3" />
         <div>{{ menu.selection }}</div></NuxtLink
       >
