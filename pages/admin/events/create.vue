@@ -1,30 +1,28 @@
 <template>
-  <div class="w-50">
+  <div class="container-sm">
     <h3 class="fw-bold">Create an event</h3>
     <hr />
 
     <form @submit.prevent="AddEvent" class="row">
       <!-- TITLE -->
       <div class="col-12 mb-3">
-        <label for="event_title" class="fw-bold">Title</label>
+        <label for="event_title" class="fw-bold mb-1">Title</label>
         <input
           type="text"
           class="form-control"
           id="event_title"
           v-model="title"
-          required
         />
       </div>
 
       <!-- CATEGORY -->
       <div class="col-6 mb-3">
-        <label for="event-category" class="fw-bold">Category</label>
+        <label for="event-category" class="fw-bold mb-1">Category</label>
         <select
           class="form-select"
           name="event-category"
           id="event-category"
           v-model="category"
-          required
         >
           <option selected disabled value="">Select event category</option>
           <option v-for="category in event_categories" :value="category">
@@ -35,13 +33,12 @@
 
       <!-- MODALITY -->
       <div class="col-6 mb-3">
-        <label for="event-modality" class="fw-bold">Modality</label>
+        <label for="event-modality" class="fw-bold mb-1">Modality</label>
         <select
           class="form-select"
           name="event-modality"
           id="event-category"
           v-model="modality"
-          required
         >
           <option selected disabled value="">Select event modality</option>
           <option v-for="modality in event_modalities" :value="modality">
@@ -52,7 +49,7 @@
 
       <!-- DESCRIPTION -->
       <div class="col-12 mb-3">
-        <label for="event-description" class="fw-bold">Description</label>
+        <label for="event-description" class="fw-bold mb-1">Description</label>
         <textarea
           v-model="description"
           name="description"
@@ -66,19 +63,18 @@
 
       <!-- EVENT DATE -->
       <div class="col-6 mb-3">
-        <label for="event-date" class="fw-bold">Date</label>
+        <label for="event-date" class="fw-bold mb-1">Date</label>
         <input
           type="date"
           class="form-control"
           id="event-date"
           v-model="date"
-          required
         />
       </div>
 
       <!-- EVENT TIME -->
       <div class="col-6 mb-3">
-        <label for="event-time" class="fw-bold">Time</label>
+        <label for="event-time" class="fw-bold mb-1">Time</label>
         <input type="time" class="form-control" v-model="time" />
       </div>
 
@@ -90,44 +86,36 @@
             type="date"
             class="form-control"
             v-model="registration_start"
-            required
           />
           <div>
             <Icon name="material-symbols:arrow-right-alt-rounded"></Icon>
           </div>
-          <input
-            type="date"
-            class="form-control"
-            v-model="registration_end"
-            required
-          />
+          <input type="date" class="form-control" v-model="registration_end" />
         </div>
       </div>
 
       <!-- VENUE -->
       <div class="col-4 mb-5">
-        <label for="event-location" class="fw-bold">Venue</label>
+        <label for="event-location" class="fw-bold mb-1">Venue</label>
         <div class="input-group">
           <input
             type="text"
             class="form-control"
             id="event-location"
             v-model="venue"
-            required
           />
         </div>
       </div>
 
       <!-- ADDRESS -->
       <div class="col-8 mb-5">
-        <label for="event-location" class="fw-bold">Address</label>
+        <label for="event-location" class="fw-bold mb-1">Address</label>
         <div class="input-group">
           <input
             type="text"
             class="form-control"
             id="event-location"
             v-model="address"
-            required
           />
         </div>
       </div>
@@ -197,7 +185,7 @@ const AddEvent = async () => {
 
   await PostEvent(eventDetails);
   if (isSuccess) {
-    navigateTo(`/admin/events/${eventId.value}`);
+    await navigateTo(`/admin/events/${eventId.value}`);
   }
 };
 const event_categories = [

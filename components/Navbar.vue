@@ -1,6 +1,6 @@
 <template>
   <div
-    class="d-flex justify-content-between align-items-center border-bottom p-3 position-absolute top-0 start-50 translate-middle-x w-100 bg-white"
+    class="d-flex justify-content-between align-items-center border border-bottom p-3 position-absolute top-0 start-50 translate-middle-x w-100 bg-white"
     style="height: 56px; z-index: 10"
   >
     <div class="hstack align-items-center gap-3">
