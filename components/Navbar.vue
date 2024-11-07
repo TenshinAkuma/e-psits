@@ -1,17 +1,9 @@
 <template>
   <div
-    class="d-flex justify-content-between align-items-center border-bottom p-3 sticky-top"
-    style="height: 56px"
+    class="d-flex justify-content-between align-items-center border border-bottom p-3 position-absolute top-0 start-50 translate-middle-x w-100 bg-white"
+    style="height: 56px; z-index: 10"
   >
     <div class="hstack align-items-center gap-3">
-      <button
-        class="btn btn-link d-flex align-items-center text-secondary border rounded p-1"
-        data-bs-toggle="offcanvas"
-        data-bs-target="#sideBarNavigation"
-        aria-controls="sideBarNavigation"
-      >
-        <Icon name="material-symbols:menu-rounded" size="1.5rem" />
-      </button>
       <NuxtLink
         to="/admin"
         class="fs-4 fw-bold text-decoration-none"
@@ -31,8 +23,6 @@
       <div>Logout</div>
     </button>
   </div>
-
-  <Sidebar />
 </template>
 
 <script setup>

@@ -1,11 +1,12 @@
 <template>
-  <h3 class="fw-bold">Create an event</h3>
-  <hr />
-  <form @submit.prevent="AddEvent">
-    <div class="row mb-3">
+  <div class="container-sm">
+    <h3 class="fw-bold">Create an event</h3>
+    <hr />
+
+    <form @submit.prevent="AddEvent" class="row">
       <!-- TITLE -->
       <div class="col-12 mb-3">
-        <label for="event_title" class="fw-bold">Title</label>
+        <label for="event_title" class="fw-bold mb-1">Title</label>
         <input
           type="text"
           class="form-control"
@@ -16,7 +17,7 @@
 
       <!-- CATEGORY -->
       <div class="col-6 mb-3">
-        <label for="event-category" class="fw-bold">Category</label>
+        <label for="event-category" class="fw-bold mb-1">Category</label>
         <select
           class="form-select"
           name="event-category"
@@ -32,7 +33,7 @@
 
       <!-- MODALITY -->
       <div class="col-6 mb-3">
-        <label for="event-modality" class="fw-bold">Modality</label>
+        <label for="event-modality" class="fw-bold mb-1">Modality</label>
         <select
           class="form-select"
           name="event-modality"
@@ -48,7 +49,7 @@
 
       <!-- DESCRIPTION -->
       <div class="col-12 mb-3">
-        <label for="event-description" class="fw-bold">Description</label>
+        <label for="event-description" class="fw-bold mb-1">Description</label>
         <textarea
           v-model="description"
           name="description"
@@ -62,7 +63,7 @@
 
       <!-- EVENT DATE -->
       <div class="col-6 mb-3">
-        <label for="event-date" class="fw-bold">Date</label>
+        <label for="event-date" class="fw-bold mb-1">Date</label>
         <input
           type="date"
           class="form-control"
@@ -73,15 +74,13 @@
 
       <!-- EVENT TIME -->
       <div class="col-6 mb-3">
-        <label for="event-time" class="fw-bold">Time</label>
+        <label for="event-time" class="fw-bold mb-1">Time</label>
         <input type="time" class="form-control" v-model="time" />
       </div>
 
-      <!-- REGISTRATION DATE -->
-      <div class="col-7 mb-3">
-        <label for="event-registration" class="fw-bold"
-          >Registration date</label
-        >
+      <!-- REGISTRATION PERIOD -->
+      <div class="col-12 mb-3">
+        <label class="fw-bold mb-1">Registration period</label>
         <div class="hstack align-items-center text-secondary gap-2">
           <input
             type="date"
@@ -95,11 +94,9 @@
         </div>
       </div>
 
-      <div class="col-5"></div>
-
       <!-- VENUE -->
-      <div class="col-4">
-        <label for="event-location" class="fw-bold">Venue</label>
+      <div class="col-4 mb-5">
+        <label for="event-location" class="fw-bold mb-1">Venue</label>
         <div class="input-group">
           <input
             type="text"
@@ -111,8 +108,8 @@
       </div>
 
       <!-- ADDRESS -->
-      <div class="col-8">
-        <label for="event-location" class="fw-bold">Address</label>
+      <div class="col-8 mb-5">
+        <label for="event-location" class="fw-bold mb-1">Address</label>
         <div class="input-group">
           <input
             type="text"
@@ -122,24 +119,36 @@
           />
         </div>
       </div>
-    </div>
-    <div class="d-flex justify-content-end gap-2">
-      <NuxtLink
-        to="/admin/events"
-        class="btn btn-outline-primary d-flex align-items-center gap-2 px-5"
-      >
-        <Icon name="material-symbols:close-rounded" />
-        Cancel
-      </NuxtLink>
-      <button
-        type="submit"
-        class="btn btn-primary d-flex align-items-center gap-2 px-5"
-      >
-        <Icon name="material-symbols:add-rounded" />
-        Create
-      </button>
-    </div>
-  </form>
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <NuxtLink
+          to="/admin/events"
+          class="btn btn-outline-primary d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="material-symbols:close-rounded" />
+          Cancel
+        </NuxtLink>
+
+        <button
+          v-if="loading"
+          class="btn btn-primary d-flex align-items-center gap-2 px-5"
+          type="button"
+          disabled
+        >
+          <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+          <span role="status">Saving...</span>
+        </button>
+
+        <button
+          v-else
+          type="submit"
+          class="btn btn-primary d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="material-symbols:add-rounded" />
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup>
@@ -158,9 +167,9 @@ const address = ref("");
 const registration_start = ref();
 const registration_end = ref();
 
-const { PostEvent } = useCreateEvent();
+const { PostEvent, loading, isSuccess, eventId } = useCreateEvent();
 
-const AddEvent = () => {
+const AddEvent = async () => {
   const eventDetails = {
     title: title.value,
     description: description.value,
@@ -174,7 +183,10 @@ const AddEvent = () => {
     registration_end: registration_end.value,
   };
 
-  PostEvent(eventDetails);
+  await PostEvent(eventDetails);
+  if (isSuccess) {
+    await navigateTo(`/admin/events/${eventId.value}`);
+  }
 };
 const event_categories = [
   "Competition",

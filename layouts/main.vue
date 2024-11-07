@@ -1,10 +1,11 @@
 <template>
-  <div style="height: 100%; position: relative">
+  <div style="position: relative">
     <!-- HEADER -->
     <Navbar />
-    <!-- BODY CONTENT -->
-    <div id="page-slot" class="py-5 mb-5 overflow-y-auto h-100">
-      <div class="container-xl">
+    <div class="d-flex w-100" style="height: 100vh">
+      <SideBar />
+      <!-- BODY CONTENT -->
+      <div class="mt-5 p-5 w-100">
         <slot />
       </div>
     </div>
