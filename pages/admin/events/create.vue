@@ -183,6 +183,7 @@ const AddEvent = async () => {
     registration_end: registration_end.value,
   };
 
+  // this method this to be await to wait for the promise to return to get the
   await PostEvent(eventDetails);
   if (isSuccess) {
     await navigateTo(`/admin/events/${eventId.value}`);
