@@ -18,10 +18,9 @@
             <th scope="col">Category</th>
             <th scope="col">Modality</th>
             <th scope="col">Date</th>
-            <th scope="col">Description</th>
           </tr>
         </thead>
-        <tbody style="height: 50vh; overflow: auto">
+        <tbody>
           <tr
             v-for="event in events"
             :key="event.id"
@@ -32,13 +31,14 @@
             <td>{{ event.category }}</td>
             <td>{{ event.modality }}</td>
             <td>{{ event.date }}</td>
-            <td>{{ event.description }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div v-else class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
+    <div v-else class="d-flex justify-content-center align-items-center m-auto">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </div>
   </div>
 </template>
