@@ -1,18 +1,23 @@
 <template>
-  <section style="width: 288px" class="border-end border-secondary">
+  <section
+    style="width: 288px"
+    class="d-flex flex-column border-end border-secondary"
+  >
     <div
-      class="w-100 hstack align-items-center border-bottom border-secondary px-3"
+      class="d-flex justify-content-between align-items-center border-bottom border-secondary px-3"
       style="height: 56px"
     >
       <div class="fs-4 fw-bold">E-PSITS</div>
     </div>
-    <NuxtLink
-      v-for="menu in Menus"
-      :to="`/admin/${menu.route}`"
-      class="hstack align-items-center text-decoration-none text-secondary p-3 w-100"
-      id="nav-menu"
-      >{{ menu.selection }}</NuxtLink
-    >
+    <div class="h-100">
+      <NuxtLink
+        v-for="menu in Menus"
+        :to="`/admin/${menu.route}`"
+        class="hstack align-items-center text-decoration-none text-secondary p-3 w-100"
+        id="nav-menu"
+        >{{ menu.selection }}</NuxtLink
+      >
+    </div>
   </section>
 </template>
 

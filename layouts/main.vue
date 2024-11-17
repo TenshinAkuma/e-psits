@@ -1,20 +1,11 @@
 <template>
-  <div class="d-flex h-100">
+  <div class="d-flex" style="height: 100%">
     <SideBar />
-    <section class="w-100 h-100">
+    <section class="d-flex flex-column w-100 h-100">
       <Navbar />
-      <article style="height: 100%; overflow: auto">
+      <article style="height: 100%; overflow: auto" class="p-5">
         <slot />
       </article>
     </section>
   </div>
-  <!-- <div style="position: relative">
-    <Navbar />
-    <div class="d-flex w-100" style="height: 100vh">
-      <SideBar />
-      <div class="mt-5 p-5 w-100">
-        <slot />
-      </div>
-    </div>
-  </div> -->
 </template>
