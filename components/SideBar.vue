@@ -1,10 +1,10 @@
 <template>
   <section
     style="width: 288px"
-    class="d-flex flex-column border-end border-secondary"
+    class="d-flex flex-column border-end border-start"
   >
     <div
-      class="d-flex justify-content-between align-items-center border-bottom border-secondary px-3"
+      class="d-flex justify-content-between align-items-center border-bottom px-3"
       style="height: 56px"
     >
       <div class="fs-4 fw-bold">E-PSITS</div>

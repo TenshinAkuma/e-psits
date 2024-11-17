@@ -1,18 +1,22 @@
 <template>
-  <div>
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h3 class="fw-bold m-0">List of events</h3>
+  <div class="p-3">
+    <div class="d-flex justify-content-start align-items-center gap-3">
+      <h4 class="fw-bold m-0">Events</h4>
       <NuxtLink
         to="/admin/events/create"
-        class="d-flex align-items-center gap-2 btn btn-outline-primary btn-sm rounded-pill px-4"
-      >
-        <Icon name="material-symbols:calendar-add-on-outline-rounded" />Create
-        event
+        class="btn btn-outline-primary btn-sm rounded-pill px-4"
+        >Create event
       </NuxtLink>
     </div>
-    <div v-if="!loading" class="table-responsive">
-      <table class="table table-hover">
-        <thead>
+
+    <hr />
+    <div
+      v-if="!loading"
+      class="table-responsive rounded-3"
+      style="height: 576px"
+    >
+      <table class="table table-hover table-borderless">
+        <thead class="table-light">
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Category</th>
@@ -60,15 +64,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.view-btn {
-  background-color: #46468f;
-}
-.remove-btn {
-  color: #ed5176;
-  border-color: #ed5176;
-}
-
 .table-row:hover {
   cursor: pointer;
+}
+
+table thead tr th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 </style>

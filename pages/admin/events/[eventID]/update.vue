@@ -1,27 +1,28 @@
 <template>
-  <h3 class="fw-bold">Create an event</h3>
-  <hr />
-  <form @submit.prevent="updateEvent(eventID)">
-    <div class="row mb-5">
+  <div class="">
+    <h3 class="fw-bold">Create an event</h3>
+    <hr />
+
+    <form @submit.prevent="AddEvent" class="row">
       <!-- TITLE -->
-      <div class="col-12 mb-5">
-        <label for="event_title" class="fw-bold">Title</label>
+      <div class="col-12 mb-3">
+        <label for="event_title" class="fw-bold mb-1">Title</label>
         <input
           type="text"
           class="form-control"
           id="event_title"
-          v-model="event.title"
+          v-model="title"
         />
       </div>
 
       <!-- CATEGORY -->
-      <div class="col-6 mb-5">
-        <label for="event-category" class="fw-bold">Category</label>
+      <div class="col-6 mb-3">
+        <label for="event-category" class="fw-bold mb-1">Category</label>
         <select
           class="form-select"
           name="event-category"
           id="event-category"
-          v-model="event.category"
+          v-model="category"
         >
           <option selected disabled value="">Select event category</option>
           <option v-for="category in event_categories" :value="category">
@@ -31,13 +32,13 @@
       </div>
 
       <!-- MODALITY -->
-      <div class="col-6 mb-5">
-        <label for="event-modality" class="fw-bold">Modality</label>
+      <div class="col-6 mb-3">
+        <label for="event-modality" class="fw-bold mb-1">Modality</label>
         <select
           class="form-select"
           name="event-modality"
           id="event-category"
-          v-model="event.modality"
+          v-model="modality"
         >
           <option selected disabled value="">Select event modality</option>
           <option v-for="modality in event_modalities" :value="modality">
@@ -47,101 +48,107 @@
       </div>
 
       <!-- DESCRIPTION -->
-      <div class="col-12 mb-5">
-        <label for="event-description" class="fw-bold">Description</label>
+      <div class="col-12 mb-3">
+        <label for="event-description" class="fw-bold mb-1">Description</label>
         <textarea
-          v-model="event.description"
+          v-model="description"
           name="description"
           class="form-control"
+          rows="3"
+          style="resize: none"
           id="event-description"
           wrap="hard"
         />
       </div>
 
       <!-- EVENT DATE -->
-      <div class="col-6 mb-5">
-        <label for="event-date" class="fw-bold">Date</label>
+      <div class="col-6 mb-3">
+        <label for="event-date" class="fw-bold mb-1">Date</label>
         <input
           type="date"
           class="form-control"
           id="event-date"
-          v-model="event.date"
+          v-model="date"
         />
       </div>
 
       <!-- EVENT TIME -->
-      <div class="col-6 mb-5">
-        <label for="event-time" class="fw-bold">Time</label>
-        <input type="time" class="form-control" />
+      <div class="col-6 mb-3">
+        <label for="event-time" class="fw-bold mb-1">Time</label>
+        <input type="time" class="form-control" v-model="time" />
       </div>
 
-      <!-- REGISTRATION DATE -->
-      <div class="col-7 mb-5">
-        <label for="event-registration" class="fw-bold"
-          >Registration date</label
-        >
+      <!-- REGISTRATION PERIOD -->
+      <div class="col-12 mb-3">
+        <label class="fw-bold mb-1">Registration period</label>
         <div class="hstack align-items-center text-secondary gap-2">
           <input
             type="date"
             class="form-control"
-            v-model="event.registration_start"
+            v-model="registration_start"
           />
           <div>
             <Icon name="material-symbols:arrow-right-alt-rounded"></Icon>
           </div>
-          <input
-            type="date"
-            class="form-control"
-            v-model="event.registration_end"
-          />
+          <input type="date" class="form-control" v-model="registration_end" />
         </div>
       </div>
 
-      <div class="col-5"></div>
-
       <!-- VENUE -->
       <div class="col-4 mb-5">
-        <label for="event-location" class="fw-bold">Venue</label>
+        <label for="event-location" class="fw-bold mb-1">Venue</label>
         <div class="input-group">
           <input
             type="text"
             class="form-control"
             id="event-location"
-            v-model="event.venue"
+            v-model="venue"
           />
         </div>
       </div>
 
       <!-- ADDRESS -->
       <div class="col-8 mb-5">
-        <label for="event-location" class="fw-bold">Address</label>
+        <label for="event-location" class="fw-bold mb-1">Address</label>
         <div class="input-group">
           <input
             type="text"
             class="form-control"
             id="event-location"
-            v-model="event.address"
+            v-model="address"
           />
         </div>
       </div>
-    </div>
-    <div class="d-flex justify-content-end gap-2">
-      <button
-        @click="toEventDetails(eventID)"
-        class="btn btn-outline-primary d-flex align-items-center gap-2 px-5"
-      >
-        <Icon name="material-symbols:close-rounded" />
-        Cancel
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary d-flex align-items-center gap-2 px-5"
-      >
-        <Icon name="material-symbols:add-rounded" />
-        Save
-      </button>
-    </div>
-  </form>
+      <div class="col-12 d-flex justify-content-end gap-2">
+        <NuxtLink
+          to="/admin/events"
+          class="btn btn-outline-primary d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="material-symbols:close-rounded" />
+          Cancel
+        </NuxtLink>
+
+        <button
+          v-if="loading"
+          class="btn btn-primary d-flex align-items-center gap-2 px-5"
+          type="button"
+          disabled
+        >
+          <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
+          <span role="status">Saving...</span>
+        </button>
+
+        <button
+          v-else
+          type="submit"
+          class="btn btn-primary d-flex align-items-center gap-2 px-5"
+        >
+          <Icon name="material-symbols:add-rounded" />
+          Create
+        </button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script setup>
@@ -149,11 +156,39 @@ definePageMeta({
   layout: "main",
 });
 
-const client = useSupabaseClient();
-const route = useRoute();
-const eventID = route.params.eventID;
-const event = ref({});
+const title = ref("");
+const description = ref("");
+const category = ref("");
+const modality = ref("");
+const time = ref();
+const date = ref();
+const venue = ref("");
+const address = ref("");
+const registration_start = ref();
+const registration_end = ref();
 
+const { PostEvent, loading, isSuccess, eventId } = useCreateEvent();
+
+const AddEvent = async () => {
+  const eventDetails = {
+    title: title.value,
+    description: description.value,
+    category: category.value,
+    modality: modality.value,
+    time: date.value,
+    date: date.value,
+    venue: venue.value,
+    address: address.value,
+    registration_start: registration_start.value,
+    registration_end: registration_end.value,
+  };
+
+  // this method this to be await to wait for the promise to return to get the
+  await PostEvent(eventDetails);
+  if (isSuccess) {
+    await navigateTo(`/admin/events/${eventId.value}`);
+  }
+};
 const event_categories = [
   "Competition",
   "Workshop",
@@ -161,48 +196,5 @@ const event_categories = [
   "Keynote speech",
 ];
 
-const toEventDetails = async (eventID) => {
-  await navigateTo(`/admin/events/${eventID}`);
-};
-
 const event_modalities = ["Face-to-face", "Virtual"];
-
-const updateEvent = async () => {
-  const { error } = await client
-    .from("events")
-    .update(event.value)
-    .eq("id", eventID)
-    .select();
-
-  if (error) {
-    console.log(error.message);
-  }
-};
-
-const fetchEvent = async (eventID) => {
-  const { data: _event, error } = await client
-    .from("events")
-    .select("*")
-    .eq("id", eventID)
-    .single();
-
-  if (error) {
-    console.log(error.message);
-  }
-
-  if (_event != null) {
-    event.value = _event;
-  }
-};
-
-onMounted(() => {
-  fetchEvent(eventID);
-});
 </script>
-
-<style scoped>
-textarea {
-  resize: none;
-  height: 10rem;
-}
-</style>

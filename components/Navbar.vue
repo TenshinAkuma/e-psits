@@ -1,6 +1,6 @@
 <template>
   <header
-    class="d-flex justify-content-between align-items-center border-bottom border-secondary px-3"
+    class="d-flex justify-content-between align-items-center border-bottom px-3"
     style="height: 56px"
   >
     <div class="text-dark">Administrator Panel</div>

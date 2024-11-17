@@ -3,7 +3,7 @@
     <SideBar />
     <section class="d-flex flex-column w-100 h-100">
       <Navbar />
-      <article style="height: 100%; overflow: auto" class="p-5">
+      <article style="height: 100%; overflow: auto">
         <slot />
       </article>
     </section>

@@ -1,98 +1,33 @@
 <template>
-  <div>
-    <div class="d-flex justify-content-between align-items-center">
-      <h3 class="fw-bold m-0">Event details</h3>
-      <NuxtLink
-        :to="`/admin/events/${eventID}/update`"
-        class="btn btn-sm btn-outline-danger d-flex align-items-center gap-2"
-        ><Icon name="material-symbols:edit-outline-rounded" />Edit</NuxtLink
-      >
-    </div>
-    <hr />
-    <div class="row gx-5">
+  <div class="container-xxl mt-5">
+    <img
+      src="https://img.freepik.com/free-vector/hand-drawn-digital-natives-illustration_23-2151254821.jpg?t=st=1731840750~exp=1731844350~hmac=eb39ceb6b6da135b93198fb9a50b86b38563edd3d263dc2c2f4c3f912e0db15e&w=1380"
+      style="height: 288px; width: 100%; object-fit: cover"
+      class="rounded-3 overflow-hidden"
+    />
+
+    <div class="row mt-3">
       <div class="col-9">
-        <!-- event title -->
-        <div class="fs-2 fw-bold">{{ event.title }}</div>
-
-        <!-- loading state -->
-        <div v-if="loading" class="d-flex justify-content-center pt-5 mt-5">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-
-        <!-- loaded state -->
-        <div v-else>
-          <dl class="row">
-            <dt class="col-2">Description:</dt>
-            <dd class="col-10">{{ event.description }}</dd>
-
-            <dt class="col-2">Category:</dt>
-            <dd class="col-10">{{ event.category }}</dd>
-
-            <dt class="col-2">Modality:</dt>
-            <dd class="col-10">{{ event.modality }}</dd>
-
-            <dt class="col-2">Date:</dt>
-            <dd class="col-10">{{ event.date }}</dd>
-
-            <dt class="col-2">Time:</dt>
-            <dd class="col-10">{{ event.time }}</dd>
-
-            <dt class="col-2">Venue:</dt>
-            <dd class="col-10">{{ event.venue }}</dd>
-
-            <dt class="col-2">Address:</dt>
-            <dd class="col-10">{{ event.address }}</dd>
-
-            <dt class="col-2">Registration:</dt>
-            <dd class="col-10">
-              {{ (event.registration_start, event.registration_end) }}
-            </dd>
-          </dl>
-        </div>
+        <h1 class="fw-bold m-0">{{ event.title }}</h1>
       </div>
-
       <div class="col-3">
-        <ul class="list-unstyled vstack gap-2">
-          <li class="fw-bold">Document and forms</li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            Guidelines <Icon name="material-symbols:download-rounded" />
-          </li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            Judging criteria <Icon name="material-symbols:download-rounded" />
-          </li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            Registration form <Icon name="material-symbols:download-rounded" />
-          </li>
-        </ul>
+        <button class="btn btn-outline-primary rounded-pill w-100 mb-1">
+          Add participant
+        </button>
+        <div class="fst-italic text-center m-0" style="font-size: 0.8rem">
+          Register a participant in this event
+        </div>
         <hr />
-        <ul class="list-unstyled vstack gap-2">
-          <li class="fw-bold">Quick actions</li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            View results <Icon name="material-symbols:arrow-outward-rounded" />
-          </li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            Create another event
-            <Icon name="material-symbols:arrow-outward-rounded" />
-          </li>
-          <li
-            class="forms text-secondary hstack justify-content-between align-items-center"
-          >
-            FAQs
-            <Icon name="material-symbols:arrow-outward-rounded" />
-          </li>
-        </ul>
+        <div class="fw-bold">Overview</div>
+        <div>{{ event.description }}</div>
+        <hr />
+        <div class="fw-bold">Date and time</div>
+        <div>{{ event.date }}</div>
+        <div>{{ event.time }}</div>
+        <hr />
+        <div class="fw-bold">Location</div>
+        <div>{{ event.venue }}</div>
+        <div>{{ event.address }}</div>
       </div>
     </div>
   </div>
@@ -105,10 +40,11 @@ definePageMeta({
 
 const route = useRoute();
 const eventID = route.params.eventID;
-const { event, loading, getEvent } = useGetEvent();
 
-onMounted(() => {
-  getEvent(eventID);
+const { status, data: event } = await useLazyFetch(`/api/events/${eventID}`, {
+  headers: useRequestHeaders(["cookie"]),
+  method: "GET",
+  lazy: true,
 });
 </script>
 
