@@ -1,13 +1,11 @@
 <template>
-  <div style="position: relative">
-    <!-- HEADER -->
-    <Navbar />
-    <div class="d-flex w-100" style="height: 100vh">
-      <SideBar />
-      <!-- BODY CONTENT -->
-      <div class="mt-5 p-5 w-100">
+  <div class="d-flex" style="height: 100%">
+    <SideBar />
+    <section class="d-flex flex-column w-100 h-100">
+      <Navbar />
+      <article style="height: 100%; overflow: auto" class="p-5">
         <slot />
-      </div>
-    </div>
+      </article>
+    </section>
   </div>
 </template>
