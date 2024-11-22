@@ -1,19 +1,13 @@
 <template>
   <section
-    style="width: 288px"
-    class="d-flex flex-column border-end border-start"
+    style="width: 216px"
+    class="vstack border-end border-2"
   >
-    <div
-      class="d-flex justify-content-between align-items-center border-bottom px-3"
-      style="height: 56px"
-    >
-      <div class="fs-4 fw-bold">E-PSITS</div>
-    </div>
     <div class="h-100">
       <NuxtLink
         v-for="menu in Menus"
         :to="`/admin/${menu.route}`"
-        class="hstack align-items-center text-decoration-none text-secondary p-3 w-100"
+        class="hstack align-items-center text-decoration-none text-secondary py-3 w-100"
         id="nav-menu"
         >{{ menu.selection }}</NuxtLink
       >
