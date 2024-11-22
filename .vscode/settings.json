@@ -1,7 +1,5 @@
 {
-	"cSpell.words": ["supabase"],
-	"editor.defaultFormatter": "Vue.volar",
-	"editor.formatOnSave": true,
-     "editor.detectIndentation": false,
-     "editor.tabSize": 3
+   "cSpell.words": [
+      "supabase"
+   ]
 }

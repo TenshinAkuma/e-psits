@@ -1,9 +1,11 @@
 <template>
-   <Navbar />
-   <div class="container-xxl d-flex" style="height: 100%">
-      <SideBar />
-      <article style="height: 100%; overflow: auto" class="p-5">
-         <slot />
+  <div class="d-flex" style="height: 100%">
+    <SideBar />
+    <section class="d-flex flex-column w-100 h-100">
+      <Navbar />
+      <article style="height: 100%; overflow: auto">
+        <slot />
       </article>
-   </div>
+    </section>
+  </div>
 </template>
