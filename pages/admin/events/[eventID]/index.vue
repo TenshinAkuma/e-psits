@@ -99,28 +99,29 @@
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "main",
-});
+	definePageMeta({
+		layout: "main",
+	});
 
-const route = useRoute();
-const eventID = route.params.eventID;
-const { event, loading, getEvent } = useGetEvent();
+	const route = useRoute();
+	const eventID = route.params.eventID;
+	const { event, loading, getEvent } = useGetEvent();
 
-onMounted(() => {
-  getEvent(eventID);
-});
+	onMounted(() => {
+		getEvent(eventID);
+	});
 </script>
 
 <style scoped>
-.list-group-item {
-  font-size: 0.9rem !important;
-}
+	.list-group-item {
+		font-size: 0.9rem !important;
+	}
 
-.forms {
-  cursor: pointer;
-}
-.forms:hover {
-  color: black !important;
-}
+	.forms {
+		cursor: pointer;
+	}
+
+	.forms:hover {
+		color: black !important;
+	}
 </style>
