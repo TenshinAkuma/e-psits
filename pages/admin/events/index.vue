@@ -13,8 +13,7 @@
 		<div
 			v-if="!loading"
 			class="table-responsive rounded-3"
-			style="height: 576px"
-		>
+			style="height: 576px">
 			<table class="table table-hover table-borderless">
 				<thead class="table-light">
 					<tr>
@@ -29,8 +28,7 @@
 						v-for="event in events"
 						:key="event.id"
 						class="table-row"
-						@click="toEventDetails(event.id)"
-					>
+						@click="toEventDetails(event.id)">
 						<td>{{ event.title }}</td>
 						<td>{{ event.category }}</td>
 						<td>{{ event.modality }}</td>
@@ -39,7 +37,9 @@
 				</tbody>
 			</table>
 		</div>
-		<div v-else class="d-flex justify-content-center align-items-center m-auto">
+		<div
+			v-else
+			class="d-flex justify-content-center align-items-center m-auto">
 			<div class="spinner-border text-secondary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
@@ -52,10 +52,11 @@
 		layout: "main",
 	});
 
+	const EventId = useRoute().params.eventID;
 	const { events, loading, GetAllEvents } = useEvents();
 
-	const toEventDetails = async (eventID) => {
-		await navigateTo(`/admin/events/${eventID}`);
+	const toEventDetails = (eventID) => {
+		navigateTo(`/admin/events/${eventID}`);
 	};
 
 	onMounted(() => {
