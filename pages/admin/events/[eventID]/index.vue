@@ -4,17 +4,13 @@
 			src="C:\Projects\073024_E-PSITS\e-psits\public\img\undraw_wait_in_line_o2aq.svg"
 			style="height: 288px; width: 100%; object-fit: cover"
 			class="rounded-3 overflow-hidden border mb-3" />
+		<EventsEditsTitle :EventTitle="event.title" />
+		<hr />
 		<div v-if="status === 'success'" class="row">
-			<div class="col-8">
-				<EventsEditsTitle :EventTitle="event.title" />
-				<br />
-			</div>
+			<div class="col-8"></div>
 			<div class="col-4">
-				<p class="fw-bold">BASIC INFORMATION</p>
-				<div class="fw-bold text-secondary">Brief Description</div>
-				<div class="text-secondary" read>
-					{{ event.description }}
-				</div>
+				<EventsEditsDescription
+					:EventDescription="event.description" />
 				<br />
 				<div class="fw-bold text-secondary">Modality</div>
 				<div class="text-secondary">

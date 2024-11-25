@@ -7,32 +7,42 @@
 			<button
 				class="btn btn-outline-secondary"
 				style="height: min-content"
-				:onclick="() => (IsEditing = !IsEditing)">
-				<Icon name="material-symbols:edit-outline-rounded" />
+				@click="StartEditing">
 				Edit
 			</button>
 		</div>
 
-		<div v-else class="d-flex justify-content-end gap-2">
+		<form v-else class="d-flex justify-content-end gap-2">
 			<input
 				type="text"
-				class="form-control border-secondary w-100 border me-3"
-				v-model="EventTitle" />
+				class="form-control border-secondary w-100 border p-2 me-3"
+				v-model="NewTitle" />
 			<button
 				class="btn btn-outline-secondary"
 				:onclick="() => (IsEditing = !IsEditing)">
 				Cancel
 			</button>
 			<button class="btn btn-success">Save</button>
-		</div>
+		</form>
 	</div>
 </template>
 
 <script setup>
-	const EventId = useRoute().params.eventID;
-	const EventTitle = defineModel("EventTitle");
+	// const EventId = useRoute().params.eventID;
+	const props = defineProps({
+		EventTitle: String,
+	});
+
+	const NewTitle = ref("");
 
 	const IsEditing = ref(false);
+
+	const StartEditing = () => {
+		NewTitle.value = props.EventTitle;
+		IsEditing.value = true;
+	};
+
+	// TODO: Create OnSaveNewTitle method
 </script>
 
 <style scoped>
