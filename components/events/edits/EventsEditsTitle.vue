@@ -15,14 +15,15 @@
 		<form v-else class="d-flex justify-content-end gap-2">
 			<input
 				type="text"
-				class="form-control border-secondary w-100 border p-2 me-3"
+				class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
+				style="font-size: 1.25rem"
 				v-model="NewTitle" />
+			<button class="btn btn-success">Save</button>
 			<button
-				class="btn btn-outline-secondary"
+				class="btn btn-outline border-0"
 				:onclick="() => (IsEditing = !IsEditing)">
 				Cancel
 			</button>
-			<button class="btn btn-success">Save</button>
 		</form>
 	</div>
 </template>

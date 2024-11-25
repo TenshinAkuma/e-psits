@@ -1,9 +1,5 @@
 <template>
 	<div class="w-100 pb-5">
-		<img
-			src="C:\Projects\073024_E-PSITS\e-psits\public\img\undraw_wait_in_line_o2aq.svg"
-			style="height: 288px; width: 100%; object-fit: cover"
-			class="rounded-3 overflow-hidden border mb-3" />
 		<EventsEditsTitle :EventTitle="event.title" />
 		<hr />
 		<div v-if="status === 'success'" class="row">
@@ -12,10 +8,7 @@
 				<EventsEditsDescription
 					:EventDescription="event.description" />
 				<br />
-				<div class="fw-bold text-secondary">Modality</div>
-				<div class="text-secondary">
-					{{ event.modality }}
-				</div>
+				<EventsEditsModality :EventModality="event.modality" />
 				<br />
 				<div class="fw-bold text-secondary">Category</div>
 				<div class="text-secondary">

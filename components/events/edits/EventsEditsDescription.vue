@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<p class="fw-bold">BASIC INFORMATION</p>
+		<p class="fw-bold text-secondary">BASIC INFORMATION</p>
 		<div v-if="!IsEditingDescription">
 			<div class="d-flex justify-content-between mb-1">
 				<div class="fw-bold text-secondary">Brief Description</div>
@@ -10,7 +10,7 @@
 					<Icon name="material-symbols:edit-outline-rounded" />
 				</button>
 			</div>
-			<div class="text-secondary" read>
+			<div class="text-dark" read>
 				{{ EventDescription }}
 			</div>
 		</div>
