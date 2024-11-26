@@ -21,10 +21,7 @@
 				<p class="fw-bold">LOCATION</p>
 				<EventsEditsVenue :EventVenue="event.venue" />
 				<br />
-				<div class="fw-bold text-secondary">Address</div>
-				<div class="text-secondary">
-					{{ event.address || `To be announced` }}
-				</div>
+				<EventsEditsAddress :EventAddress="event.address" />
 			</div>
 		</div>
 		<div v-else>
