@@ -13,14 +13,10 @@
 				<br />
 				<EventsEditsCategory :EventCategory="event.category" />
 				<hr />
-
 				<p class="fw-bold">SCHEDULE</p>
 				<EventsEditsDate :EventDate="event.date" />
 				<br />
-				<div class="fw-bold text-secondary">Time</div>
-				<div>
-					{{ new Date(event.date).toLocaleTimeString() }}
-				</div>
+				<EventsEditsTime :EventTime="event.date" />
 				<hr />
 				<p class="fw-bold">LOCATION</p>
 				<div class="fw-bold text-secondary">Venue</div>

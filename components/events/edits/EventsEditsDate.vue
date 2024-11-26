@@ -29,7 +29,7 @@
 
 <script setup>
 	const props = defineProps({
-		EventDate: new Date(),
+		EventDate: { type: Date },
 	});
 
 	const newDate = ref();
@@ -37,7 +37,7 @@
 
 	const ToggleEdit = () => {
 		IsEditingDate.value = !IsEditingDate.value;
-		if (IsEditingDate) {
+		if (IsEditingDate.value) {
 			newDate.value = props.EventDate;
 		}
 	};

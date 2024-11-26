@@ -9,7 +9,7 @@
 			</button>
 		</div>
 		<div v-if="!IsEditingCategory">
-			<div class="text-secondary">
+			<div class="text-dark">
 				{{ EventCategory }}
 			</div>
 		</div>
