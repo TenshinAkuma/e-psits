@@ -9,7 +9,12 @@
 			</button>
 		</div>
 		<div v-if="!IsEditingTime">
-			{{ new Date(EventTime).toLocaleTimeString() }}
+			{{
+				new Date(props.EventTime).toLocaleTimeString([], {
+					hour: "2-digit",
+					minute: "2-digit",
+				})
+			}}
 		</div>
 
 		<form v-else>
@@ -32,7 +37,7 @@
 <script setup>
 	const props = defineProps({
 		EventTime: {
-			type: Date,
+			type: String,
 		},
 	});
 
@@ -42,13 +47,16 @@
 	const ToggleEdit = () => {
 		IsEditingTime.value = !IsEditingTime.value;
 		if (IsEditingTime.value) {
-			const hours = props.EventTime.getHours()
+			// Parse the string into a Date object
+			const eventDate = new Date(props.EventTime);
+
+			// Extract and format time as HH:MM
+			const hours = eventDate.getHours().toString().padStart(2, "0");
+			const minutes = eventDate
+				.getMinutes()
 				.toString()
 				.padStart(2, "0");
-			const minutes = props.EventTime.getMinutes()
-				.toString()
-				.padStart(2, "0");
-			newTime.value = `${hours}:${minutes}`; // Format to HH:MM
+			newTime.value = `${hours}:${minutes}`;
 		}
 	};
 </script>

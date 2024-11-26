@@ -8,7 +8,7 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingDate">{{ formatDate(EventDate) }}</div>
+		<div v-if="!IsEditingDate">{{ formatDateString(EventDate) }}</div>
 
 		<form v-else>
 			<input
@@ -29,7 +29,7 @@
 
 <script setup>
 	const props = defineProps({
-		EventDate: { type: Date },
+		EventDate: { type: String },
 	});
 
 	const newDate = ref();
@@ -38,7 +38,11 @@
 	const ToggleEdit = () => {
 		IsEditingDate.value = !IsEditingDate.value;
 		if (IsEditingDate.value) {
-			newDate.value = props.EventDate;
+			// Convert EventDate to YYYY-MM-DD format (if not already)
+			const date = new Date(props.EventDate);
+			newDate.value = isNaN(date.getTime())
+				? "" // Handle invalid dates gracefully
+				: date.toISOString().split("T")[0]; // Extract YYYY-MM-DD
 		}
 	};
 </script>

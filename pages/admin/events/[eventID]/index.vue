@@ -14,9 +14,10 @@
 				<EventsEditsCategory :EventCategory="event.category" />
 				<hr />
 				<p class="fw-bold">SCHEDULE</p>
-				<EventsEditsDate :EventDate="event.date" />
+				<EventsEditsDate :EventDate="event.date.toString()" />
 				<br />
-				<EventsEditsTime :EventTime="event.date" />
+				<EventsEditsTime
+					:EventTime="new Date(event.date).toString()" />
 				<hr />
 				<p class="fw-bold">LOCATION</p>
 				<div class="fw-bold text-secondary">Venue</div>
