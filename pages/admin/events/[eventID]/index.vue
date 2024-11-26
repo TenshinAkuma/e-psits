@@ -16,14 +16,10 @@
 				<p class="fw-bold">SCHEDULE</p>
 				<EventsEditsDate :EventDate="event.date.toString()" />
 				<br />
-				<EventsEditsTime
-					:EventTime="new Date(event.date).toString()" />
+				<EventsEditsTime :EventTime="event.date.toString()" />
 				<hr />
 				<p class="fw-bold">LOCATION</p>
-				<div class="fw-bold text-secondary">Venue</div>
-				<div class="text-secondary">
-					{{ event.venue || `To be announced` }}
-				</div>
+				<EventsEditsVenue :EventVenue="event.venue" />
 				<br />
 				<div class="fw-bold text-secondary">Address</div>
 				<div class="text-secondary">
