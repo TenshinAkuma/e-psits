@@ -1,11 +1,34 @@
 <template>
-	<div class="container-xxl mt-5 pb-5">
-		<img
-			src="C:\Projects\073024_E-PSITS\e-psits\public\img\undraw_wait_in_line_o2aq.svg"
-			style="height: 288px; width: 100%; object-fit: cover"
-			class="rounded-3 overflow-hidden border mb-3"
-		/>
-		<h1 class="fw-bold">{{ event.title }}</h1>
+	<div class="w-100 pb-5">
+		<div v-if="status === 'success'" class="row">
+			<EventsEditsTitle :EventTitle="event.title" />
+			<hr />
+			<div class="col-8"></div>
+			<div class="col-4">
+				<p class="fw-bold text-secondary">BASIC INFORMATION</p>
+				<EventsEditsDescription
+					:EventDescription="event.description" />
+				<br />
+				<EventsEditsModality :EventModality="event.modality" />
+				<br />
+				<EventsEditsCategory :EventCategory="event.category" />
+				<hr />
+				<p class="fw-bold">SCHEDULE</p>
+				<EventsEditsDate :EventDate="event.date.toString()" />
+				<br />
+				<EventsEditsTime :EventTime="event.date.toString()" />
+				<hr />
+				<p class="fw-bold">LOCATION</p>
+				<EventsEditsVenue :EventVenue="event.venue" />
+				<br />
+				<EventsEditsAddress :EventAddress="event.address" />
+			</div>
+		</div>
+		<div v-else>
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -14,14 +37,17 @@
 		layout: "main",
 	});
 
-	const route = useRoute();
-	const eventID = route.params.eventID;
+	const eventID = useRoute().params.eventID;
 
-
-	const { data: event, status } = await useFetch(`/api/events/${eventID}`, {
+	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
 	});
+
+	// onMounted(async () => {
+	// 	await refresh();
+	// 	execute();
+	// });
 </script>
 
 <style scoped>
