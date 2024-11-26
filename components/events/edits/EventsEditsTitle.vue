@@ -4,23 +4,26 @@
 			v-if="!IsEditing"
 			class="d-flex justify-content-between align-items-center gap-1">
 			<h1 id="event-title" class="fw-bold">{{ EventTitle }}</h1>
-			<button
-				class="btn btn-outline-secondary"
-				style="height: min-content"
-				@click="StartEditing">
-				Edit
-			</button>
+			<div class="hstack gap-2">
+				<button
+					class="btn btn-secondary"
+					style="height: min-content"
+					@click="StartEditing">
+					Edit
+				</button>
+				<button class="btn btn-success">New event</button>
+			</div>
 		</div>
 
-		<form v-else class="d-flex justify-content-end gap-2">
+		<form v-else class="hstack gap-2">
 			<input
 				type="text"
 				class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
 				style="font-size: 1.25rem"
 				v-model="NewTitle" />
-			<button class="btn btn-success">Save</button>
+			<button class="btn btn-outline-dark fw-bold">Save</button>
 			<button
-				class="btn btn-outline border-0"
+				class="btn btn-outline-dark fw-bold border-0"
 				:onclick="() => (IsEditing = !IsEditing)">
 				Cancel
 			</button>

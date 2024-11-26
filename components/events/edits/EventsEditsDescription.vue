@@ -5,7 +5,7 @@
 			<div class="d-flex justify-content-between mb-1">
 				<div class="fw-bold text-secondary">Brief Description</div>
 				<button
-					class="btn btn-sm d-flex align-items-center"
+					class="btn btn-sm d-flex align-items-center text-secondary"
 					@click="StartEditingDescription">
 					<Icon name="material-symbols:edit-outline-rounded" />
 				</button>

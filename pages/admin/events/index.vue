@@ -52,11 +52,10 @@
 		layout: "main",
 	});
 
-	const EventId = useRoute().params.eventID;
 	const { events, loading, GetAllEvents } = useEvents();
 
-	const toEventDetails = (eventID) => {
-		navigateTo(`/admin/events/${eventID}`);
+	const toEventDetails = async (eventID) => {
+		await navigateTo(`/admin/events/${eventID}`);
 	};
 
 	onMounted(() => {

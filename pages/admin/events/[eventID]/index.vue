@@ -10,11 +10,7 @@
 				<br />
 				<EventsEditsModality :EventModality="event.modality" />
 				<br />
-				<div class="fw-bold text-secondary">Category</div>
-				<div class="text-secondary">
-					{{ event.category }}
-				</div>
-
+				<EventsEditsCategory :EventCategory="event.category" />
 				<hr />
 
 				<p class="fw-bold">SCHEDULE</p>
@@ -48,7 +44,7 @@
 
 	const eventID = useRoute().params.eventID;
 
-	const { data: event, status } = await useFetch(`/api/events/${eventID}`, {
+	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
 		lazy: true,
