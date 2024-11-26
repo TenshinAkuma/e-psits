@@ -1,10 +1,11 @@
 <template>
 	<div class="w-100 pb-5">
-		<EventsEditsTitle :EventTitle="event.title" />
-		<hr />
 		<div v-if="status === 'success'" class="row">
+			<EventsEditsTitle :EventTitle="event.title" />
+			<hr />
 			<div class="col-8"></div>
 			<div class="col-4">
+				<p class="fw-bold text-secondary">BASIC INFORMATION</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
 				<br />
@@ -14,8 +15,7 @@
 				<hr />
 
 				<p class="fw-bold">SCHEDULE</p>
-				<div class="fw-bold text-secondary">Date</div>
-				<div>{{ formatDate(event.date) }}</div>
+				<EventsEditsDate :EventDate="event.date" />
 				<br />
 				<div class="fw-bold text-secondary">Time</div>
 				<div>
@@ -49,15 +49,15 @@
 
 	const eventID = useRoute().params.eventID;
 
-	const { data: event, status } = await useFetch(`/api/events/${eventID}`, {
+	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
-		lazy: true,
 	});
 
-	watch(event, (newEvent) => {
-		console.log(newEvent);
-	});
+	// onMounted(async () => {
+	// 	await refresh();
+	// 	execute();
+	// });
 </script>
 
 <style scoped>

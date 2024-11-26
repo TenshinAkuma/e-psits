@@ -1,14 +1,14 @@
 <template>
 	<div>
+		<div class="d-flex justify-content-between mb-1">
+			<div class="fw-bold text-secondary">Modality</div>
+			<button
+				class="btn btn-sm d-flex align-items-center text-secondary"
+				@click="StartEditingModality">
+				<Icon name="material-symbols:edit-outline-rounded" />
+			</button>
+		</div>
 		<div v-if="!IsEditingModality">
-			<div class="d-flex justify-content-between mb-1">
-				<div class="fw-bold text-secondary">Modality</div>
-				<button
-					class="btn btn-sm d-flex align-items-center text-secondary"
-					@click="StartEditingModality">
-					<Icon name="material-symbols:edit-outline-rounded" />
-				</button>
-			</div>
 			<div class="text-dark">{{ EventModality }}</div>
 		</div>
 

@@ -1,21 +1,7 @@
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
-  const client = await serverSupabaseClient(event);
+	const client = await serverSupabaseClient(event);
 
-  try {
-    const { data: _events, error } = await client.from("events").select("*");
-
-    if (error) throw error;
-
-    return {
-      status: 200,
-      body: _events,
-    };
-  } catch (err) {
-    return {
-      status: 500,
-      body: { message: err.message },
-    };
-  }
+	return (await client.from("events").select("*")).data;
 });
