@@ -34,6 +34,11 @@
 				</div>
 			</div>
 		</div>
+		<div v-else>
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -44,7 +49,7 @@
 
 	const eventID = useRoute().params.eventID;
 
-	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
+	const { data: event, status } = await useFetch(`/api/events/${eventID}`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
 		lazy: true,

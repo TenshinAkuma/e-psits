@@ -1,21 +1,20 @@
 <template>
 	<div>
+		<div class="d-flex justify-content-between">
+			<div class="fw-bold text-secondary">Category</div>
+			<button
+				class="btn btn-sm d-flex align-items-center text-secondary"
+				@click="StartEditingCategory">
+				<Icon name="material-symbols:edit-outline-rounded" />
+			</button>
+		</div>
 		<div v-if="!IsEditingCategory">
-			<div class="d-flex justify-content-between">
-				<div class="fw-bold text-secondary">Category</div>
-				<button
-					class="btn btn-sm d-flex align-items-center text-secondary"
-					@click="StartEditingCategory">
-					<Icon name="material-symbols:edit-outline-rounded" />
-				</button>
-			</div>
-
 			<div class="text-secondary">
 				{{ EventCategory }}
 			</div>
 		</div>
 
-		<form v-else>
+		<form v-else class="mt-2">
 			<select
 				v-model="newCategory"
 				class="form-select border-secondary p-2 mb-3 w-100">
@@ -32,7 +31,9 @@
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					class="btn btn-outline-secondary"
-					:onclick="() => (IsEditing = !IsEditing)">
+					:onclick="
+						() => (IsEditingCategory = !IsEditingCategory)
+					">
 					Cancel
 				</button>
 				<button class="btn btn-success">Save</button>
