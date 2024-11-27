@@ -6,25 +6,35 @@
 			<h1 id="event-title" class="fw-bold">{{ EventTitle }}</h1>
 			<div class="hstack gap-2">
 				<button
+					type="button"
 					class="btn btn-secondary"
 					style="height: min-content"
-					@click="StartEditing">
+					@click="ToggleEdit">
 					Edit
 				</button>
 				<button class="btn btn-success">New event</button>
 			</div>
 		</div>
 
-		<form v-else class="hstack gap-2">
+		<form v-else @submit.prevent="OnSaveNewTitle" class="hstack gap-2">
 			<input
 				type="text"
 				class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
 				style="font-size: 1.25rem"
 				v-model="NewTitle" />
-			<button class="btn btn-outline-dark fw-bold">Save</button>
+			<button
+				type="submit"
+				:disabled="IsSaving"
+				class="hstack btn btn-outline-dark fw-bold gap-2">
+				<span
+					v-if="status === 'pending'"
+					class="spinner-grow spinner-grow-sm"
+					aria-hidden="true" />
+				Save
+			</button>
 			<button
 				class="btn btn-outline-dark fw-bold border-0"
-				:onclick="() => (IsEditing = !IsEditing)">
+				:onclick="ToggleEdit">
 				Cancel
 			</button>
 		</form>
@@ -32,21 +42,44 @@
 </template>
 
 <script setup>
-	// const EventId = useRoute().params.eventID;
-	const props = defineProps({
-		EventTitle: String,
-	});
+	const EventId = useRoute().params.eventID;
+	const EventTitle = defineModel("EventTitle");
 
-	const NewTitle = ref("");
+	const NewTitle = ref();
 
-	const IsEditing = ref(false);
+	const IsEditing = false;
+	const IsSaving = false;
 
-	const StartEditing = () => {
-		NewTitle.value = props.EventTitle;
-		IsEditing.value = true;
+	const ToggleEdit = () => {
+		IsEditing.value = !IsEditing.value;
+		if (IsEditing.value) {
+			NewTitle.value = EventTitle.value;
+		}
 	};
 
-	// TODO: Create OnSaveNewTitle method
+	const { data, status, execute, refresh } = await useFetch(
+		`/api/events/${EventId}?column=title`,
+		{
+			method: "PATCH",
+			body: { value: NewTitle },
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const OnSaveNewTitle = async () => {
+		IsSaving = true;
+		try {
+			await refresh();
+			execute();
+			ToggleEdit();
+			EventTitle.value = NewTitle.value;
+		} catch (err) {
+			NewTitle.value = err.message;
+		} finally {
+			IsSaving = false;
+		}
+	};
 </script>
 
 <style scoped>

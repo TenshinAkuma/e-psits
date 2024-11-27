@@ -4,12 +4,12 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { eventID } = event.context.params;
 	const { column } = getQuery(event);
-	const { body } = readBody(event);
+	const body = await readBody(event);
 
 	return (
 		await client
 			.from("events")
-			.update({ [column]: body })
+			.update({ [column]: body.value })
 			.eq("id", eventID)
 			.select()
 	).data;
