@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<div class="d-flex justify-content-between">
+		<div class="d-flex justify-content-between mb-1">
 			<div class="fw-bold text-secondary">Category</div>
 			<button
 				class="btn btn-sm d-flex align-items-center text-secondary"
-				@click="StartEditingCategory">
+				@click="ToggleEdit">
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
@@ -14,7 +14,7 @@
 			</div>
 		</div>
 
-		<form v-else class="mt-2">
+		<form v-else @submit.prevent="OnSaveNewCategory">
 			<select
 				v-model="newCategory"
 				class="form-select border-secondary p-2 mb-3 w-100">
@@ -24,35 +24,66 @@
 				<option
 					v-for="(category, index) in categories"
 					:key="index"
-					:value="index">
+					:value="category">
 					{{ category }}
 				</option>
 			</select>
 			<div class="d-flex justify-content-end gap-2">
 				<button
+					type="submit"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
+					style="height: min-content"
+					:disabled="status === 'pending'">
+					<span
+						v-if="status === 'pending'"
+						class="spinner-border spinner-border-sm"
+						aria-hidden="true" />
+					<span role="status">Save</span>
+				</button>
+				<button
+					type="button"
 					class="btn btn-outline-secondary"
-					:onclick="
-						() => (IsEditingCategory = !IsEditingCategory)
-					">
+					@click="ToggleEdit">
 					Cancel
 				</button>
-				<button class="btn btn-success">Save</button>
 			</div>
 		</form>
 	</div>
 </template>
 
 <script setup>
-	const props = defineProps({
-		EventCategory: String,
-	});
+	const eventID = useRoute().params.eventID;
+	const EventCategory = defineModel("EventCategory");
 
 	const newCategory = ref("");
 	const IsEditingCategory = ref(false);
 
-	const StartEditingCategory = () => {
-		newCategory.value = props.EventCategory;
-		IsEditingCategory.value = true;
+	const ToggleEdit = () => {
+		IsEditingCategory.value = !IsEditingCategory.value;
+		if (IsEditingCategory.value) {
+			newCategory.value = EventCategory.value;
+		}
+	};
+
+	const { status, execute, refresh } = await useFetch(
+		`/api/events/${eventID}?column=category`,
+		{
+			method: "PATCH",
+			body: { value: newCategory },
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const OnSaveNewCategory = async () => {
+		try {
+			await refresh();
+			execute();
+			ToggleEdit();
+			EventCategory.value = newCategory.value;
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	const categories = [
