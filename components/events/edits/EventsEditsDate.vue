@@ -10,7 +10,7 @@
 		</div>
 		<div v-if="!IsEditingDate">{{ formatDate(EventDate) }}</div>
 
-		<form v-else @submit.prevent="OnSaveNewDate">
+		<form v-else @submit.prevent="OnSaveNewDate" class="mt-1">
 			<input
 				v-model="newDate"
 				type="date"
@@ -57,8 +57,8 @@
 
 	const OnSaveNewDate = async () => {
 		try {
-			await refresh();
-			execute();
+			await execute();
+
 			ToggleEdit();
 			EventDate.value = newDate.value;
 		} catch (err) {

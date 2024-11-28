@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="d-flex justify-content-between mb-1">
+		<div class="d-flex justify-content-between">
 			<div class="fw-bold text-secondary">Brief Description</div>
 			<button
 				type="button"
@@ -13,7 +13,7 @@
 			{{ EventDescription }}
 		</div>
 
-		<form v-else @submit.prevent="OnSaveNewDescription">
+		<form v-else @submit.prevent="OnSaveNewDescription" class="mt-1">
 			<textarea
 				class="form-control border-secondary p-2 mb-3"
 				style="max-height: 216px; resize: vertical"
@@ -68,8 +68,7 @@
 
 	const OnSaveNewDescription = async () => {
 		try {
-			await refresh();
-			execute();
+			await execute();
 			ToggleEdit();
 			EventDescription.value = newDescription.value;
 		} catch (err) {

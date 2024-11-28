@@ -6,6 +6,7 @@ export default defineEventHandler(async (event) => {
 	const { column } = getQuery(event);
 	const body = await readBody(event);
 
+	console.log(column, body);
 	return (
 		await client
 			.from("events")

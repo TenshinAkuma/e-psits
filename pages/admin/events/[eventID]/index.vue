@@ -5,7 +5,7 @@
 			<hr />
 			<div class="col-8"></div>
 			<div class="col-4">
-				<p class="fw-bold text-secondary">BASIC INFORMATION</p>
+				<p class="fw-bold">BASIC INFORMATION</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
 				<br />
@@ -16,7 +16,7 @@
 				<p class="fw-bold">SCHEDULE</p>
 				<EventsEditsDate :EventDate="event.date" />
 				<br />
-				<EventsEditsTime :EventTime="event.date.toString()" />
+				<EventsEditsTime :EventTime="event.date" />
 				<hr />
 				<p class="fw-bold">LOCATION</p>
 				<EventsEditsVenue :EventVenue="event.venue" />
