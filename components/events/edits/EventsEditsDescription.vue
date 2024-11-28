@@ -24,7 +24,7 @@
 					type="submit"
 					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="IsSaving">
+					:disabled="status === 'pending'">
 					<span
 						v-if="status === 'pending'"
 						class="spinner-border spinner-border-sm"
@@ -48,7 +48,6 @@
 
 	const newDescription = ref("");
 	const IsEditingDescription = ref(false);
-	const IsSaving = ref(false);
 
 	const ToggleEdit = () => {
 		IsEditingDescription.value = !IsEditingDescription.value;
@@ -68,7 +67,6 @@
 	);
 
 	const OnSaveNewDescription = async () => {
-		IsSaving.value = true;
 		try {
 			await refresh();
 			execute();
@@ -76,8 +74,6 @@
 			EventDescription.value = newDescription.value;
 		} catch (err) {
 			newDescription.value = err.message;
-		} finally {
-			IsSaving.value = false;
 		}
 	};
 </script>
