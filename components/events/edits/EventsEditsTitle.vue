@@ -7,16 +7,19 @@
 			<div class="hstack gap-2">
 				<button
 					type="button"
-					class="btn btn-secondary"
+					class="btn btn-outline-dark"
 					style="height: min-content"
 					@click="ToggleEdit">
 					Edit
 				</button>
-				<button class="btn btn-success">New event</button>
+				<button class="btn btn-primary">New event</button>
 			</div>
 		</div>
 
-		<form v-else @submit.prevent="OnSaveNewTitle" class="hstack gap-2">
+		<form
+			v-else
+			@submit.prevent="OnSaveNewTitle"
+			class="hstack align-items-center gap-2">
 			<input
 				type="text"
 				class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
@@ -24,16 +27,18 @@
 				v-model="NewTitle" />
 			<button
 				type="submit"
-				:disabled="IsSaving"
-				class="hstack btn btn-outline-dark fw-bold gap-2">
+				class="d-flex align-items-center btn btn-success fw-bold gap-2"
+				style="height: min-content"
+				:disabled="IsSaving">
 				<span
 					v-if="status === 'pending'"
-					class="spinner-grow spinner-grow-sm"
+					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
-				Save
+				<span role="status">Save</span>
 			</button>
 			<button
-				class="btn btn-outline-dark fw-bold border-0"
+				class="btn btn-outline-secondary"
+				style="height: min-content"
 				:onclick="ToggleEdit">
 				Cancel
 			</button>
@@ -47,8 +52,8 @@
 
 	const NewTitle = ref();
 
-	const IsEditing = false;
-	const IsSaving = false;
+	const IsEditing = ref(false);
+	const IsSaving = ref(false);
 
 	const ToggleEdit = () => {
 		IsEditing.value = !IsEditing.value;
@@ -57,7 +62,7 @@
 		}
 	};
 
-	const { data, status, execute, refresh } = await useFetch(
+	const { status, execute, refresh } = await useFetch(
 		`/api/events/${EventId}?column=title`,
 		{
 			method: "PATCH",
@@ -68,7 +73,7 @@
 	);
 
 	const OnSaveNewTitle = async () => {
-		IsSaving = true;
+		IsSaving.value = true;
 		try {
 			await refresh();
 			execute();
@@ -77,7 +82,7 @@
 		} catch (err) {
 			NewTitle.value = err.message;
 		} finally {
-			IsSaving = false;
+			IsSaving.value = false;
 		}
 	};
 </script>
