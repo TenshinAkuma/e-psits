@@ -14,7 +14,7 @@
 				<EventsEditsCategory :EventCategory="event.category" />
 				<hr />
 				<p class="fw-bold">SCHEDULE</p>
-				<EventsEditsDate :EventDate="event.date.toString()" />
+				<EventsEditsDate :EventDate="event.date" />
 				<br />
 				<EventsEditsTime :EventTime="event.date.toString()" />
 				<hr />

@@ -17,8 +17,11 @@
 			<select
 				v-model="newModality"
 				class="form-select border-secondary p-2 mb-3 w-100">
+				<option value="" selected disabled hidden>
+					{{ newModality }}
+				</option>
 				<option
-					v-for="(mode, index) in eventModality"
+					v-for="(mode, index) in Modes"
 					:key="index"
 					:value="mode">
 					{{ mode }}
@@ -82,7 +85,7 @@
 		}
 	};
 
-	const eventModality = ["In-person", "Virtual"];
+	const Modes = ["In-person", "Virtual"];
 </script>
 
 <style></style>
