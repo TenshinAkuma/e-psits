@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="d-flex justify-content-between mb-1">
+		<div class="d-flex justify-content-between">
 			<div class="fw-bold text-secondary">Modality</div>
 			<button
 				type="button"
@@ -13,7 +13,7 @@
 			<div class="text-dark">{{ EventModality }}</div>
 		</div>
 
-		<form v-else @submit.prevent="OnSaveNewModality">
+		<form v-else @submit.prevent="OnSaveNewModality" class="mt-1">
 			<select
 				v-model="newModality"
 				class="form-select border-secondary p-2 mb-3 w-100">
@@ -76,12 +76,11 @@
 
 	const OnSaveNewModality = async () => {
 		try {
-			await refresh();
-			execute();
+			await execute();
 			ToggleEdit();
 			EventModality.value = newModality.value;
 		} catch (err) {
-			console.log(err.message);
+			console.log("Failed to update modality", err);
 		}
 	};
 

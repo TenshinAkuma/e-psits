@@ -1,8 +1,9 @@
 <template>
 	<div>
-		<div class="d-flex justify-content-between mb-1">
+		<div class="d-flex justify-content-between">
 			<div class="fw-bold text-secondary">Category</div>
 			<button
+				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
 				@click="ToggleEdit">
 				<Icon name="material-symbols:edit-outline-rounded" />
@@ -14,7 +15,7 @@
 			</div>
 		</div>
 
-		<form v-else @submit.prevent="OnSaveNewCategory">
+		<form v-else @submit.prevent="OnSaveNewCategory" class="mt-1">
 			<select
 				v-model="newCategory"
 				class="form-select border-secondary p-2 mb-3 w-100">
@@ -77,12 +78,11 @@
 
 	const OnSaveNewCategory = async () => {
 		try {
-			await refresh();
-			execute();
+			await execute();
 			ToggleEdit();
 			EventCategory.value = newCategory.value;
 		} catch (err) {
-			console.log(err);
+			console.log("Failed to update category", err);
 		}
 	};
 

@@ -3,6 +3,7 @@
 		<div class="d-flex justify-content-between">
 			<div class="fw-bold text-secondary">Time</div>
 			<button
+				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
 				@click="ToggleEdit">
 				<Icon name="material-symbols:edit-outline-rounded" />

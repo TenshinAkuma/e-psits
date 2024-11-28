@@ -3,6 +3,7 @@
 		<div class="d-flex justify-content-between">
 			<div class="fw-bold text-secondary">Date</div>
 			<button
+				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
 				@click="ToggleEdit">
 				<Icon name="material-symbols:edit-outline-rounded" />
@@ -62,7 +63,7 @@
 			ToggleEdit();
 			EventDate.value = newDate.value;
 		} catch (err) {
-			console.log(err);
+			console.log("Failed to update date", err);
 		}
 	};
 
