@@ -56,7 +56,7 @@
 		}
 	};
 
-	const { status, execute, refresh } = await useFetch(
+	const { status, execute } = await useFetch(
 		`/api/events/${eventID}?column=description`,
 		{
 			method: "PATCH",

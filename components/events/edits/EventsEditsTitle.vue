@@ -12,7 +12,12 @@
 					@click="ToggleEdit">
 					Edit
 				</button>
-				<button class="btn btn-primary">New event</button>
+				<button
+					class="btn btn-primary"
+					data-bs-toggle="modal"
+					data-bs-target="#createEventModal">
+					New event
+				</button>
 			</div>
 		</div>
 
@@ -43,6 +48,8 @@
 				Cancel
 			</button>
 		</form>
+
+		<EventsCreateModal />
 	</div>
 </template>
 
