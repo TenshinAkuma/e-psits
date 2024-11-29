@@ -24,7 +24,7 @@
 				</div>
 
 				<div class="modal-body">
-					<form id="createEvent">
+					<form @submit.prevent="OnAddNewEvent" id="createEvent">
 						<input
 							type="text"
 							placeholder="Event name"
@@ -125,16 +125,21 @@
 
 				<div class="modal-footer">
 					<button
+						type="button"
 						data-bs-dismiss="modal"
 						class="btn btn-outline-secondary border-0">
 						Cancel
 					</button>
 					<button
-						type="button"
-						@click="closeModal"
+						type="submit"
 						form="createEvent"
-						class="btn btn-primary">
-						Create
+						class="btn btn-primary"
+						:disabled="status === 'pending'">
+						<span
+							v-if="status === 'pending'"
+							class="spinner-border spinner-border-sm"
+							aria-hidden="true" />
+						<span role="status">Create event</span>
 					</button>
 				</div>
 			</div>
@@ -145,6 +150,7 @@
 <script setup>
 	const createEventModalRef = ref(null);
 	let createEventModal;
+	const id = ref();
 
 	const eventDetails = reactive({
 		title: "",
@@ -172,6 +178,31 @@
 	];
 
 	const eventTypes = ["Face-to-face", "Virtual"];
+
+	const {
+		data: event,
+		status,
+		error,
+		execute,
+	} = await useFetch(`/api/events`, {
+		headers: useRequestHeaders(["cookie"]),
+		method: "POST",
+		body: eventDetails,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnAddNewEvent = async () => {
+		try {
+			await execute();
+			if (status.value == "success") {
+				navigateTo(`/admin/events/${event.value.id}`);
+				closeModal();
+			}
+		} catch (err) {
+			console.log("Failed adding new event", error.value);
+		}
+	};
 
 	const closeModal = () => {
 		if (createEventModal) {
