@@ -28,7 +28,8 @@
 						<input
 							type="text"
 							placeholder="Event name"
-							class="form-control mb-3" />
+							class="form-control mb-3"
+							v-model="eventDetails.title" />
 
 						<div class="d-flex gap-2 mb-2">
 							<div class="w-100">
@@ -60,11 +61,11 @@
 							style="font-size: 0.75rem"
 							class="fst-italic text-secondary">
 							This event will start on
-							{{ formatDate(dateInput) }} at
-							{{ timeInput }}
+							{{ formatDateString(eventDetails.date) }}
 						</p>
-
-						<select class="form-select mb-3" v-model="type">
+						<select
+							class="form-select mb-3"
+							v-model="eventDetails.type">
 							<option hidden selected disabled value="">
 								Choose an event type
 							</option>
@@ -77,24 +78,29 @@
 						</select>
 
 						<input
-							v-if="type == 'Virtual'"
+							v-if="eventDetails.type == 'Virtual'"
 							type="text"
 							placeholder="Meeting link"
-							class="form-control mb-3" />
+							class="form-control mb-3"
+							v-model="eventDetails.link" />
 
 						<div v-else>
 							<input
 								type="text"
 								placeholder="Venue"
-								class="form-control mb-3" />
+								class="form-control mb-3"
+								v-model="eventDetails.venue" />
 
 							<input
 								type="text"
 								placeholder="Address"
-								class="form-control mb-3" />
+								class="form-control mb-3"
+								v-model="eventDetails.address" />
 						</div>
 
-						<select class="form-select mb-3">
+						<select
+							class="form-select mb-3"
+							v-model="eventDetails.category">
 							<option value="" hidden selected>
 								Choose category
 							</option>
@@ -112,10 +118,8 @@
 							class="form-control mb-3"
 							placeholder="Description"
 							rows="5"
-							style="
-								max-height: 288px;
-								resize: vertical;
-							" />
+							style="max-height: 288px; resize: vertical"
+							v-model="eventDetails.description" />
 					</form>
 				</div>
 
@@ -142,18 +146,49 @@
 	const createEventModalRef = ref(null);
 	let createEventModal;
 
-	const date = ref(new Date());
-	const type = ref("");
-
-	const dateInput = computed(() => {
-		return new Date().toISOString().split("T")[0];
+	const eventDetails = reactive({
+		title: "",
+		date: new Date().toISOString(),
+		type: "",
+		link: "",
+		venue: "",
+		address: "",
+		category: "",
+		description: "",
 	});
 
-	const timeInput = computed(() => {
-		const _date = new Date();
-		const hours = _date.getHours().toLocaleString().padStart(2, "0");
-		const minutes = _date.getMinutes().toString().padStart(2, "0");
-		return `${hours}:${minutes}`;
+	const dateInput = ref(
+		new Date(eventDetails.date).toISOString().split("T")[0]
+	);
+	const timeInput = ref(
+		new Date(eventDetails.date).toTimeString().slice(0, 5)
+	);
+
+	const eventCategories = [
+		"Competition",
+		"Workshop",
+		"Career fair",
+		"Keynote speech",
+	];
+
+	const eventTypes = ["Face-to-face", "Virtual"];
+
+	const closeModal = () => {
+		if (createEventModal) {
+			createEventModal.hide();
+		}
+	};
+
+	// Watchers to sync changes to dateInput and timeInput with eventDetails.date
+	watch([dateInput, timeInput], ([newDate, newTime]) => {
+		if (!newDate || !newTime) return;
+
+		const updatedDate = new Date(newDate); // Parse date input
+		const [hours, minutes] = newTime.split(":").map(Number); // Parse time input
+		updatedDate.setHours(hours, minutes);
+
+		// Update eventDetails.date in ISO format
+		eventDetails.date = updatedDate.toISOString();
 	});
 
 	onMounted(() => {
@@ -164,19 +199,4 @@
 			);
 		}
 	});
-
-	const closeModal = () => {
-		if (createEventModal) {
-			createEventModal.hide();
-		}
-	};
-
-	const eventCategories = [
-		"Competition",
-		"Workshop",
-		"Career fair",
-		"Keynote speech",
-	];
-
-	const eventTypes = ["Face-to-face", "Virtual"];
 </script>
