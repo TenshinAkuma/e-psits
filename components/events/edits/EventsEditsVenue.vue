@@ -9,7 +9,7 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingVenue" class="text-secondary">
+		<div v-if="!IsEditingVenue">
 			{{ EventVenue || `To be announced` }}
 		</div>
 

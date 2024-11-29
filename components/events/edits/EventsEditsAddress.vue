@@ -9,7 +9,7 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingAddress" class="text-secondary">
+		<div v-if="!IsEditingAddress">
 			{{ newAddress || `To be announced` }}
 		</div>
 

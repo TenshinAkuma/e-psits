@@ -46,7 +46,7 @@
 					name="event-modality"
 					id="event-category"
 					v-model="modality">
-					<option selected disabled value="">
+					<option selected disabled hidden value="">
 						Select event modality
 					</option>
 					<option

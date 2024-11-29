@@ -5,196 +5,141 @@
 		data-bs-backdrop="static"
 		data-bs-keyboard="false"
 		tabindex="-1"
-		aria-labelledby="staticBackdropLabel"
+		aria-labelledby="createEventModal"
 		aria-hidden="true"
 		ref="createEventModalRef">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="staticBackdropLabel">
-						Create event
-					</h1>
+					<h5
+						class="modal-title fw-bold"
+						id="staticBackdropLabel">
+						ADD NEW EVENT
+					</h5>
 					<button
 						type="button"
 						class="btn-close"
 						data-bs-dismiss="modal"
 						aria-label="Close"></button>
 				</div>
+
 				<div class="modal-body">
-					<form id="createEvent" class="row">
-						<!-- TITLE -->
-						<div class="col-12 mb-3">
-							<label for="event_title" class="fw-bold mb-1"
-								>Title</label
-							>
+					<form @submit.prevent="OnAddNewEvent" id="createEvent">
+						<input
+							type="text"
+							placeholder="Event name"
+							class="form-control mb-3"
+							v-model="eventDetails.title" />
+
+						<div class="d-flex gap-2 mb-2">
+							<div class="w-100">
+								<label
+									class="text-secondary"
+									for="eventDate"
+									>Date</label
+								>
+								<input
+									type="date"
+									class="form-control"
+									id="eventDate"
+									v-model="dateInput" />
+							</div>
+							<div>
+								<label
+									class="text-secondary"
+									for="eventTime"
+									>Time</label
+								>
+								<input
+									type="time"
+									class="form-control w-100"
+									id="eventTime"
+									v-model="timeInput" />
+							</div>
+						</div>
+						<p
+							style="font-size: 0.75rem"
+							class="fst-italic text-secondary">
+							This event will start on
+							{{ formatDateString(eventDetails.date) }}
+						</p>
+						<select
+							class="form-select mb-3"
+							v-model="eventDetails.type">
+							<option hidden selected disabled value="">
+								Choose an event type
+							</option>
+							<option
+								v-for="(type, index) in eventTypes"
+								:key="index"
+								:value="type">
+								{{ type }}
+							</option>
+						</select>
+
+						<input
+							v-if="eventDetails.type == 'Virtual'"
+							type="text"
+							placeholder="Meeting link"
+							class="form-control mb-3"
+							v-model="eventDetails.link" />
+
+						<div v-else>
 							<input
 								type="text"
-								class="form-control"
-								id="event_title"
-								v-model="title" />
-						</div>
+								placeholder="Venue"
+								class="form-control mb-3"
+								v-model="eventDetails.venue" />
 
-						<!-- CATEGORY -->
-						<div class="col-6 mb-3">
-							<label
-								for="event-category"
-								class="fw-bold mb-1"
-								>Category</label
-							>
-							<select
-								class="form-select"
-								name="event-category"
-								id="event-category"
-								v-model="category">
-								<option selected disabled value="">
-									Select event category
-								</option>
-								<option
-									v-for="(
-										category, index
-									) in event_categories"
-									:key="index"
-									:value="category">
-									{{ category }}
-								</option>
-							</select>
-						</div>
-
-						<!-- MODALITY -->
-						<div class="col-6 mb-3">
-							<label
-								for="event-modality"
-								class="fw-bold mb-1"
-								>Modality</label
-							>
-							<select
-								class="form-select"
-								name="event-modality"
-								id="event-category"
-								v-model="modality">
-								<option selected disabled value="">
-									Select event modality
-								</option>
-								<option
-									v-for="(
-										modality, index
-									) in event_modalities"
-									:key="index"
-									:value="modality">
-									{{ modality }}
-								</option>
-							</select>
-						</div>
-
-						<!-- DESCRIPTION -->
-						<div class="col-12 mb-3">
-							<label
-								for="event-description"
-								class="fw-bold mb-1"
-								>Description</label
-							>
-							<textarea
-								v-model="description"
-								name="description"
-								class="form-control"
-								rows="3"
-								style="resize: none"
-								id="event-description"
-								wrap="hard" />
-						</div>
-
-						<!-- EVENT DATE -->
-						<div class="col-6 mb-3">
-							<label for="event-date" class="fw-bold mb-1"
-								>Date</label
-							>
 							<input
-								type="date"
-								class="form-control"
-								id="event-date"
-								v-model="date" />
+								type="text"
+								placeholder="Address"
+								class="form-control mb-3"
+								v-model="eventDetails.address" />
 						</div>
 
-						<!-- EVENT TIME -->
-						<div class="col-6 mb-3">
-							<label for="event-time" class="fw-bold mb-1"
-								>Time</label
-							>
-							<input
-								type="time"
-								class="form-control"
-								v-model="time" />
-						</div>
+						<select
+							class="form-select mb-3"
+							v-model="eventDetails.category">
+							<option value="" hidden selected>
+								Choose category
+							</option>
+							<option
+								v-for="(
+									category, index
+								) in eventCategories"
+								:key="index"
+								:value="category">
+								{{ category }}
+							</option>
+						</select>
 
-						<!-- REGISTRATION PERIOD -->
-						<div class="col-12 mb-3">
-							<label class="fw-bold mb-1"
-								>Registration period</label
-							>
-							<div
-								class="hstack align-items-center text-secondary gap-2">
-								<input
-									type="date"
-									class="form-control"
-									v-model="registration_start" />
-								<div>
-									<Icon
-										name="material-symbols:arrow-right-alt-rounded"></Icon>
-								</div>
-								<input
-									type="date"
-									class="form-control"
-									v-model="registration_end" />
-							</div>
-						</div>
-
-						<!-- VENUE -->
-						<div class="col-4 mb-5">
-							<label
-								for="event-location"
-								class="fw-bold mb-1"
-								>Venue</label
-							>
-							<div class="input-group">
-								<input
-									type="text"
-									class="form-control"
-									id="event-location"
-									v-model="venue" />
-							</div>
-						</div>
-
-						<!-- ADDRESS -->
-						<div class="col-8 mb-5">
-							<label
-								for="event-location"
-								class="fw-bold mb-1"
-								>Address</label
-							>
-							<div class="input-group">
-								<input
-									type="text"
-									class="form-control"
-									id="event-location"
-									v-model="address" />
-							</div>
-						</div>
+						<textarea
+							class="form-control mb-3"
+							placeholder="Description"
+							rows="5"
+							style="max-height: 288px; resize: vertical"
+							v-model="eventDetails.description" />
 					</form>
 				</div>
+
 				<div class="modal-footer">
 					<button
+						type="button"
 						data-bs-dismiss="modal"
-						class="btn btn-outline-primary d-flex align-items-center gap-2 px-5">
-						<Icon name="material-symbols:close-rounded" />
+						class="btn btn-outline-secondary border-0">
 						Cancel
 					</button>
-
 					<button
-						type="button"
-						@click="closeModal"
-						class="btn btn-primary d-flex align-items-center gap-2 px-5">
-						<Icon name="material-symbols:add-rounded" />
-						Create
+						type="submit"
+						form="createEvent"
+						class="btn btn-primary"
+						:disabled="status === 'pending'">
+						<span
+							v-if="status === 'pending'"
+							class="spinner-border spinner-border-sm"
+							aria-hidden="true" />
+						<span role="status">Create event</span>
 					</button>
 				</div>
 			</div>
@@ -204,30 +149,85 @@
 
 <script setup>
 	const createEventModalRef = ref(null);
-	let exampleModalInstance;
+	let createEventModal;
+	const id = ref();
+
+	const eventDetails = reactive({
+		title: "",
+		date: new Date().toISOString(),
+		type: "",
+		link: "",
+		venue: "",
+		address: "",
+		category: "",
+		description: "",
+	});
+
+	const dateInput = ref(
+		new Date(eventDetails.date).toISOString().split("T")[0]
+	);
+	const timeInput = ref(
+		new Date(eventDetails.date).toTimeString().slice(0, 5)
+	);
+
+	const eventCategories = [
+		"Competition",
+		"Workshop",
+		"Career fair",
+		"Keynote speech",
+	];
+
+	const eventTypes = ["Face-to-face", "Virtual"];
+
+	const {
+		data: event,
+		status,
+		error,
+		execute,
+	} = await useFetch(`/api/events`, {
+		headers: useRequestHeaders(["cookie"]),
+		method: "POST",
+		body: eventDetails,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnAddNewEvent = async () => {
+		try {
+			await execute();
+			if (status.value == "success") {
+				navigateTo(`/admin/events/${event.value.id}`);
+				closeModal();
+			}
+		} catch (err) {
+			console.log("Failed adding new event", error.value);
+		}
+	};
+
+	const closeModal = () => {
+		if (createEventModal) {
+			createEventModal.hide();
+		}
+	};
+
+	// Watchers to sync changes to dateInput and timeInput with eventDetails.date
+	watch([dateInput, timeInput], ([newDate, newTime]) => {
+		if (!newDate || !newTime) return;
+
+		const updatedDate = new Date(newDate); // Parse date input
+		const [hours, minutes] = newTime.split(":").map(Number); // Parse time input
+		updatedDate.setHours(hours, minutes);
+
+		// Update eventDetails.date in ISO format
+		eventDetails.date = updatedDate.toISOString();
+	});
 
 	onMounted(() => {
 		// Access the global `bootstrap` object to initialize the Modal
 		if (createEventModalRef.value) {
-			exampleModalInstance = new bootstrap.Modal(
+			createEventModal = new bootstrap.Modal(
 				createEventModalRef.value
 			);
 		}
 	});
-
-	const closeModal = () => {
-		if (exampleModalInstance) {
-			exampleModalInstance.hide();
-		}
-	};
-	const title = ref("");
-	const description = ref("");
-	const category = ref("");
-	const modality = ref("");
-	const time = ref();
-	const date = ref();
-	const venue = ref("");
-	const address = ref("");
-	const registration_start = ref();
-	const registration_end = ref();
 </script>
