@@ -17,7 +17,7 @@
 			<input
 				type="text"
 				v-model="newVenue"
-				class="form-select border-secondary p-2 mb-3 w-100" />
+				class="form-control border-secondary p-2 mb-3 w-100" />
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"

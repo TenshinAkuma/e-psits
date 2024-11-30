@@ -3,13 +3,14 @@
 		<div v-if="status === 'success'" class="row">
 			<EventsEditsTitle :EventTitle="event.title" />
 			<hr />
+			<br />
 			<div class="col-8"></div>
 			<div class="col-4">
 				<p class="fw-bold">BASIC INFORMATION</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
 				<br />
-				<EventsEditsModality :EventModality="event.modality" />
+				<EventsEditsModality :EventModality="event.type" />
 				<br />
 				<EventsEditsCategory :EventCategory="event.category" />
 				<hr />
