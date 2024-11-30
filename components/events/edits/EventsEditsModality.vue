@@ -10,7 +10,9 @@
 			</button>
 		</div>
 		<div v-if="!IsEditingModality">
-			<div class="text-dark">{{ EventModality }}</div>
+			<div class="text-dark">
+				{{ EventModality || "Input event type" }}
+			</div>
 		</div>
 
 		<form v-else @submit.prevent="OnSaveNewModality" class="mt-1">
@@ -18,13 +20,13 @@
 				v-model="newModality"
 				class="form-select border-secondary p-2 mb-3 w-100">
 				<option value="" selected disabled hidden>
-					{{ newModality }}
+					{{ newModality || "Choose event type" }}
 				</option>
 				<option
-					v-for="(mode, index) in Modes"
+					v-for="(type, index) in Types"
 					:key="index"
-					:value="mode">
-					{{ mode }}
+					:value="type">
+					{{ type }}
 				</option>
 			</select>
 			<div class="d-flex justify-content-end gap-2">
@@ -65,7 +67,7 @@
 	};
 
 	const { status, execute, refresh } = await useFetch(
-		`/api/events/${eventID}?column=modality`,
+		`/api/events/${eventID}?column=type`,
 		{
 			method: "PATCH",
 			body: { value: newModality },
@@ -84,7 +86,7 @@
 		}
 	};
 
-	const Modes = ["In-person", "Virtual"];
+	const Types = ["In-person", "Virtual"];
 </script>
 
 <style></style>

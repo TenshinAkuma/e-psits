@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="mb-3">
 		<div
 			v-if="!IsEditing"
 			class="d-flex justify-content-between align-items-center gap-1">
@@ -7,17 +7,18 @@
 			<div class="hstack gap-2">
 				<button
 					type="button"
-					class="btn btn-outline-dark"
+					class="btn btn-outline-success"
 					style="height: min-content"
 					@click="ToggleEdit">
 					Edit
 				</button>
-				<button
+				<!-- <button
 					class="btn btn-primary"
 					data-bs-toggle="modal"
 					data-bs-target="#createEventModal">
 					New event
-				</button>
+				</button> -->
+				<EventsDelete />
 			</div>
 		</div>
 

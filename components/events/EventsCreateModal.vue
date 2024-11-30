@@ -133,7 +133,7 @@
 					<button
 						type="submit"
 						form="createEvent"
-						class="btn btn-primary"
+						class="d-flex align-items-center btn btn-primary gap-2"
 						:disabled="status === 'pending'">
 						<span
 							v-if="status === 'pending'"
@@ -150,7 +150,6 @@
 <script setup>
 	const createEventModalRef = ref(null);
 	let createEventModal;
-	const id = ref();
 
 	const eventDetails = reactive({
 		title: "",
