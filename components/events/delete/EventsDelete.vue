@@ -13,7 +13,8 @@
 			id="deleteEvent"
 			tabindex="-1"
 			aria-labelledby="deleteEventModal"
-			aria-haspopup="true">
+			aria-hidden="true"
+			ref="deleteEventModalRef">
 			<div class="modal-dialog modal-dialog-centered">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -33,10 +34,21 @@
 
 					<div class="modal-footer">
 						<button
-							class="btn btn-outline-secondary border-0">
+							class="btn btn-outline-secondary border-0"
+							@click="closeDeleteModal">
 							Cancel
 						</button>
-						<button class="btn btn-danger">Delete</button>
+						<button
+							type="button"
+							class="btn btn-danger d-flex align-items-center gap-2"
+							:disabled="status === 'pending'"
+							@click="OnDeleteEvent">
+							<span
+								v-if="status === 'pending'"
+								class="spinner-border spinner-border-sm"
+								aria-hidden="true" />
+							<span role="status">Delete</span>
+						</button>
 					</div>
 				</div>
 			</div>
@@ -46,6 +58,44 @@
 
 <script setup>
 	const eventID = useRoute().params.eventID;
+	const deleteEventModalRef = ref(null);
+	let deleteEventModal;
+
+	const { status, error, execute } = await useFetch(
+		`/api/events/${eventID}`,
+		{
+			headers: useRequestHeaders(["cookie"]),
+			method: "DELETE",
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const OnDeleteEvent = async () => {
+		try {
+			await execute();
+			if (status.value == "success") {
+				closeDeleteModal();
+				navigateTo("/admin/events");
+			}
+		} catch {
+			console.log("Failed deleting event", error.message);
+		}
+	};
+
+	const closeDeleteModal = () => {
+		if (deleteEventModal) {
+			deleteEventModal.hide();
+		}
+	};
+
+	onMounted(() => {
+		if (deleteEventModalRef.value) {
+			deleteEventModal = new bootstrap.Modal(
+				deleteEventModalRef.value
+			);
+		}
+	});
 </script>
 
 <style></style>

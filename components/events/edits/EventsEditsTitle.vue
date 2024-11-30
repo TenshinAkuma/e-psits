@@ -12,12 +12,12 @@
 					@click="ToggleEdit">
 					Edit
 				</button>
-				<!-- <button
+				<button
 					class="btn btn-primary"
 					data-bs-toggle="modal"
 					data-bs-target="#createEventModal">
 					New event
-				</button> -->
+				</button>
 				<EventsDelete />
 			</div>
 		</div>
