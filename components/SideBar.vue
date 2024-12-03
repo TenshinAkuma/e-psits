@@ -1,6 +1,6 @@
 <template>
 	<section style="width: 216px" class="vstack border-end border-2">
-		<div class="h-100">
+		<div class="ps-3 h-100">
 			<NuxtLink
 				v-for="(menu, index) in Menus"
 				:key="index"

@@ -4,8 +4,8 @@
 			<EventsEditsTitle :EventTitle="event.title" />
 			<hr />
 			<br />
-			<div class="col-8"></div>
-			<div class="col-4">
+			<div class="col-9"></div>
+			<div class="col-3">
 				<p class="fw-bold">BASIC INFORMATION</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
@@ -44,11 +44,6 @@
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
 	});
-
-	// onMounted(async () => {
-	// 	await refresh();
-	// 	execute();
-	// });
 </script>
 
 <style scoped>

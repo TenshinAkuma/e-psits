@@ -7,16 +7,10 @@
 			<div class="hstack gap-2">
 				<button
 					type="button"
-					class="btn btn-outline-success"
+					class="btn btn-sm btn-outline-success"
 					style="height: min-content"
 					@click="ToggleEdit">
 					Edit
-				</button>
-				<button
-					class="btn btn-primary"
-					data-bs-toggle="modal"
-					data-bs-target="#createEventModal">
-					New event
 				</button>
 				<EventsDelete />
 			</div>
@@ -33,7 +27,7 @@
 				v-model="NewTitle" />
 			<button
 				type="submit"
-				class="d-flex align-items-center btn btn-success fw-bold gap-2"
+				class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 				style="height: min-content"
 				:disabled="IsSaving">
 				<span
@@ -43,14 +37,12 @@
 				<span role="status">Save</span>
 			</button>
 			<button
-				class="btn btn-outline-secondary"
+				class="btn btn-sm btn-outline-secondary"
 				style="height: min-content"
 				:onclick="ToggleEdit">
 				Cancel
 			</button>
 		</form>
-
-		<EventsCreateModal />
 	</div>
 </template>
 
