@@ -1,12 +1,8 @@
 <template>
 	<div class="p-3">
-		<div class="d-flex justify-content-start align-items-center gap-3">
-			<h4 class="fw-bold m-0">Events</h4>
-			<NuxtLink
-				to="/admin/events/create"
-				class="btn btn-outline-primary btn-sm rounded-pill px-4"
-				>Create event
-			</NuxtLink>
+		<div class="d-flex justify-content-between align-items-center gap-3">
+			<h4 class="fw-bold m-0">EVENTS</h4>
+			<EventsCreateModal />
 		</div>
 
 		<hr />
@@ -19,8 +15,9 @@
 					<tr>
 						<th scope="col">Title</th>
 						<th scope="col">Category</th>
-						<th scope="col">Modality</th>
+						<th scope="col">Type</th>
 						<th scope="col">Date</th>
+						<th scope="col">Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -31,8 +28,11 @@
 						@click="ToEventDetailsPage(event.id)">
 						<td>{{ event.title }}</td>
 						<td>{{ event.category }}</td>
-						<td>{{ event.modality }}</td>
-						<td>{{ event.date }}</td>
+						<td>{{ event.type }}</td>
+						<td>
+							{{ new Date(event.date).toLocaleString() }}
+						</td>
+						<td>{{ event.status }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -51,7 +51,6 @@
 	definePageMeta({
 		layout: "main",
 	});
-
 	const { data: events, status } = useFetch("/api/events");
 
 	const ToEventDetailsPage = (id) => {

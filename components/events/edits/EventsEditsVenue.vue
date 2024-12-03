@@ -21,7 +21,7 @@
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-success fw-bold gap-2"
+					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 					style="height: min-content"
 					:disabled="status === 'pending'">
 					<span
@@ -32,7 +32,7 @@
 				</button>
 				<button
 					type="button"
-					class="btn btn-outline-secondary"
+					class="btn btn-sm btn-outline-secondary"
 					@click="ToggleEdit">
 					Cancel
 				</button>

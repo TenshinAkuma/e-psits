@@ -1,146 +1,165 @@
 <template>
-	<div
-		class="modal fade"
-		id="createEventModal"
-		data-bs-backdrop="static"
-		data-bs-keyboard="false"
-		tabindex="-1"
-		aria-labelledby="createEventModal"
-		aria-hidden="true"
-		ref="createEventModalRef">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5
-						class="modal-title fw-bold"
-						id="staticBackdropLabel">
-						ADD NEW EVENT
-					</h5>
-					<button
-						type="button"
-						class="btn-close"
-						data-bs-dismiss="modal"
-						aria-label="Close"></button>
-				</div>
+	<div>
+		<button
+			class="btn btn-sm btn-primary"
+			data-bs-toggle="modal"
+			data-bs-target="#createEventModal">
+			New event
+		</button>
+		<div
+			class="modal"
+			id="createEventModal"
+			data-bs-backdrop="static"
+			data-bs-keyboard="false"
+			tabindex="-1"
+			aria-labelledby="createEventModal"
+			aria-hidden="true"
+			ref="createEventModalRef">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5
+							class="modal-title fw-bold"
+							id="staticBackdropLabel">
+							ADD NEW EVENT
+						</h5>
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
 
-				<div class="modal-body">
-					<form @submit.prevent="OnAddNewEvent" id="createEvent">
-						<input
-							type="text"
-							placeholder="Event name"
-							class="form-control mb-3"
-							v-model="eventDetails.title" />
-
-						<div class="d-flex gap-2 mb-2">
-							<div class="w-100">
-								<label
-									class="text-secondary"
-									for="eventDate"
-									>Date</label
-								>
-								<input
-									type="date"
-									class="form-control"
-									id="eventDate"
-									v-model="dateInput" />
-							</div>
-							<div>
-								<label
-									class="text-secondary"
-									for="eventTime"
-									>Time</label
-								>
-								<input
-									type="time"
-									class="form-control w-100"
-									id="eventTime"
-									v-model="timeInput" />
-							</div>
-						</div>
-						<p
-							style="font-size: 0.75rem"
-							class="fst-italic text-secondary">
-							This event will start on
-							{{ formatDateString(eventDetails.date) }}
-						</p>
-						<select
-							class="form-select mb-3"
-							v-model="eventDetails.type">
-							<option hidden selected disabled value="">
-								Choose an event type
-							</option>
-							<option
-								v-for="(type, index) in eventTypes"
-								:key="index"
-								:value="type">
-								{{ type }}
-							</option>
-						</select>
-
-						<input
-							v-if="eventDetails.type == 'Virtual'"
-							type="text"
-							placeholder="Meeting link"
-							class="form-control mb-3"
-							v-model="eventDetails.link" />
-
-						<div v-else>
+					<div class="modal-body">
+						<form
+							@submit.prevent="OnAddNewEvent"
+							id="createEvent">
 							<input
 								type="text"
-								placeholder="Venue"
+								placeholder="Event name"
 								class="form-control mb-3"
-								v-model="eventDetails.venue" />
+								v-model="eventDetails.title" />
+
+							<div class="d-flex gap-2 mb-2">
+								<div class="w-100">
+									<label
+										class="text-secondary"
+										for="eventDate"
+										>Date</label
+									>
+									<input
+										type="date"
+										class="form-control"
+										id="eventDate"
+										v-model="dateInput" />
+								</div>
+								<div>
+									<label
+										class="text-secondary"
+										for="eventTime"
+										>Time</label
+									>
+									<input
+										type="time"
+										class="form-control w-100"
+										id="eventTime"
+										v-model="timeInput" />
+								</div>
+							</div>
+							<p
+								style="font-size: 0.75rem"
+								class="fst-italic text-secondary">
+								This event will start on
+								{{
+									formatDateString(eventDetails.date)
+								}}
+							</p>
+							<select
+								class="form-select mb-3"
+								v-model="eventDetails.type">
+								<option
+									hidden
+									selected
+									disabled
+									value="">
+									Choose an event type
+								</option>
+								<option
+									v-for="(type, index) in eventTypes"
+									:key="index"
+									:value="type">
+									{{ type }}
+								</option>
+							</select>
 
 							<input
+								v-if="eventDetails.type == 'Virtual'"
 								type="text"
-								placeholder="Address"
+								placeholder="Meeting link"
 								class="form-control mb-3"
-								v-model="eventDetails.address" />
-						</div>
+								v-model="eventDetails.link" />
 
-						<select
-							class="form-select mb-3"
-							v-model="eventDetails.category">
-							<option value="" hidden selected>
-								Choose category
-							</option>
-							<option
-								v-for="(
-									category, index
-								) in eventCategories"
-								:key="index"
-								:value="category">
-								{{ category }}
-							</option>
-						</select>
+							<div v-else>
+								<input
+									type="text"
+									placeholder="Venue"
+									class="form-control mb-3"
+									v-model="eventDetails.venue" />
 
-						<textarea
-							class="form-control mb-3"
-							placeholder="Description"
-							rows="5"
-							style="max-height: 288px; resize: vertical"
-							v-model="eventDetails.description" />
-					</form>
-				</div>
+								<input
+									type="text"
+									placeholder="Address"
+									class="form-control mb-3"
+									v-model="eventDetails.address" />
+							</div>
 
-				<div class="modal-footer">
-					<button
-						type="button"
-						data-bs-dismiss="modal"
-						class="btn btn-outline-secondary border-0">
-						Cancel
-					</button>
-					<button
-						type="submit"
-						form="createEvent"
-						class="d-flex align-items-center btn btn-primary gap-2"
-						:disabled="status === 'pending'">
-						<span
-							v-if="status === 'pending'"
-							class="spinner-border spinner-border-sm"
-							aria-hidden="true" />
-						<span role="status">Create event</span>
-					</button>
+							<select
+								class="form-select mb-3"
+								v-model="eventDetails.category">
+								<option value="" hidden selected>
+									Choose category
+								</option>
+								<option
+									v-for="(
+										category, index
+									) in eventCategories"
+									:key="index"
+									:value="category">
+									{{ category }}
+								</option>
+							</select>
+
+							<textarea
+								class="form-control mb-3"
+								placeholder="Description"
+								rows="5"
+								style="
+									max-height: 288px;
+									resize: vertical;
+								"
+								v-model="eventDetails.description" />
+						</form>
+					</div>
+
+					<div class="modal-footer">
+						<button
+							type="button"
+							data-bs-dismiss="modal"
+							class="btn btn-outline-secondary border-0">
+							Cancel
+						</button>
+						<button
+							type="submit"
+							form="createEvent"
+							class="d-flex align-items-center btn btn-primary gap-2"
+							:disabled="status === 'pending'">
+							<span
+								v-if="status === 'pending'"
+								class="spinner-border spinner-border-sm"
+								aria-hidden="true" />
+							<span role="status">Create event</span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -195,11 +214,12 @@
 		try {
 			await execute();
 			if (status.value == "success") {
-				navigateTo(`/admin/events/${event.value.id}`);
 				closeModal();
+				navigateTo(`/admin/events/${event.value.id}`);
 			}
 		} catch (err) {
 			console.log("Failed adding new event", error.value);
+			showToast("Failed adding new event");
 		}
 	};
 
