@@ -1,5 +1,5 @@
 <template>
-	<div class="p-3">
+	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">EVENTS</h4>
 			<EventsCreateModal />
