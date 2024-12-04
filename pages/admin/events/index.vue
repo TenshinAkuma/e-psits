@@ -1,5 +1,5 @@
 <template>
-	<div class="p-3">
+	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">EVENTS</h4>
 			<EventsCreateModal />
@@ -11,7 +11,7 @@
 			class="table-responsive rounded-3"
 			style="height: 576px">
 			<table class="table table-hover table-borderless">
-				<thead class="table-light">
+				<thead class="table-secondary">
 					<tr>
 						<th scope="col">Title</th>
 						<th scope="col">Category</th>

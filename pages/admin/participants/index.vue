@@ -1,76 +1,78 @@
 <template>
-  <div class="">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <div class="fs-5 me-3" style="color: #46468f">List of participants</div>
-      <NuxtLink
-        to="/"
-        class="add-event-btn d-flex align-items-center gap-3 btn px-4"
-        style="color: #46468f; border-color: #46468f"
-        ><Icon name="material-symbols:person-add-outline-rounded" />Register a
-        participant</NuxtLink
-      >
-    </div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">School</th>
-          <th scope="col">Year & Course</th>
-          <th scope="col">Event</th>
-          <th scope="col">Email</th>
-          <th scope="col">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(participant, id) in participants"
-          class="table-row"
-          @click="toParticipantProfile(id)"
-        >
-          <td>{{ participant.name }}</td>
-          <td>{{ getParticipantSchool(participant.school) }}</td>
-          <td>{{ participant.course + ", " + participant.yearLevel }}</td>
-          <td>{{ getParticipantEvent(participant.event) }}</td>
-          <td>{{ participant.email }}</td>
-          <td>{{ participant.registrationStatus }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+	<div class="">
+		<div class="d-flex justify-content-between align-items-center gap-3">
+			<h4 class="fw-bold m-0">PARTICIPANTS</h4>
+			<button class="btn btn-sm btn-primary">Add participant</button>
+		</div>
+
+		<hr />
+		<div
+			v-if="status === 'success'"
+			class="table-responsive rounded-3"
+			style="height: 576px">
+			<table class="table table-hover table-borderless">
+				<thead class="table-secondary">
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">School</th>
+						<th scope="col">Year & Course</th>
+						<th scope="col">Event</th>
+						<th scope="col">Email</th>
+						<th scope="col">Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="participant in participants"
+						:key="participant.id"
+						class="table-row"
+						@click="toParticipantProfile(participant.id)">
+						<td>{{ participant.name }}</td>
+						<td>{{ participant.school }}</td>
+						<td>
+							{{
+								participant.course +
+								", " +
+								participant.year
+							}}
+						</td>
+						<td>{{ participant.events.title }}</td>
+						<td>{{ participant.email }}</td>
+						<td>{{ participant.registration_status }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div
+			v-else
+			class="d-flex justify-content-center align-items-center m-auto">
+			<div class="spinner-border text-secondary" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "main",
-});
+	definePageMeta({
+		layout: "main",
+	});
 
-const { participants } = useParticipants();
-const { schools } = useSchools();
-const { events } = useEvents();
+	const { data: participants, status } = await useFetch("/api/participants");
 
-function getParticipantSchool(schoolID) {
-  return schools[schoolID]?.schoolName || "School name not found";
-}
-
-function getParticipantEvent(eventID) {
-  return events[eventID]?.title || "Attendee";
-}
-
-const toParticipantProfile = async (participantID) => {
-  await navigateTo(`/admin/participants/${participantID}`);
-};
+	const toParticipantProfile = async (participantID) => {
+		// await navigateTo(`/admin/participants/${participantID}`);
+	};
 </script>
 
 <style scoped>
-.view-btn {
-  background-color: #46468f;
-}
-.remove-btn {
-  color: #ed5176;
-  border-color: #ed5176;
-}
+	.table-row:hover {
+		cursor: pointer;
+	}
 
-.table-row:hover {
-  cursor: pointer;
-}
+	table thead tr th {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+	}
 </style>
