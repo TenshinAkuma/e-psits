@@ -25,7 +25,8 @@
 					<tr
 						v-for="participant in participants"
 						:key="participant.id"
-						class="table-row">
+						class="table-row"
+						@click="toParticipantProfile(participant.id)">
 						<td>{{ participant.name }}</td>
 						<td>{{ participant.school }}</td>
 						<td>
@@ -59,9 +60,9 @@
 
 	const { data: participants, status } = await useFetch("/api/participants");
 
-	// const toParticipantProfile = async (participantID) => {
-	// 	await navigateTo(`/admin/participants/${participantID}`);
-	// };
+	const toParticipantProfile = async (participantID) => {
+		// await navigateTo(`/admin/participants/${participantID}`);
+	};
 </script>
 
 <style scoped>
