@@ -1,64 +1,90 @@
 <template>
 	<div>
-		<div v-if="status === 'success'" class="row">
-			<div class="col-3">
+		<div v-if="status === 'success'">
+			<div class="d-flex align-items-center gap-3">
 				<div
-					class="ratio ratio-1x1 border rounded-circle border overflow-hidden mb-2 mx-auto"
+					class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
 					style="width: 144px">
 					<img
 						src="public\img\undraw_wait_in_line_o2aq.svg"
 						alt="profile_image"
 						class="h-100 w-100" />
 				</div>
-
-				<div
-					class="d-flex justify-content-center align-items-center gap-2">
-					<h2 class="fw-bold mb-0">
+				<div>
+					<h2 class="fw-bold mb-2">
 						{{ participant.name }}
 					</h2>
-					<span
-						:class="`px-3 py-2 badge ${registrationStatus(
-							participant.registration_status
-						)}`"
-						style="font-size: 0.7rem">
-						{{ participant.registration_status }}
-					</span>
+					<div class="d-flex align-items-center gap-2">
+						<div
+							:class="`px-3 py-2 rounded-pill badge ${registrationStatus(
+								participant.registration_status
+							)}`"
+							style="font-size: 0.7rem">
+							{{ participant.registration_status }}
+						</div>
+
+						<div class="text-secondary">
+							<b>{{ participant.name }}</b> will
+							participate on
+							<a
+								:href="`/admin/events/${participant.event_id}`"
+								class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-bold">
+								{{ participant.events.title }}
+							</a>
+
+							event.
+						</div>
+					</div>
 				</div>
-				<div class="text-secondary text-center">
-					{{ participant.email }}
+			</div>
+
+			<hr />
+			<div class="row">
+				<div class="col-2">
+					<p class="fw-bold">PERSONAL INFORMATION</p>
+
+					<div class="fw-bold text-secondary">Date of birth</div>
+					<p class="text-dark">
+						{{ new Date(participant.dob).toDateString() }}
+					</p>
+
+					<div class="fw-bold text-secondary">Address</div>
+					<p class="text-dark">
+						{{ participant.address }}
+					</p>
+
+					<hr />
+					<p class="fw-bold">CONTACT INFORMATION</p>
+
+					<div class="fw-bold text-secondary">Email</div>
+					<p class="text-dark">
+						{{ participant.email }}
+					</p>
+
+					<div class="fw-bold text-secondary">
+						Contact number
+					</div>
+					<p class="text-dark">
+						{{ participant.phone_number }}
+					</p>
+
+					<hr />
+
+					<p class="fw-bold">ACADEMIC INFORMATION</p>
+					<div class="fw-bold text-secondary">School</div>
+					<p class="text-dark">
+						{{ participant.school }}
+					</p>
+					<div class="fw-bold text-secondary">
+						Year level & Course
+					</div>
+					<p class="text-dark">
+						{{ `${participant.year}, ${participant.course}` }}
+					</p>
 				</div>
-
-				<hr />
-
-				<p class="fw-bold">PERSONAL INFORMATION</p>
-				<div class="fw-bold text-secondary">Date of birth</div>
-				<p class="text-dark">
-					{{ new Date(participant.dob).toDateString() }}
-				</p>
-				<div class="fw-bold text-secondary">Address</div>
-				<p class="text-dark">
-					{{ participant.address }}
-				</p>
-				<div class="fw-bold text-secondary">Contact number</div>
-				<p class="text-dark">
-					{{ participant.phone_number }}
-				</p>
-
-				<hr />
-
-				<p class="fw-bold">ACADEMIC INFORMATION</p>
-				<div class="fw-bold text-secondary">School</div>
-				<p class="text-dark">
-					{{ participant.school }}
-				</p>
-				<div class="fw-bold text-secondary">
-					Year level & Course
-				</div>
-				<p class="text-dark">
-					{{ `${participant.year}, ${participant.course}` }}
-				</p>
 			</div>
 		</div>
+
 		<div v-else>
 			<div class="spinner-border" role="status">
 				<span class="visually-hidden">Loading...</span>
