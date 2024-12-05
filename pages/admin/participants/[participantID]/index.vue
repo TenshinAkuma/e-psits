@@ -10,32 +10,11 @@
 						alt="profile_image"
 						class="h-100 w-100" />
 				</div>
-				<div>
-					<h2 class="fw-bold mb-2">
-						{{ participant.name }}
-					</h2>
-					<div class="d-flex align-items-center gap-2">
-						<div
-							:class="`px-3 py-2 rounded-pill badge ${registrationStatus(
-								participant.registration_status
-							)}`"
-							style="font-size: 0.7rem">
-							{{ participant.registration_status }}
-						</div>
-
-						<div class="text-secondary">
-							<b>{{ participant.name }}</b> will
-							participate on
-							<a
-								:href="`/admin/events/${participant.event_id}`"
-								class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-bold">
-								{{ participant.events.title }}
-							</a>
-
-							event.
-						</div>
-					</div>
-				</div>
+				<ParticipantsEditsTitle
+					:ParticipantName="participant.name"
+					:ParticipantStatus="participant.registration_status"
+					:ParticipantEvent="participant.events.title"
+					:ParticipantEventId="participant.event_id" />
 			</div>
 
 			<hr />
@@ -107,15 +86,4 @@
 			method: "GET",
 		}
 	);
-
-	const registrationStatus = (status) => {
-		switch (status) {
-			case "Registered":
-				return "text-bg-primary";
-			case "Cancelled":
-				return "text-bg-danger";
-			default:
-				return "text-bg-secondary";
-		}
-	};
 </script>

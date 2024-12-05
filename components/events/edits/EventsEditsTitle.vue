@@ -29,7 +29,7 @@
 				type="submit"
 				class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 				style="height: min-content"
-				:disabled="IsSaving">
+				:disabled="status === 'pending'">
 				<span
 					v-if="status === 'pending'"
 					class="spinner-border spinner-border-sm"
@@ -53,7 +53,6 @@
 	const NewTitle = ref();
 
 	const IsEditing = ref(false);
-	const IsSaving = ref(false);
 
 	const ToggleEdit = () => {
 		IsEditing.value = !IsEditing.value;
@@ -73,7 +72,6 @@
 	);
 
 	const OnSaveNewTitle = async () => {
-		IsSaving.value = true;
 		try {
 			await refresh();
 			execute();
@@ -81,8 +79,6 @@
 			EventTitle.value = NewTitle.value;
 		} catch (err) {
 			NewTitle.value = err.message;
-		} finally {
-			IsSaving.value = false;
 		}
 	};
 </script>
