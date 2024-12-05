@@ -40,7 +40,7 @@
 
 			<hr />
 			<div class="row">
-				<div class="col-2">
+				<div class="col-4">
 					<p class="fw-bold">PERSONAL INFORMATION</p>
 
 					<div class="fw-bold text-secondary">Date of birth</div>

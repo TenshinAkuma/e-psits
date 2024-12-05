@@ -4,8 +4,8 @@
 			<EventsEditsTitle :EventTitle="event.title" />
 			<hr />
 			<br />
-			<div class="col-10"></div>
-			<div class="col-2">
+			<div class="col-8"></div>
+			<div class="col-4">
 				<p class="fw-bold">BASIC INFORMATION</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
