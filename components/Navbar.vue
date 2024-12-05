@@ -3,7 +3,10 @@
 		<div
 			class="px-3 d-flex justify-content-between align-items-center"
 			style="height: 56px">
-			<div class="fs-4 fw-bold">E-PSITS</div>
+			<div class="d-flex align-items-center gap-3">
+				<SideBar />
+				<div class="fs-4 fw-bold">E-PSITS</div>
+			</div>
 			<div class="text-dark">Administrator Panel</div>
 			<button
 				class="d-flex align-items-center btn btn-link text-decoration-none text-dark px-3"
