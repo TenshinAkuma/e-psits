@@ -58,10 +58,10 @@
 		layout: "main",
 	});
 
-	const { data: participants, status } = await useFetch("/api/participants");
+	const { data: participants, status } = useFetch("/api/participants");
 
 	const toParticipantProfile = async (participantID) => {
-		// await navigateTo(`/admin/participants/${participantID}`);
+		await navigateTo(`/admin/participants/${participantID}`);
 	};
 </script>
 
