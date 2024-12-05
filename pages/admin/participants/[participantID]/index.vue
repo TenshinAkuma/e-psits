@@ -1,80 +1,121 @@
 <template>
-  <div class="h-100 d-flex flex-column justify-content-between">
-    <div>
-      <div>
-        <div class="fs-5">Participant profile</div>
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="fs-2 fw-bold">{{ participant.name }}</div>
-          <NuxtLink
-            :to="`/admin/participants/${participantID}/update`"
-            class="text-decoration-none text-secondary d-flex align-items-center gap-2 px-2"
-            ><Icon name="material-symbols:edit-outline-rounded" />Edit</NuxtLink
-          >
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6 text-secondary mb-5 p-0">
-          <div class="row m-0">
-            <div class="col-3">Date of birth:</div>
-            <div class="col-9">{{ participant.dateOfBirth }}</div>
-            <div class="col-3">Sex:</div>
-            <div class="col-9">{{ participant.sex }}</div>
-            <div class="col-3">School:</div>
-            <div class="col-9">
-              {{ getParticipantSchool(participant.school) }}
-            </div>
-            <div class="col-3">Year & Course:</div>
-            <div class="col-9">
-              {{ participant.yearLevel + " " + participant.course }}
-            </div>
-            <div class="col-3">Email:</div>
-            <div class="col-9">{{ participant.email }}</div>
-            <div class="col-3">Phone number:</div>
-            <div class="col-9">{{ participant.phoneNumber }}</div>
-            <br />
-            <br />
-            <div class="col-12 fw-bold">Event participation</div>
-            <br />
-            <br />
-            <div class="col-3">Title:</div>
-            <div class="col-9">
-              {{ getParticipantEvent(participant.event) }}
-            </div>
-            <div class="col-3">category:</div>
-            <div class="col-9">
-              {{ getParticipantEventCategory(participant.event) }}
-            </div>
-            <div class="col-3">Registration status:</div>
-            <div class="col-9">{{ participant.registrationStatus }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div>
+		<div v-if="status === 'success'">
+			<div class="d-flex align-items-center gap-3">
+				<div
+					class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
+					style="width: 144px">
+					<img
+						src="public\img\undraw_wait_in_line_o2aq.svg"
+						alt="profile_image"
+						class="h-100 w-100" />
+				</div>
+				<div>
+					<h2 class="fw-bold mb-2">
+						{{ participant.name }}
+					</h2>
+					<div class="d-flex align-items-center gap-2">
+						<div
+							:class="`px-3 py-2 rounded-pill badge ${registrationStatus(
+								participant.registration_status
+							)}`"
+							style="font-size: 0.7rem">
+							{{ participant.registration_status }}
+						</div>
+
+						<div class="text-secondary">
+							<b>{{ participant.name }}</b> will
+							participate on
+							<a
+								:href="`/admin/events/${participant.event_id}`"
+								class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-bold">
+								{{ participant.events.title }}
+							</a>
+
+							event.
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<hr />
+			<div class="row">
+				<div class="col-2">
+					<p class="fw-bold">PERSONAL INFORMATION</p>
+
+					<div class="fw-bold text-secondary">Date of birth</div>
+					<p class="text-dark">
+						{{ new Date(participant.dob).toDateString() }}
+					</p>
+
+					<div class="fw-bold text-secondary">Address</div>
+					<p class="text-dark">
+						{{ participant.address }}
+					</p>
+
+					<hr />
+					<p class="fw-bold">CONTACT INFORMATION</p>
+
+					<div class="fw-bold text-secondary">Email</div>
+					<p class="text-dark">
+						{{ participant.email }}
+					</p>
+
+					<div class="fw-bold text-secondary">
+						Contact number
+					</div>
+					<p class="text-dark">
+						{{ participant.phone_number }}
+					</p>
+
+					<hr />
+
+					<p class="fw-bold">ACADEMIC INFORMATION</p>
+					<div class="fw-bold text-secondary">School</div>
+					<p class="text-dark">
+						{{ participant.school }}
+					</p>
+					<div class="fw-bold text-secondary">
+						Year level & Course
+					</div>
+					<p class="text-dark">
+						{{ `${participant.year}, ${participant.course}` }}
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<div v-else>
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
+			</div>
+		</div>
+	</div>
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "main",
-});
-const route = useRoute();
-const participantID = route.params.participantID;
+	definePageMeta({
+		layout: "main",
+	});
 
-const { participants } = useParticipants();
-const { schools } = useSchools();
-const { events } = useEvents();
+	const participantID = useRoute().params.participantID;
 
-const participant = participants[participantID];
+	const { data: participant, status } = useFetch(
+		`/api/participants/${participantID}`,
+		{
+			headers: useRequestHeaders(["cookie"]),
+			method: "GET",
+		}
+	);
 
-function getParticipantSchool(schoolID) {
-  return schools[schoolID]?.schoolName || "School name not found";
-}
-
-function getParticipantEvent(eventID) {
-  return events[eventID]?.title || "Attendee";
-}
-
-function getParticipantEventCategory(eventID) {
-  return events[eventID]?.category || "Category not found";
-}
+	const registrationStatus = (status) => {
+		switch (status) {
+			case "Registered":
+				return "text-bg-primary";
+			case "Cancelled":
+				return "text-bg-danger";
+			default:
+				return "text-bg-secondary";
+		}
+	};
 </script>
