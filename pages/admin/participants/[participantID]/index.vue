@@ -10,7 +10,7 @@
 						alt="profile_image"
 						class="h-100 w-100" />
 				</div>
-				<ParticipantsEditsTitle
+				<ParticipantsEditsNameStatus
 					:ParticipantName="participant.name"
 					:ParticipantStatus="participant.registration_status"
 					:ParticipantEvent="participant.events.title"
@@ -22,10 +22,8 @@
 				<div class="col-4">
 					<p class="fw-bold">PERSONAL INFORMATION</p>
 
-					<div class="fw-bold text-secondary">Date of birth</div>
-					<p class="text-dark">
-						{{ new Date(participant.dob).toDateString() }}
-					</p>
+					<ParticipantsEditsDob
+						:ParticipantDob="participant.dob" />
 
 					<div class="fw-bold text-secondary">Address</div>
 					<p class="text-dark">
