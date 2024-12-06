@@ -25,11 +25,8 @@
 					<ParticipantsEditsDob
 						:ParticipantDob="participant.dob" />
 
-					<div class="fw-bold text-secondary">Address</div>
-					<p class="text-dark">
-						{{ participant.address }}
-					</p>
-
+					<ParticipantsEditsAddress
+						:ParticipantAddress="participant.address" />
 					<hr />
 					<p class="fw-bold">CONTACT INFORMATION</p>
 
