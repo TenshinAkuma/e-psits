@@ -34,13 +34,10 @@
 					<ParticipantsEditsEmail
 						:ParticipantEmail="participant.email" />
 
-					<div class="fw-bold text-secondary">
-						Contact number
-					</div>
-					<p class="text-dark">
-						{{ participant.phone_number }}
-					</p>
-
+					<ParticipantsEditsPhoneNumber
+						:ParticipantPhoneNumber="
+							participant.phone_number
+						" />
 					<hr />
 
 					<p class="fw-bold">ACADEMIC INFORMATION</p>

@@ -11,7 +11,7 @@
 		</div>
 
 		<p v-if="!isEditing" class="text-dark">
-			{{ participant.address }}
+			{{ ParticipantAddress }}
 		</p>
 
 		<form v-else @submit.prevent="OnSaveNewAddress" class="mt-1">

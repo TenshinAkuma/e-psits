@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Email</div>
+			<div class="fw-bold text-secondary">Phone number</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -11,13 +11,13 @@
 		</div>
 
 		<p v-if="!isEditing" class="text-dark">
-			{{ ParticipantEmail }}
+			{{ ParticipantPhoneNumber }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewEmail" class="mt-1">
+		<form v-else @submit.prevent="OnSaveNewPhoneNumber" class="mt-1">
 			<input
 				type="text"
-				v-model="participant.email"
+				v-model="participant.phone_number"
 				class="form-control border-secondary p-2 mb-3 w-100" />
 			<div class="d-flex justify-content-end gap-2">
 				<button
@@ -44,12 +44,12 @@
 
 <script setup>
 	const participantID = useRoute().params.participantID;
-	const ParticipantEmail = defineModel("ParticipantEmail");
+	const ParticipantPhoneNumber = defineModel("ParticipantPhoneNumber");
 
 	const isEditing = ref(false);
 
 	const participant = ref({
-		email: ParticipantEmail.value,
+		phone_number: ParticipantPhoneNumber.value,
 	});
 
 	const { status, error, execute } = await useFetch(
@@ -62,12 +62,13 @@
 		}
 	);
 
-	const OnSaveNewEmail = async () => {
+	const OnSaveNewPhoneNumber = async () => {
 		try {
 			await execute();
 			if (status.value == "success") {
 				ToggleEdit();
-				ParticipantEmail.value = participant.value.email;
+				ParticipantPhoneNumber.value =
+					participant.value.phone_number;
 			}
 		} catch {
 			console.log(error);
