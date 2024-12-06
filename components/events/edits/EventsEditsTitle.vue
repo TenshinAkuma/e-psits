@@ -61,7 +61,7 @@
 		}
 	};
 
-	const { status, execute, refresh } = await useFetch(
+	const { status, execute } = await useFetch(
 		`/api/events/${EventId}?column=title`,
 		{
 			method: "PATCH",
@@ -73,10 +73,11 @@
 
 	const OnSaveNewTitle = async () => {
 		try {
-			await refresh();
-			execute();
-			ToggleEdit();
-			EventTitle.value = NewTitle.value;
+			await execute();
+			if (status.value == "success") {
+				ToggleEdit();
+				EventTitle.value = NewTitle.value;
+			}
 		} catch (err) {
 			NewTitle.value = err.message;
 		}

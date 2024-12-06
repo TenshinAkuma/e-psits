@@ -24,15 +24,23 @@
 
 			<form
 				v-else
+				@submit.prevent="OnSaveNewNameStatus"
 				id="editNameStatusForm"
 				class="hstack align-items-center gap-2 mb-2">
 				<input
 					type="text"
 					class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
-					v-model="newName" />
+					v-model="participant.name" />
 
-				<button type="submit " class="btn btn-sm btn-success">
-					Save
+				<button
+					type="submit "
+					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					:disabled="status === 'pending'">
+					<span
+						v-if="status === 'pending'"
+						class="spinner-border spinner-border-sm"
+						aria-hidden="true" />
+					<span role="status">Save</span>
 				</button>
 				<button
 					type="button"
@@ -57,14 +65,18 @@
 					form="editNameStatusForm"
 					class="form-select border-secondary"
 					style="width: max-content"
-					v-model="newStatus">
-					<option :value="newStatus" selected disabled hidden>
-						{{ newStatus }}
+					v-model="participant.registration_status">
+					<option
+						:value="participant.registration_status"
+						selected
+						disabled
+						hidden>
+						{{ participant.registration_status }}
 					</option>
 					<option
 						v-for="(status, index) in statuses"
 						:key="index"
-						value="status">
+						:value="status">
 						{{ status }}
 					</option>
 				</select>
@@ -84,23 +96,46 @@
 </template>
 
 <script setup>
-	const props = defineProps({
-		ParticipantName: String,
-		ParticipantStatus: String,
-		ParticipantEvent: String,
-		ParticipantEventId: Number,
+	const participantID = useRoute().params.participantID;
+
+	const ParticipantName = defineModel("ParticipantName");
+	const ParticipantStatus = defineModel("ParticipantStatus");
+	const ParticipantEvent = defineModel("ParticipantEvent");
+	const ParticipantEventId = defineModel("ParticipantEventId");
+
+	const participant = ref({
+		name: ParticipantName.value,
+		registration_status: ParticipantStatus.value,
 	});
 
-	const newName = ref();
-	const newStatus = ref();
 	const isEditing = ref(false);
+
+	const { status, error, execute, refresh } = await useFetch(
+		`/api/participants/${participantID}`,
+		{
+			method: "PATCH",
+			body: participant,
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const OnSaveNewNameStatus = async () => {
+		try {
+			await execute();
+			if (status.value == "success") {
+				ToggleEdit();
+				ParticipantName.value = participant.value.name;
+				ParticipantStatus.value =
+					participant.value.registration_status;
+			}
+		} catch (err) {
+			console.log(err, error.value);
+		}
+	};
 
 	const ToggleEdit = () => {
 		isEditing.value = !isEditing.value;
-		if (isEditing) {
-			newName.value = props.ParticipantName;
-			newStatus.value = props.ParticipantStatus;
-		}
 	};
 
 	const statuses = ["Registered", "Cancelled", "Pending"];
