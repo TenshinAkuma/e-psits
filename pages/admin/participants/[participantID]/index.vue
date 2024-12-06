@@ -38,13 +38,14 @@
 						:ParticipantPhoneNumber="
 							participant.phone_number
 						" />
+
 					<hr />
 
 					<p class="fw-bold">ACADEMIC INFORMATION</p>
-					<div class="fw-bold text-secondary">School</div>
-					<p class="text-dark">
-						{{ participant.school }}
-					</p>
+
+					<ParticipantsEditsSchool
+						:ParticipantSchool="participant.school" />
+
 					<div class="fw-bold text-secondary">
 						Year level & Course
 					</div>
