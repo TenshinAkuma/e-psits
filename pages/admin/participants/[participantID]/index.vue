@@ -46,12 +46,9 @@
 					<ParticipantsEditsSchool
 						:ParticipantSchool="participant.school" />
 
-					<div class="fw-bold text-secondary">
-						Year level & Course
-					</div>
-					<p class="text-dark">
-						{{ `${participant.year}, ${participant.course}` }}
-					</p>
+					<ParticipantsEditsYearCourse
+						:ParticipantYear="participant.year"
+						:ParticipantCourse="participant.course" />
 				</div>
 			</div>
 		</div>
