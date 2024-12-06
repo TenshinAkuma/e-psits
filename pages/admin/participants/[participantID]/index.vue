@@ -27,13 +27,12 @@
 
 					<ParticipantsEditsAddress
 						:ParticipantAddress="participant.address" />
+
 					<hr />
 					<p class="fw-bold">CONTACT INFORMATION</p>
 
-					<div class="fw-bold text-secondary">Email</div>
-					<p class="text-dark">
-						{{ participant.email }}
-					</p>
+					<ParticipantsEditsEmail
+						:ParticipantEmail="participant.email" />
 
 					<div class="fw-bold text-secondary">
 						Contact number
