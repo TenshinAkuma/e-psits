@@ -10,32 +10,11 @@
 						alt="profile_image"
 						class="h-100 w-100" />
 				</div>
-				<div>
-					<h2 class="fw-bold mb-2">
-						{{ participant.name }}
-					</h2>
-					<div class="d-flex align-items-center gap-2">
-						<div
-							:class="`px-3 py-2 rounded-pill badge ${registrationStatus(
-								participant.registration_status
-							)}`"
-							style="font-size: 0.7rem">
-							{{ participant.registration_status }}
-						</div>
-
-						<div class="text-secondary">
-							<b>{{ participant.name }}</b> will
-							participate on
-							<a
-								:href="`/admin/events/${participant.event_id}`"
-								class="link-secondary link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover fw-bold">
-								{{ participant.events.title }}
-							</a>
-
-							event.
-						</div>
-					</div>
-				</div>
+				<ParticipantsEditsNameStatus
+					:ParticipantName="participant.name"
+					:ParticipantStatus="participant.registration_status"
+					:ParticipantEvent="participant.events.title"
+					:ParticipantEventId="participant.event_id" />
 			</div>
 
 			<hr />
@@ -43,44 +22,33 @@
 				<div class="col-4">
 					<p class="fw-bold">PERSONAL INFORMATION</p>
 
-					<div class="fw-bold text-secondary">Date of birth</div>
-					<p class="text-dark">
-						{{ new Date(participant.dob).toDateString() }}
-					</p>
+					<ParticipantsEditsDob
+						:ParticipantDob="participant.dob" />
 
-					<div class="fw-bold text-secondary">Address</div>
-					<p class="text-dark">
-						{{ participant.address }}
-					</p>
+					<ParticipantsEditsAddress
+						:ParticipantAddress="participant.address" />
 
 					<hr />
 					<p class="fw-bold">CONTACT INFORMATION</p>
 
-					<div class="fw-bold text-secondary">Email</div>
-					<p class="text-dark">
-						{{ participant.email }}
-					</p>
+					<ParticipantsEditsEmail
+						:ParticipantEmail="participant.email" />
 
-					<div class="fw-bold text-secondary">
-						Contact number
-					</div>
-					<p class="text-dark">
-						{{ participant.phone_number }}
-					</p>
+					<ParticipantsEditsPhoneNumber
+						:ParticipantPhoneNumber="
+							participant.phone_number
+						" />
 
 					<hr />
 
 					<p class="fw-bold">ACADEMIC INFORMATION</p>
-					<div class="fw-bold text-secondary">School</div>
-					<p class="text-dark">
-						{{ participant.school }}
-					</p>
-					<div class="fw-bold text-secondary">
-						Year level & Course
-					</div>
-					<p class="text-dark">
-						{{ `${participant.year}, ${participant.course}` }}
-					</p>
+
+					<ParticipantsEditsSchool
+						:ParticipantSchool="participant.school" />
+
+					<ParticipantsEditsYearCourse
+						:ParticipantYear="participant.year"
+						:ParticipantCourse="participant.course" />
 				</div>
 			</div>
 		</div>
@@ -107,15 +75,4 @@
 			method: "GET",
 		}
 	);
-
-	const registrationStatus = (status) => {
-		switch (status) {
-			case "Registered":
-				return "text-bg-primary";
-			case "Cancelled":
-				return "text-bg-danger";
-			default:
-				return "text-bg-secondary";
-		}
-	};
 </script>
