@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 	return (
 		await client
 			.from("participants")
-			.select("*")
+			.delete()
 			.eq("id", participantID)
 			.single()
 	).data;

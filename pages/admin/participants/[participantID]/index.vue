@@ -1,9 +1,9 @@
 <template>
 	<div>
-		<div v-if="status === 'success'">
-			<div class="d-flex align-items-center gap-3">
+		<div v-if="status === 'success'" class="row">
+			<div class="col-4">
 				<div
-					class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
+					class="ratio ratio-1x1 border rounded-circle border overflow-hidden mx-auto mb-2"
 					style="width: 144px">
 					<img
 						src="public\img\undraw_wait_in_line_o2aq.svg"
@@ -11,45 +11,35 @@
 						class="h-100 w-100" />
 				</div>
 				<ParticipantsEditsNameStatus
-					:ParticipantName="participant.name"
-					:ParticipantStatus="participant.registration_status"
-					:ParticipantEvent="participant.events.title"
-					:ParticipantEventId="participant.event_id" />
-			</div>
+					:ParticipantName="participant.name" />
 
-			<hr />
-			<div class="row">
-				<div class="col-4">
-					<p class="fw-bold">PERSONAL INFORMATION</p>
+				<hr />
+				<p class="fw-bold">PERSONAL INFORMATION</p>
 
-					<ParticipantsEditsDob
-						:ParticipantDob="participant.dob" />
+				<ParticipantsEditsDob :ParticipantDob="participant.dob" />
 
-					<ParticipantsEditsAddress
-						:ParticipantAddress="participant.address" />
+				<ParticipantsEditsAddress
+					:ParticipantAddress="participant.address" />
 
-					<hr />
-					<p class="fw-bold">CONTACT INFORMATION</p>
+				<hr />
+				<p class="fw-bold">CONTACT INFORMATION</p>
 
-					<ParticipantsEditsEmail
-						:ParticipantEmail="participant.email" />
+				<ParticipantsEditsEmail
+					:ParticipantEmail="participant.email" />
 
-					<ParticipantsEditsPhoneNumber
-						:ParticipantPhoneNumber="
-							participant.phone_number
-						" />
+				<ParticipantsEditsPhoneNumber
+					:ParticipantPhoneNumber="participant.phone_number" />
 
-					<hr />
+				<hr />
 
-					<p class="fw-bold">ACADEMIC INFORMATION</p>
+				<p class="fw-bold">ACADEMIC INFORMATION</p>
 
-					<ParticipantsEditsSchool
-						:ParticipantSchool="participant.school" />
+				<ParticipantsEditsSchool
+					:ParticipantSchool="participant.school" />
 
-					<ParticipantsEditsYearCourse
-						:ParticipantYear="participant.year"
-						:ParticipantCourse="participant.course" />
-				</div>
+				<ParticipantsEditsYearCourse
+					:ParticipantYear="participant.year"
+					:ParticipantCourse="participant.course" />
 			</div>
 		</div>
 

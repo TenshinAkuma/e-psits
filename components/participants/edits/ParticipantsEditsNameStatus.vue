@@ -3,54 +3,50 @@
 		<div>
 			<div
 				v-if="!isEditing"
-				class="d-flex justify-content-between align-items-center">
+				class="d-flex justify-content-center align-items-start gap-2">
 				<h2 class="fw-bold mb-0">
 					{{ ParticipantName }}
 				</h2>
-				<div class="hstack gap-2">
-					<button
-						type="button"
-						class="btn btn-sm btn-outline-success"
-						@click="ToggleEdit">
-						Edit
-					</button>
-					<button
-						type="button"
-						class="btn btn-sm btn-outline-danger">
-						Remove
-					</button>
-				</div>
+
+				<button
+					type="button"
+					class="btn btn-sm d-flex align-items-center text-secondary"
+					@click="ToggleEdit">
+					<Icon name="material-symbols:edit-outline-rounded" />
+				</button>
 			</div>
 
 			<form
 				v-else
 				@submit.prevent="OnSaveNewNameStatus"
 				id="editNameStatusForm"
-				class="hstack align-items-center gap-2 mb-2">
+				class="mb-2">
 				<input
 					type="text"
-					class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
+					class="form-control border-secondary w-100 border p-2 mb-3 fw-bold"
 					v-model="participant.name" />
 
-				<button
-					type="submit "
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
-					:disabled="status === 'pending'">
-					<span
-						v-if="status === 'pending'"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true" />
-					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
-				</button>
+				<div class="d-flex justify-content-end gap-2">
+					<button
+						type="submit "
+						class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+						:disabled="status === 'pending'">
+						<span
+							v-if="status === 'pending'"
+							class="spinner-border spinner-border-sm"
+							aria-hidden="true" />
+						<span role="status">Save</span>
+					</button>
+					<button
+						type="button"
+						class="btn btn-sm btn-outline-secondary"
+						@click="ToggleEdit">
+						Cancel
+					</button>
+				</div>
 			</form>
 
-			<div class="d-flex align-items-center gap-2">
+			<!-- <div class="d-flex align-items-center gap-2">
 				<div
 					v-if="!isEditing"
 					:class="`px-3 py-2 rounded-pill badge ${registrationStatus(
@@ -90,22 +86,17 @@
 					</a>
 					event.
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
 
 <script setup>
 	const participantID = useRoute().params.participantID;
-
 	const ParticipantName = defineModel("ParticipantName");
-	const ParticipantStatus = defineModel("ParticipantStatus");
-	const ParticipantEvent = defineModel("ParticipantEvent");
-	const ParticipantEventId = defineModel("ParticipantEventId");
 
 	const participant = ref({
 		name: ParticipantName.value,
-		registration_status: ParticipantStatus.value,
 	});
 
 	const isEditing = ref(false);
@@ -126,8 +117,6 @@
 			if (status.value == "success") {
 				ToggleEdit();
 				ParticipantName.value = participant.value.name;
-				ParticipantStatus.value =
-					participant.value.registration_status;
 			}
 		} catch (err) {
 			console.log(err, error.value);
