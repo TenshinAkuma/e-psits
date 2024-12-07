@@ -2,13 +2,9 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { participantID } = event.context.params;
+	const body = await readBody(event);
 
-	return (
-		await client
-			.from("participants")
-			.select("*")
-			.eq("id", participantID)
-			.single()
-	).data;
+	console.log(body);
+	return (await client.from("participants").insert(body).select().single())
+		.data;
 });

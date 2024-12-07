@@ -2,7 +2,7 @@
 	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">PARTICIPANTS</h4>
-			<button class="btn btn-sm btn-primary">Add participant</button>
+			<ParticipantsCreateModal />
 		</div>
 
 		<hr />
@@ -15,7 +15,6 @@
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">School</th>
-						<th scope="col">Year & Course</th>
 						<th scope="col">Event</th>
 						<th scope="col">Email</th>
 						<th scope="col">Status</th>
@@ -26,19 +25,18 @@
 						v-for="participant in participants"
 						:key="participant.id"
 						class="table-row"
-						@click="toParticipantProfile(participant.id)">
-						<td>{{ participant.name }}</td>
-						<td>{{ participant.school }}</td>
-						<td>
-							{{
-								participant.course +
-								", " +
-								participant.year
-							}}
-						</td>
+						@click="
+							toParticipantProfile(
+								participant.participants.id
+							)
+						">
+						<td>{{ participant.participants.name }}</td>
+						<td>{{ participant.participants.school }}</td>
 						<td>{{ participant.events.title }}</td>
-						<td>{{ participant.email }}</td>
-						<td>{{ participant.registration_status }}</td>
+						<td>{{ participant.participants.email }}</td>
+						<td>
+							{{ participant.registration_status }}
+						</td>
 					</tr>
 				</tbody>
 			</table>
