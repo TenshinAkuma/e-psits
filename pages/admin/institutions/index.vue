@@ -1,7 +1,7 @@
 <template>
 	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
-			<h4 class="fw-bold m-0">EVENTS</h4>
+			<h4 class="fw-bold m-0">INSTITUTIONS</h4>
 			<EventsCreateModal />
 		</div>
 
@@ -51,11 +51,8 @@
 	definePageMeta({
 		layout: "main",
 	});
-	const { data: events, status } = useFetch("/api/events");
 
-	const ToEventDetailsPage = (id) => {
-		navigateTo(`/admin/events/	${id}`);
-	};
+	const { data: institutions, status } = await useFetch(`/api`);
 </script>
 
 <style scoped>

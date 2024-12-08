@@ -84,8 +84,8 @@
 			route: "participants",
 		},
 		{
-			selection: "Members",
-			route: "university",
+			selection: "Institutions",
+			route: "institutions",
 		},
 		{
 			selection: "Registration",
