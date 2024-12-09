@@ -9,11 +9,9 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingModality">
-			<div class="text-dark">
-				{{ EventModality || "Input event type" }}
-			</div>
-		</div>
+		<p v-if="!IsEditingModality" class="text-dark">
+			{{ EventModality || "Input event type" }}
+		</p>
 
 		<form v-else @submit.prevent="OnSaveNewModality" class="mt-1">
 			<select

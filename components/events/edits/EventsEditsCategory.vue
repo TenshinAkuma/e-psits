@@ -9,11 +9,9 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingCategory">
-			<div class="text-dark">
-				{{ EventCategory }}
-			</div>
-		</div>
+		<p v-if="!IsEditingCategory" class="text-dark">
+			{{ EventCategory }}
+		</p>
 
 		<form v-else @submit.prevent="OnSaveNewCategory" class="mt-1">
 			<select

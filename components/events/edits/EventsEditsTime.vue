@@ -9,9 +9,9 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingTime">
+		<p v-if="!IsEditingTime">
 			{{ formattedTime }}
-		</div>
+		</p>
 
 		<form v-else @submit.prevent="OnSaveNewTime" class="mt-1">
 			<input

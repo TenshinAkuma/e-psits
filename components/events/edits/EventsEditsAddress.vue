@@ -9,9 +9,9 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingAddress">
+		<p v-if="!IsEditingAddress">
 			{{ newAddress || `To be announced` }}
-		</div>
+		</p>
 
 		<form v-else @submit.prevent="OnSaveNewAddress" class="mt-1">
 			<input

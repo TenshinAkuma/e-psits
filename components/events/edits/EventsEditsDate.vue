@@ -9,7 +9,7 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingDate">{{ formatDate(EventDate) }}</div>
+		<p v-if="!IsEditingDate">{{ formatDate(EventDate) }}</p>
 
 		<form v-else @submit.prevent="OnSaveNewDate" class="mt-1">
 			<input
