@@ -1,5 +1,5 @@
 <template>
-	<div class="w-100">
+	<div>
 		<div>
 			<div class="d-flex justify-content-between align-items-center">
 				<div

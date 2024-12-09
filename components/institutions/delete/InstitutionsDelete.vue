@@ -5,7 +5,7 @@
 			data-bs-toggle="modal"
 			data-bs-target="#deleteInstitution"
 			class="btn btn-sm btn-outline-danger">
-			Delete
+			<i class="bi bi-trash" />
 		</button>
 
 		<div
