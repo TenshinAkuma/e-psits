@@ -8,7 +8,7 @@
 		<hr />
 		<div
 			v-if="status === 'success'"
-			class="table-responsive"
+			class="table-responsive rounded-3"
 			style="height: 576px">
 			<table class="table table-hover table-borderless">
 				<thead class="table-secondary">

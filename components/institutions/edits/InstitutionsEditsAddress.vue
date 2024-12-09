@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Brief Description</div>
+			<div class="fw-bold text-secondary">Address</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,16 +9,15 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingDescription" class="text-dark">
-			{{ EventDescription }}
+		<p v-if="!IsEditing" class="text-dark">
+			{{ InstitutionAddress }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewDescription" class="mt-1">
-			<textarea
+		<form v-else @submit.prevent="OnSaveNewAddress" class="mt-1">
+			<input
+				type="text"
 				class="form-control border-secondary p-2 mb-3"
-				style="max-height: 216px; resize: vertical"
-				rows="4"
-				v-model="newDescription" />
+				v-model="institution.address" />
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
@@ -43,37 +42,38 @@
 </template>
 
 <script setup>
-	const eventID = useRoute().params.eventID;
-	const EventDescription = defineModel("EventDescription");
+	const institutionID = useRoute().params.institutionID;
+	const InstitutionAddress = defineModel("InstitutionAddress");
 
-	const newDescription = ref("");
-	const IsEditingDescription = ref(false);
-
-	const ToggleEdit = () => {
-		IsEditingDescription.value = !IsEditingDescription.value;
-		if (IsEditingDescription.value) {
-			newDescription.value = EventDescription.value;
-		}
-	};
+	const IsEditing = ref(false);
+	const institution = ref({
+		address: InstitutionAddress.value,
+	});
 
 	const { status, execute } = await useFetch(
-		`/api/events/${eventID}?column=description`,
+		`/api/institutions/${institutionID}`,
 		{
 			method: "PATCH",
-			body: { value: newDescription },
+			body: institution,
 			immediate: false,
 			watch: false,
 		}
 	);
 
-	const OnSaveNewDescription = async () => {
+	const OnSaveNewAddress = async () => {
 		try {
 			await execute();
-			ToggleEdit();
-			EventDescription.value = newDescription.value;
+			if (status.value == "success") {
+				ToggleEdit();
+				InstitutionAddress.value = institution.value.address;
+			}
 		} catch (err) {
-			newDescription.value = err.message;
+			console.log(err);
 		}
+	};
+
+	const ToggleEdit = () => {
+		IsEditing.value = !IsEditing.value;
 	};
 </script>
 

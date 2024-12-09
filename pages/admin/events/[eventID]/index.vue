@@ -3,25 +3,21 @@
 		<div v-if="status === 'success'" class="row">
 			<EventsEditsTitle :EventTitle="event.title" />
 			<hr />
-			<br />
 			<div class="col-8"></div>
 			<div class="col-4">
-				<p class="fw-bold">BASIC INFORMATION</p>
+				<p class="fw-bold">Basic Information</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
-				<br />
 				<EventsEditsModality :EventModality="event.type" />
-				<br />
 				<EventsEditsCategory :EventCategory="event.category" />
+
 				<hr />
-				<p class="fw-bold">SCHEDULE</p>
+				<p class="fw-bold">Schedule</p>
 				<EventsEditsDate :EventDate="event.date" />
-				<br />
 				<EventsEditsTime :EventTime="event.date" />
 				<hr />
-				<p class="fw-bold">LOCATION</p>
+				<p class="fw-bold">Location</p>
 				<EventsEditsVenue :EventVenue="event.venue" />
-				<br />
 				<EventsEditsAddress :EventAddress="event.address" />
 			</div>
 		</div>

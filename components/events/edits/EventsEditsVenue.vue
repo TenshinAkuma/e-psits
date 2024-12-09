@@ -9,9 +9,9 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<div v-if="!IsEditingVenue">
+		<p v-if="!IsEditingVenue">
 			{{ EventVenue || `To be announced` }}
-		</div>
+		</p>
 
 		<form v-else @submit.prevent="OnSaveNewVenue" class="mt-1">
 			<input

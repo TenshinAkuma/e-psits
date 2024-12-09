@@ -2,37 +2,29 @@
 	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">INSTITUTIONS</h4>
-			<EventsCreateModal />
+			<button class="btn btn-sm btn-primary">Add institution</button>
 		</div>
 
 		<hr />
 		<div
 			v-if="status === 'success'"
-			class="table-responsive"
+			class="table-responsive rounded-3"
 			style="height: 576px">
 			<table class="table table-hover table-borderless">
 				<thead class="table-secondary">
 					<tr>
-						<th scope="col">Title</th>
-						<th scope="col">Category</th>
-						<th scope="col">Type</th>
-						<th scope="col">Date</th>
-						<th scope="col">Status</th>
+						<th scope="col">Name</th>
+						<th scope="col">Email</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr
-						v-for="event in events"
-						:key="event.id"
+						v-for="(institution, index) in institutions"
+						:key="index"
 						class="table-row"
-						@click="ToEventDetailsPage(event.id)">
-						<td>{{ event.title }}</td>
-						<td>{{ event.category }}</td>
-						<td>{{ event.type }}</td>
-						<td>
-							{{ new Date(event.date).toLocaleString() }}
-						</td>
-						<td>{{ event.status }}</td>
+						@click="NavigateToPage(institution.id)">
+						<td>{{ institution.name }}</td>
+						<td>{{ institution.email }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -52,7 +44,11 @@
 		layout: "main",
 	});
 
-	const { data: institutions, status } = await useFetch(`/api`);
+	const { data: institutions, status } = useFetch(`/api/institutions`);
+
+	const NavigateToPage = (institutionID) => {
+		navigateTo(`/admin/institutions/${institutionID}`);
+	};
 </script>
 
 <style scoped>
