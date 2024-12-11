@@ -5,9 +5,9 @@ export default defineEventHandler(async (event) => {
 
 	return (
 		await client
-			.from("participant_registrations")
+			.from("participants")
 			.select(
-				"events(id, title), participants(id, name, school, email), registration_status"
+				"*, participant_registrations!left (events(id, title), registration_status), institutions (id, name)"
 			)
 	).data;
 });

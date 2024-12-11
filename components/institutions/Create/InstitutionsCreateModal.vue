@@ -35,6 +35,9 @@
 						<form
 							@submit.prevent="OnAddNewInstitution"
 							id="createInstitution">
+							<p class="fw-bold text-secondary">
+								Institution Information
+							</p>
 							<input
 								type="text"
 								placeholder="Name"
@@ -50,8 +53,38 @@
 							<input
 								type="text"
 								placeholder="Address"
-								class="form-control border-secondary text-dark mb-3"
+								class="form-control border-secondary text-dark mb-4"
 								v-model="newInstitution.address"
+								required />
+
+							<hr />
+
+							<p class="fw-bold text-secondary">
+								Coordinator Information
+							</p>
+							<input
+								type="text"
+								placeholder="Name"
+								class="form-control border-secondary text-dark mb-3"
+								v-model="newCoordinator.name"
+								required />
+							<input
+								type="text"
+								placeholder="Position"
+								class="form-control border-secondary text-dark mb-3"
+								v-model="newCoordinator.position"
+								required />
+							<input
+								type="text"
+								placeholder="Email"
+								class="form-control border-secondary text-dark mb-3"
+								v-model="newCoordinator.email"
+								required />
+							<input
+								type="text"
+								placeholder="Contact number"
+								class="form-control border-secondary text-dark mb-4"
+								v-model="newCoordinator.contact_number"
 								required />
 						</form>
 					</div>
@@ -67,9 +100,15 @@
 							type="submit"
 							form="createInstitution"
 							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="status === 'pending'">
+							:disabled="
+								status === 'pending' ||
+								newCoordinatorStatus === 'pending'
+							">
 							<span
-								v-if="status === 'pending'"
+								v-if="
+									status === 'pending' ||
+									newCoordinatorStatus === 'pending'
+								"
 								class="spinner-border spinner-border-sm"
 								aria-hidden="true" />
 							<span role="status">Add institution</span>
@@ -89,13 +128,21 @@
 		name: "",
 		address: "",
 		email: "",
+		coordinator_id: Int8Array,
+	});
+
+	const newCoordinator = ref({
+		name: "",
+		position: "",
+		email: "",
+		contact_number: "",
 	});
 
 	const {
-		data: institution,
+		data: newInstitutionData,
 		status,
 		error,
-		execute,
+		execute: saveInstitution,
 	} = await useFetch(`/api/institutions`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "POST",
@@ -104,13 +151,38 @@
 		watch: false,
 	});
 
+	const {
+		data: newCoordinatorData,
+		status: newCoordinatorStatus,
+		error: coordinatorError,
+		execute: saveCoordinator,
+	} = await useFetch(`/api/coordinators`, {
+		headers: useRequestHeaders(["cookie"]),
+		method: "POST",
+		body: newCoordinator,
+		immediate: false,
+		watch: false,
+	});
+
 	const OnAddNewInstitution = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				closeModal();
-				navigateTo(`/admin/institutions/${institution.value.id}`);
+			await saveCoordinator();
+
+			if (newCoordinatorStatus.value == "error") {
+				return;
 			}
+
+			newInstitution.value.coordinator_id =
+				newCoordinatorData.value.id;
+
+			await saveInstitution();
+
+			if (status == "error") {
+				return;
+			}
+
+			closeModal();
+			navigateTo(`/admin/institutions/${newInstitutionData.value.id}`);
 		} catch (err) {
 			console.log("Failed adding new institution", error.value);
 		}

@@ -2,16 +2,13 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
+	const { institutionID } = event.context.params;
 
-	try {
-		return (
-			await client
-				.from("institutions")
-				.select("*, coordinators!left (*)")
-		).data;
-	} catch {
-		return {
-			data: null,
-		};
-	}
+	return (
+		await client
+			.from("institutions")
+			.delete()
+			.eq("id", institutionID)
+			.single()
+	).data;
 });

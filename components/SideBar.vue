@@ -99,11 +99,6 @@
 </script>
 
 <style scoped>
-	.router-link-active {
-		color: #46468f !important;
-		font-weight: bold;
-	}
-
 	.logout-btn {
 		color: #46468f;
 		text-decoration: none;

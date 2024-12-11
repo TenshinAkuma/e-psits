@@ -6,7 +6,7 @@
 					class="ratio ratio-1x1 border rounded-circle border overflow-hidden mx-auto mb-2"
 					style="width: 144px">
 					<img
-						src="public\img\undraw_wait_in_line_o2aq.svg"
+						src="https://avatar.iran.liara.run/public/28"
 						alt="profile_image"
 						class="h-100 w-100" />
 				</div>
@@ -14,7 +14,7 @@
 					:ParticipantName="participant.name" />
 
 				<hr />
-				<p class="fw-bold">PERSONAL INFORMATION</p>
+				<p class="fw-bold">Personal Information</p>
 
 				<ParticipantsEditsDob :ParticipantDob="participant.dob" />
 
@@ -22,7 +22,7 @@
 					:ParticipantAddress="participant.address" />
 
 				<hr />
-				<p class="fw-bold">CONTACT INFORMATION</p>
+				<p class="fw-bold">Contact Information</p>
 
 				<ParticipantsEditsEmail
 					:ParticipantEmail="participant.email" />
@@ -32,7 +32,7 @@
 
 				<hr />
 
-				<p class="fw-bold">ACADEMIC INFORMATION</p>
+				<p class="fw-bold">Academic Information</p>
 
 				<ParticipantsEditsSchool
 					:ParticipantSchool="participant.school" />
