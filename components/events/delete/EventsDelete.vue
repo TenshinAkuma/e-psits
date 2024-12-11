@@ -4,8 +4,8 @@
 			type="button"
 			data-bs-toggle="modal"
 			data-bs-target="#deleteEvent"
-			class="btn btn-sm btn-outline-danger">
-			Remove
+			class="btn btn-sm btn-outline-danger d-flex align-items-center">
+			<i class="bi bi-trash"></i>
 		</button>
 
 		<div

@@ -1,19 +1,17 @@
 <template>
-	<div class="mb-3">
+	<div>
 		<div
 			v-if="!IsEditing"
-			class="d-flex justify-content-between align-items-center gap-1">
-			<h1 id="event-title" class="fw-bold">{{ EventTitle }}</h1>
-			<div class="hstack gap-2">
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-success"
-					style="height: min-content"
-					@click="ToggleEdit">
-					Edit
-				</button>
-				<EventsDelete />
+			class="d-flex justify-content-between align-items-start">
+			<div id="event-title" class="h1 fw-bold m-0">
+				{{ EventTitle }}
 			</div>
+			<button
+				type="button"
+				class="btn btn-sm d-flex align-items-center text-secondary"
+				@click="ToggleEdit">
+				<Icon name="material-symbols:edit-outline-rounded" />
+			</button>
 		</div>
 
 		<form

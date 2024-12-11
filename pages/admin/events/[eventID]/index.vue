@@ -1,7 +1,11 @@
 <template>
 	<div class="w-100 pb-5">
 		<div v-if="status === 'success'" class="row">
-			<EventsEditsTitle :EventTitle="event.title" />
+			<div
+				class="d-flex justify-content-between align-items-center mb-3">
+				<EventsEditsTitle :EventTitle="event.title" />
+				<EventsDelete />
+			</div>
 			<hr />
 			<div class="col-8"></div>
 			<div class="col-4">
