@@ -1,11 +1,11 @@
 <template>
-	<div class="">
+	<div>
 		<div class="d-flex justify-content-between align-items-center gap-3">
-			<h4 class="fw-bold m-0">INSTITUTIONS</h4>
-			<InstitutionsCreateModal />
+			<h4 class="fw-bold m-0">COORDINATORS</h4>
 		</div>
 
 		<hr />
+
 		<div
 			v-if="status === 'success'"
 			class="table-responsive rounded-3"
@@ -14,31 +14,21 @@
 				<thead class="table-secondary">
 					<tr>
 						<th scope="col">Name</th>
+						<th scope="col">Position</th>
 						<th scope="col">Email</th>
-						<th scope="col">Address</th>
-						<th scope="col">Coordinator</th>
+						<th scope="col">Institution</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr
-						v-for="(institution, index) in institutions"
+						v-for="(coordinator, index) in coordinators"
 						:key="index"
 						class="table-row"
-						@click="NavigateToPage(institution.id)">
-						<td>{{ institution.name }}</td>
-						<td>{{ institution.email }}</td>
-						<td>{{ institution.address }}</td>
-						<td v-if="institution.coordinators">
-							<div>
-								{{ institution.coordinators.name }}
-							</div>
-							<div
-								style="font-size: 0.9rem"
-								class="text-secondary">
-								{{ institution.coordinators.email }}
-							</div>
-						</td>
-						<td v-else>No coordinators assigned</td>
+						@click="NavigateToPage(coordinator.id)">
+						<td>{{ coordinator.name }}</td>
+						<td>{{ coordinator.position }}</td>
+						<td>{{ coordinator.email }}</td>
+						<td>{{ coordinator.institutions?.name }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -60,10 +50,14 @@
 		layout: "main",
 	});
 
-	const { data: institutions, status } = useFetch(`/api/institutions`);
+	const {
+		data: coordinators,
+		status,
+		error,
+	} = await useFetch(`/api/coordinators`);
 
-	const NavigateToPage = (institutionID) => {
-		navigateTo(`/admin/institutions/${institutionID}`);
+	const NavigateToPage = (id) => {
+		navigateTo(`/admin/coordinators/${id}`);
 	};
 </script>
 

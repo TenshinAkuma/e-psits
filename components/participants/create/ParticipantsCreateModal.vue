@@ -21,7 +21,7 @@
 						<h5
 							class="modal-title fw-bold"
 							id="staticBackdropLabel">
-							ADD NEW PARTICIPANT
+							New Participant
 						</h5>
 						<button
 							type="button"

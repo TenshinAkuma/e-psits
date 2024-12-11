@@ -39,10 +39,12 @@
 		</div>
 		<div
 			v-else
-			class="d-flex justify-content-center align-items-center m-auto">
+			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
+			style="height: 576px">
 			<div class="spinner-border text-secondary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
+			Loading...
 		</div>
 	</div>
 </template>
