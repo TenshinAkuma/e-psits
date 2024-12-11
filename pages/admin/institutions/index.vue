@@ -15,6 +15,8 @@
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">Email</th>
+						<th scope="col">Address</th>
+						<th scope="col">Coordinator</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -25,16 +27,29 @@
 						@click="NavigateToPage(institution.id)">
 						<td>{{ institution.name }}</td>
 						<td>{{ institution.email }}</td>
+						<td>{{ institution.address }}</td>
+						<td>
+							<div>
+								{{ institution.coordinators.name }}
+							</div>
+							<p
+								style="font-size: 0.9rem"
+								class="text-secondary">
+								{{ institution.coordinators.email }}
+							</p>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 		<div
 			v-else
-			class="d-flex justify-content-center align-items-center m-auto">
+			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
+			style="height: 576px">
 			<div class="spinner-border text-secondary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
+			Loading...
 		</div>
 	</div>
 </template>

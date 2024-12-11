@@ -1,3 +1,5 @@
+<!-- TODO: refac the participant index page to show event and registration status -->
+
 <template>
 	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
@@ -15,9 +17,8 @@
 					<tr>
 						<th scope="col">Name</th>
 						<th scope="col">School</th>
-						<th scope="col">Event</th>
 						<th scope="col">Email</th>
-						<th scope="col">Status</th>
+						<th scope="col">Event</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -25,17 +26,19 @@
 						v-for="participant in participants"
 						:key="participant.id"
 						class="table-row"
-						@click="
-							toParticipantProfile(
-								participant.participants.id
-							)
-						">
-						<td>{{ participant.participants.name }}</td>
-						<td>{{ participant.participants.school }}</td>
-						<td>{{ participant.events.title }}</td>
-						<td>{{ participant.participants.email }}</td>
+						@click="toParticipantProfile(participant.id)">
+						<td>{{ participant.name }}</td>
+						<td>{{ participant.institutions.name }}</td>
+						<td>{{ participant.email }}</td>
 						<td>
-							{{ participant.registration_status }}
+							<p
+								v-for="registration in participant.participant_registrations"
+								:key="registration.events?.id">
+								{{
+									registration.events?.title ||
+									"No Event Registered	"
+								}}
+							</p>
 						</td>
 					</tr>
 				</tbody>
@@ -43,10 +46,12 @@
 		</div>
 		<div
 			v-else
-			class="d-flex justify-content-center align-items-center m-auto">
+			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
+			style="height: 576px">
 			<div class="spinner-border text-secondary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
+			Loading...
 		</div>
 	</div>
 </template>
