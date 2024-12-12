@@ -1,14 +1,13 @@
 <template>
 	<div>
 		<button
-			class="btn btn-sm btn-outline-secondary d-flex align-items-center p-1"
-			style="font-size: 1.5rem"
+			class="navbar-toggler border border-secondary rounded p-1"
 			type="button"
 			data-bs-toggle="offcanvas"
 			href="#leftSideBar"
 			role="button"
 			aria-controls="leftSideBar">
-			<Icon name="material-symbols:menu-rounded" />
+			<span class="bi-list fs-3" />
 		</button>
 
 		<div

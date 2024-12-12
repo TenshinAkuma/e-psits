@@ -3,7 +3,7 @@
 		<div
 			class="px-3 d-flex justify-content-between align-items-center"
 			style="height: 56px">
-			<div class="d-flex align-items-center gap-3">
+			<div class="d-flex align-items-center gap-2">
 				<SideBar />
 				<div class="fs-4 fw-bold">E-PSITS</div>
 			</div>
