@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex align-items-center gap-3 py-2 mb-3">
+	<div class="d-flex align-items-center gap-3 py-2">
 		<div
 			class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
 			style="width: 72px">
@@ -40,9 +40,9 @@
 			</p>
 		</div>
 
-		<RegistrationsStatusUpdate
+		<!-- <RegistrationsStatusUpdate
 			:RegistrationStatus="registration.registration_status"
-			:ParticipantRegistrationID="registration.id" />
+			:ParticipantRegistrationID="registration.id" /> -->
 	</div>
 </template>
 

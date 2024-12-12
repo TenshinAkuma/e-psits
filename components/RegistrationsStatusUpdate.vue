@@ -2,9 +2,10 @@
 	<div class="dropdown">
 		<button
 			type="button"
-			:class="`btn ${registrationStatusButton(
+			:class="`btn btn-sm ${registrationStatusButton(
 				RegistrationStatus
-			)} dropdown-toggle`"
+			)} rounded-pill dropdown-toggle`"
+			style="width: 132px"
 			data-bs-toggle="dropdown"
 			aria-expanded="false"
 			data-bs-auto-close="outside"

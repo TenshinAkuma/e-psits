@@ -4,11 +4,20 @@
 			<p>Participant</p>
 			<p>Registration status</p>
 		</div>
-		<EventsParticipantsCard
-			v-for="registration in registrations"
-			:key="registration.id"
-			:registration="registration" />
+		<ul class="list-group list-group-flush">
+			<li
+				v-for="registration in registrations"
+				:key="registration.id"
+				class="list-group-item d-flex justify-content-between align-items-center">
+				<EventsParticipantsCard :registration="registration" />
+
+				<RegistrationsStatusUpdate
+					:RegistrationStatus="registration.registration_status"
+					:ParticipantRegistrationID="registration.id" />
+			</li>
+		</ul>
 	</div>
+
 	<div v-else>No Participants</div>
 </template>
 

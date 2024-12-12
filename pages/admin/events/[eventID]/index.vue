@@ -31,6 +31,7 @@
 					</button>
 				</div>
 			</nav>
+
 			<div class="col-8">
 				<div class="tab-content" id="nav-tabContent">
 					<div
@@ -43,7 +44,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-4">
+			<div class="col-3">
 				<p class="fw-bold">Basic Information</p>
 				<EventsEditsDescription
 					:EventDescription="event.description" />
