@@ -14,20 +14,18 @@
 				class="h-100 w-100" />
 		</div>
 		<div class="flex-grow-1">
-			<h4
+			<h5
 				class="participant-card-link text-dark user-select-none fw-bold m-0"
-				style="width: max-content">
-				<a
-					@click="
-						navigateTo(
-							`/admin/participants/${registration.participants.id}`
-						)
-					">
-					{{
-						`${registration.participants.first_name} ${registration.participants.surname}`
-					}}
-				</a>
-			</h4>
+				style="width: max-content"
+				@click="
+					navigateTo(
+						`/admin/participants/${registration.participants.id}`
+					)
+				">
+				{{
+					`${registration.participants.first_name} ${registration.participants.surname}`
+				}}
+			</h5>
 			<p
 				class="participant-card-link text-secondary user-select-none m-0"
 				style="cursor: pointer; width: max-content"
@@ -39,10 +37,6 @@
 				{{ registration.participants.institutions.name }}
 			</p>
 		</div>
-
-		<!-- <RegistrationsStatusUpdate
-			:RegistrationStatus="registration.registration_status"
-			:ParticipantRegistrationID="registration.id" /> -->
 	</div>
 </template>
 

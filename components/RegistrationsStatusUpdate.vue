@@ -2,10 +2,10 @@
 	<div class="dropdown">
 		<button
 			type="button"
-			:class="`btn btn-sm ${registrationStatusButton(
+			:class="`btn ${registrationStatusButton(
 				RegistrationStatus
-			)} rounded-pill dropdown-toggle`"
-			style="width: 132px"
+			)} rounded-pill dropdown-toggle p-1`"
+			style="width: 114px; font-size: 0.8rem"
 			data-bs-toggle="dropdown"
 			aria-expanded="false"
 			data-bs-auto-close="outside"
@@ -42,7 +42,8 @@
 				<div class="d-flex justify-content-end gap-2">
 					<button
 						type="button"
-						class="btn btn-outline-secondary border-0">
+						class="btn btn-outline-secondary border-0"
+						@click="closeDropdown">
 						Cancel
 					</button>
 					<button

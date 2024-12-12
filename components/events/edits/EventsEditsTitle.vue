@@ -1,11 +1,9 @@
 <template>
-	<div>
-		<div
-			v-if="!IsEditing"
-			class="d-flex justify-content-between align-items-start">
-			<div id="event-title" class="h1 fw-bold m-0">
+	<div class="mb-3">
+		<div v-if="!IsEditing" class="d-flex align-items-start gap-2">
+			<h1 id="event-title" class="fw-bold m-0">
 				{{ EventTitle }}
-			</div>
+			</h1>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
