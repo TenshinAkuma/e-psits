@@ -27,7 +27,11 @@
 						:key="participant.id"
 						class="table-row"
 						@click="toParticipantProfile(participant.id)">
-						<td>{{ participant.name }}</td>
+						<td>
+							{{
+								`${participant.first_name} ${participant.surname}`
+							}}
+						</td>
 						<td>{{ participant.institutions.name }}</td>
 						<td>{{ participant.email }}</td>
 						<td>
