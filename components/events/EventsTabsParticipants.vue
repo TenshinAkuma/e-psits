@@ -3,12 +3,7 @@
 		<EventsParticipantsCard
 			v-for="registration in registrations"
 			:key="registration.id"
-			:first_name="registration.participants.first_name"
-			:surname="registration.participants.surname"
-			:sex="registration.participants.sex"
-			:institution="registration.participants.institutions.name"
-			:registration_status="registration.registration_status"
-			:registration_id="registration.id" />
+			:registration="registration" />
 	</div>
 </template>
 

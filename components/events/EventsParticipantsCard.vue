@@ -4,43 +4,60 @@
 			class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
 			style="width: 72px">
 			<img
-				:src="generateAvatarSrc(sex, first_name)"
+				:src="
+					generateAvatarSrc(
+						registration.participants.sex,
+						registration.participants.first_name
+					)
+				"
 				alt="profile_image"
 				class="h-100 w-100" />
 		</div>
 		<div class="flex-grow-1">
-			<a
-				class="participant-link text-dark text-decoration-none h4 fw-bold m-0">
-				{{ `${first_name} ${surname}` }}
-			</a>
-			<p class="text-secondary m-0">
-				{{ institution }}
+			<h4
+				class="participant-card-link text-dark user-select-none fw-bold m-0"
+				style="width: max-content">
+				<a
+					@click="
+						navigateTo(
+							`/admin/participants/${registration.participants.id}`
+						)
+					">
+					{{
+						`${registration.participants.first_name} ${registration.participants.surname}`
+					}}
+				</a>
+			</h4>
+			<p
+				class="participant-card-link text-secondary user-select-none m-0"
+				style="cursor: pointer; width: max-content"
+				@click="
+					navigateTo(
+						`/admin/institutions/${registration.participants.institutions.id}`
+					)
+				">
+				{{ registration.participants.institutions.name }}
 			</p>
 		</div>
 
 		<RegistrationsStatusUpdate
-			:RegistrationStatus="registration_status"
-			:ParticipantRegistrationID="registration_id" />
+			:RegistrationStatus="registration.registration_status"
+			:ParticipantRegistrationID="registration.id" />
 	</div>
 </template>
 
 <script setup>
 	const props = defineProps({
-		first_name: String,
-		surname: String,
-		sex: String,
-		institution: String,
-		registration_status: String,
-		registration_id: Number,
+		registration: {},
 	});
 </script>
 
 <style scoped>
-	.participant-link {
+	.participant-card-link {
 		cursor: pointer;
 	}
 
-	.participant-link:hover {
+	.participant-card-link:hover {
 		color: #1976d2 !important;
 	}
 </style>

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 		await client
 			.from("participant_registrations")
 			.select(
-				"id, registration_status, participants (*, institutions(name))"
+				"id, registration_status, participants (*, institutions(id, name))"
 			)
 			.eq("event_id", eventID)
 	).data;
