@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<button
-			class="navbar-toggler border border-secondary rounded p-1"
+			class="navbar-toggler border border-secondary rounded-1"
 			type="button"
 			data-bs-toggle="offcanvas"
 			href="#leftSideBar"
 			role="button"
 			aria-controls="leftSideBar">
-			<span class="bi-list fs-3" />
+			<i class="bi-list fs-3" />
 		</button>
 
 		<div
