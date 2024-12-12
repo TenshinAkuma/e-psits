@@ -5,7 +5,7 @@
 				<EventsEditsTitle :EventTitle="event.title" />
 				<EventsDelete />
 			</div>
-			<nav class="mb-5">
+			<nav class="mb-4">
 				<div class="nav nav-tabs" id="nav-tab" role="tablist">
 					<button
 						class="nav-link active"

@@ -1,10 +1,11 @@
 <template>
 	<div v-if="registrations != null">
-		<div class="d-flex justify-content-between fw-bold text-secondary">
-			<p>Participant</p>
-			<p>Registration status</p>
-		</div>
 		<ul class="list-group list-group-flush">
+			<div
+				class="list-group-item d-flex justify-content-between fw-bold text-secondary">
+				<div>Participant</div>
+				<div>Registration status</div>
+			</div>
 			<li
 				v-for="registration in registrations"
 				:key="registration.id"
