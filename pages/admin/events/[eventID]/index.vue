@@ -1,13 +1,48 @@
 <template>
 	<div class="w-100 pb-5">
 		<div v-if="status === 'success'" class="row">
-			<div
-				class="d-flex justify-content-between align-items-center mb-3">
+			<div class="d-flex justify-content-between mb-3">
 				<EventsEditsTitle :EventTitle="event.title" />
 				<EventsDelete />
 			</div>
-			<hr />
-			<div class="col-8"></div>
+			<nav class="mb-5">
+				<div class="nav nav-tabs" id="nav-tab" role="tablist">
+					<button
+						class="nav-link active"
+						id="nav-participants-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#nav-participants"
+						type="button"
+						role="tab"
+						aria-controls="nav-participants"
+						aria-selected="true">
+						Participants
+					</button>
+					<button
+						class="nav-link"
+						id="nav-results-tab"
+						data-bs-toggle="tab"
+						data-bs-target="#nav-results"
+						type="button"
+						role="tab"
+						aria-controls="nav-results"
+						aria-selected="true">
+						Results
+					</button>
+				</div>
+			</nav>
+			<div class="col-8">
+				<div class="tab-content" id="nav-tabContent">
+					<div
+						class="tab-pane fade show active"
+						id="nav-participants"
+						role="tabpanel"
+						aria-labelledby="nav-participants-tab"
+						tabindex="0">
+						<EventsParticipants />
+					</div>
+				</div>
+			</div>
 			<div class="col-4">
 				<p class="fw-bold">Basic Information</p>
 				<EventsEditsDescription
@@ -47,15 +82,11 @@
 </script>
 
 <style scoped>
-	.list-group-item {
-		font-size: 0.9rem !important;
+	.nav-link {
+		color: #424242;
 	}
-
-	.forms {
-		cursor: pointer;
-	}
-
-	.forms:hover {
-		color: black !important;
+	.nav-link.active {
+		color: #242424 !important;
+		font-weight: bold;
 	}
 </style>
