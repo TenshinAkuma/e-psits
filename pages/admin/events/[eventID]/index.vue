@@ -39,7 +39,7 @@
 						role="tabpanel"
 						aria-labelledby="nav-participants-tab"
 						tabindex="0">
-						<EventsParticipants />
+						<EventsTabsParticipants />
 					</div>
 				</div>
 			</div>

@@ -15,7 +15,6 @@
 		<div class="dropdown-menu dropdown-menu-end" ref="StatusDropdownRef">
 			<div class="dropdown-item fw-bold">
 				Update registration status
-				{{ ParticipantRegistrationID }}
 			</div>
 			<hr class="dropdown-divider" />
 			<form
@@ -56,7 +55,6 @@
 							aria-hidden="true" />
 						<span role="status">Update</span>
 					</button>
-					{{ data }}
 				</div>
 			</form>
 		</div>
