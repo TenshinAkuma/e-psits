@@ -34,7 +34,7 @@
 			<div class="col-8">
 				<div class="tab-content" id="nav-tabContent">
 					<div
-						class="tab-pane fade show active"
+						class="tab-pane show active"
 						id="nav-participants"
 						role="tabpanel"
 						aria-labelledby="nav-participants-tab"

@@ -1,5 +1,5 @@
 <template>
-	<div class="d-flex align-items-center gap-3 p-3 mb-3">
+	<div class="d-flex align-items-center gap-3 py-2 mb-3">
 		<div
 			class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
 			style="width: 72px">

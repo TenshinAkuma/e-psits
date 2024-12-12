@@ -1,10 +1,15 @@
 <template>
-	<div>
+	<div v-if="registrations != null">
+		<div class="d-flex justify-content-between fw-bold text-secondary">
+			<p>Participant</p>
+			<p>Registration status</p>
+		</div>
 		<EventsParticipantsCard
 			v-for="registration in registrations"
 			:key="registration.id"
 			:registration="registration" />
 	</div>
+	<div v-else>No Participants</div>
 </template>
 
 <script setup>
