@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<button
-			class="btn btn-sm btn-primary"
+			class="btn btn-primary"
 			data-bs-toggle="modal"
 			data-bs-target="#createEventModal">
 			New event

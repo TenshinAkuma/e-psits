@@ -4,7 +4,7 @@
 			type="button"
 			data-bs-toggle="modal"
 			data-bs-target="#deleteEvent"
-			class="btn btn-outline-danger d-flex align-items-center">
+			class="btn btn-danger d-flex align-items-center">
 			<i class="bi bi-trash"></i>
 		</button>
 
