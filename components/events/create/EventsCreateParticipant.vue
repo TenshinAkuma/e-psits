@@ -35,18 +35,15 @@
 							@submit.prevent="OnRegisterParticipant"
 							id="createEvent">
 							<div
-								class="d-flex justify-content-between align-items-center">
-								<p class="fw-bold text-secondary">
+								class="d-flex justify-content-between align-items-center mb-2">
+								<div class="fw-bold text-secondary">
 									Participant
-								</p>
-
-								<p>
-									<a
-										class="link-primary link-offset-2"
-										style="font-size: 0.8rem">
-										Register new participant
-									</a>
-								</p>
+								</div>
+								<a
+									class="link-primary link-offset-2"
+									style="font-size: 0.8rem">
+									Register new participant
+								</a>
 							</div>
 
 							<input
@@ -54,7 +51,15 @@
 								class="form-control border-secondary mb-3"
 								placeholder="Search participant"
 								list="participantListOptions"
-								v-model="searchQuery" />
+								v-model="searchQuery"
+								required />
+
+							<p
+								v-if="isRegistrationExist"
+								style="font-size: 0.8rem"
+								class="text-danger text-center">
+								Particiapnt already registererd
+							</p>
 
 							<ul
 								v-if="participants.length != 0"
@@ -64,26 +69,31 @@
 									overflow-y: auto;
 								">
 								<button
+									type="button"
 									v-for="participant in participants"
 									:key="participant.id"
-									class="list-group-item list-group-item-action">
-									{{
-										`${participant.first_name} ${participant.surname}`
-									}}
+									class="list-group-item list-group-item-action"
+									@click="
+										OnSelectParticipant(
+											participant.id,
+											`${participant.first_name} ${participant.surname}`
+										)
+									">
+									<div class="">
+										{{
+											`${participant.first_name} ${participant.surname}`
+										}}
+									</div>
+									<div
+										class="text-secondary"
+										style="font-size: 0.9rem">
+										{{
+											participant.institutions
+												.name
+										}}
+									</div>
 								</button>
 							</ul>
-
-							<div
-								v-if="IsSearching === 'pending'"
-								class="d-flex justify-content-center">
-								<div
-									class="spinner-border text-secondary"
-									role="status">
-									<span class="visually-hidden"
-										>Loading...</span
-									>
-								</div>
-							</div>
 
 							<ul
 								v-if="participants.length === 0"
@@ -99,20 +109,23 @@
 						<button
 							type="button"
 							data-bs-dismiss="modal"
-							class="btn btn-outline-secondary border-0">
+							class="btn">
 							Cancel
 						</button>
-						<!-- <button
+						<button
 							type="submit"
 							form="createEvent"
 							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="status === 'pending'">
+							:disabled="
+								isRegistrationExist ||
+								SavingRegistration === 'pending'
+							">
 							<span
-								v-if="status === 'pending'"
+								v-if="SavingRegistration === 'pending'"
 								class="spinner-border spinner-border-sm"
 								aria-hidden="true" />
 							<span role="status">Register</span>
-						</button> -->
+						</button>
 					</div>
 				</div>
 			</div>
@@ -124,8 +137,12 @@
 	const registerParticipantRef = ref(null);
 	let registerParticipant;
 
+	const eventID = useRoute().params.eventID;
+
 	const searchQuery = ref("");
 	const selectedParticipantId = ref();
+
+	const isRegistrationExist = ref(false);
 
 	const {
 		data: participants,
@@ -138,9 +155,50 @@
 		},
 	});
 
-	const OnSelectParticipant = (id, participantName) => {
+	const {
+		status: SavingRegistration,
+		execute: SaveRegistration,
+		error,
+	} = await useFetch(`/api/registrations/participants`, {
+		headers: useRequestHeaders(["cookie"]),
+		method: "POST",
+		immediate: false,
+		watch: false,
+	});
+
+	const { data: registrationExist, execute: checkRegistrationExist } =
+		await useFetch(`/api/registrations/participants/exists`, {
+			headers: useRequestHeaders(["cookie"]),
+			method: "GET",
+			params: {
+				eventID: eventID,
+				participantID: selectedParticipantId,
+			},
+			immediate: false,
+			watch: false,
+		});
+
+	const OnSaveRegistration = async () => {
+		try {
+			await SaveRegistration();
+			if (SavingRegistration.value == "success") {
+				closeModal();
+			}
+		} catch {
+			console.log(error);
+		}
+	};
+
+	const OnSelectParticipant = async (id, participantName) => {
 		searchQuery.value = participantName;
 		selectedParticipantId.value = id;
+
+		await checkRegistrationExist();
+		if (registrationExist.value != null) {
+			isRegistrationExist.value = true;
+		} else {
+			isRegistrationExist.value = false;
+		}
 	};
 
 	const closeModal = () => {
