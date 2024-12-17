@@ -2,7 +2,7 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { participantRegistrationID } = event.context.params;
+	const { registrationID } = event.context.params;
 	const body = await readBody(event);
 
 	console.log(body);
@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 	const { data, error } = await client
 		.from("participant_registrations")
 		.update(body)
-		.eq("id", participantRegistrationID)
+		.eq("id", registrationID)
 		.select();
 
 	try {
