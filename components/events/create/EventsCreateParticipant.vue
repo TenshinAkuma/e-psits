@@ -32,7 +32,7 @@
 
 					<div class="modal-body">
 						<form
-							@submit.prevent="OnRegisterParticipant"
+							@submit="OnSaveRegistration"
 							id="createEvent">
 							<div
 								class="d-flex justify-content-between align-items-center mb-2">
@@ -111,6 +111,7 @@
 									</div>
 								</button>
 							</ul>
+							{{ newRegistration.participant_id }}
 						</form>
 					</div>
 
@@ -148,7 +149,12 @@
 
 	// Reactive variables
 	const searchQuery = ref("");
-	const selectedParticipantId = ref(null);
+
+	const newRegistration = ref({
+		event_id: eventID,
+		participant_id: null,
+	});
+
 	const canRegister = ref(true);
 
 	// Fetch setup for saving registration
@@ -156,6 +162,7 @@
 		await useFetch(`/api/registrations/participants`, {
 			headers: useRequestHeaders(["cookie"]),
 			method: "POST",
+			body: newRegistration,
 			immediate: false,
 			watch: false,
 		});
@@ -175,7 +182,7 @@
 	// Function to select a participant
 	const OnSelectParticipant = (id, participantName) => {
 		searchQuery.value = participantName;
-		selectedParticipantId.value = id;
+		newRegistration.value.participant_id = id;
 
 		IsParticipantRegistered(id);
 	};
@@ -250,7 +257,7 @@
 		if (registerParticipant) {
 			registerParticipant.hide();
 			searchQuery.value = "";
-			selectedParticipantId.value = null;
+			newRegistration.value.participant_id = null;
 		}
 	};
 
