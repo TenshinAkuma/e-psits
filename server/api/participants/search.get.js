@@ -6,14 +6,15 @@ export default defineEventHandler(async (event) => {
 
 	const [firstName, lastName] = query.split(" ");
 
-	const { data, error } = await client
-		.from("participants")
-		.select("id, first_name, surname, institutions(name)")
-		.or(`first_name.ilike.%${firstName}%,surname.ilike.%${lastName}%`);
-
-	try {
-		return data;
-	} catch {
-		console.log(error);
-	}
+	return (
+		await client
+			.from("participants")
+			.select(
+				"id, first_name, surname, institutions(name), participant_registrations(id, event_id, registration_status)"
+			)
+			.or(
+				`first_name.ilike.%${firstName}%,surname.ilike.%${lastName}%`
+			)
+			.limit(10)
+	).data;
 });

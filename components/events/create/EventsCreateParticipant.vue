@@ -26,7 +26,7 @@
 						<button
 							type="button"
 							class="btn-close"
-							data-bs-dismiss="modal"
+							@click="closeModal"
 							aria-label="Close"></button>
 					</div>
 
@@ -52,17 +52,10 @@
 								placeholder="Search participant"
 								list="participantListOptions"
 								v-model="searchQuery"
+								@input="OnInputSearch"
 								required />
 
-							<p
-								v-if="isRegistrationExist"
-								style="font-size: 0.8rem"
-								class="text-danger text-center">
-								Particiapnt already registererd
-							</p>
-
 							<ul
-								v-if="participants.length != 0"
 								class="list-group mb-3"
 								style="
 									max-height: 360px;
@@ -70,37 +63,53 @@
 								">
 								<button
 									type="button"
-									v-for="participant in participants"
+									v-for="participant in SearchResult"
 									:key="participant.id"
-									class="list-group-item list-group-item-action"
+									class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
 									@click="
 										OnSelectParticipant(
 											participant.id,
 											`${participant.first_name} ${participant.surname}`
 										)
 									">
-									<div class="">
-										{{
-											`${participant.first_name} ${participant.surname}`
-										}}
+									<div>
+										<div class="">
+											{{
+												`${participant.first_name} ${participant.surname}`
+											}}
+										</div>
+										<div
+											class="text-secondary"
+											style="
+												font-size: 0.9rem;
+											">
+											{{
+												participant
+													.institutions
+													.name
+											}}
+										</div>
 									</div>
 									<div
-										class="text-secondary"
-										style="font-size: 0.9rem">
-										{{
-											participant.institutions
-												.name
-										}}
+										v-for="(
+											registration, index
+										) in participant.participant_registrations"
+										:key="index">
+										<div
+											v-if="
+												registration.event_id ==
+												eventID
+											"
+											style="font-size: 0.8rem"
+											:class="`${registrationStatusLabel(
+												registration.registration_status
+											)}`">
+											{{
+												registration.registration_status
+											}}
+										</div>
 									</div>
 								</button>
-							</ul>
-
-							<ul
-								v-if="participants.length === 0"
-								class="list-group">
-								<li class="list-group-item">
-									Sorry, could not find participant.
-								</li>
 							</ul>
 						</form>
 					</div>
@@ -108,18 +117,15 @@
 					<div class="modal-footer">
 						<button
 							type="button"
-							data-bs-dismiss="modal"
-							class="btn">
+							class="btn"
+							@click="closeModal">
 							Cancel
 						</button>
 						<button
 							type="submit"
 							form="createEvent"
 							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="
-								isRegistrationExist ||
-								SavingRegistration === 'pending'
-							">
+							:disabled="canRegister">
 							<span
 								v-if="SavingRegistration === 'pending'"
 								class="spinner-border spinner-border-sm"
@@ -137,73 +143,114 @@
 	const registerParticipantRef = ref(null);
 	let registerParticipant;
 
+	// Route parameter
 	const eventID = useRoute().params.eventID;
 
+	// Reactive variables
 	const searchQuery = ref("");
-	const selectedParticipantId = ref();
+	const selectedParticipantId = ref(null);
+	const canRegister = ref(true);
 
-	const isRegistrationExist = ref(false);
-
-	const {
-		data: participants,
-		status: IsSearching,
-		execute: OnSearch,
-	} = await useFetch(`/api/participants/search`, {
-		method: "GET",
-		params: {
-			query: searchQuery,
-		},
-	});
-
-	const {
-		status: SavingRegistration,
-		execute: SaveRegistration,
-		error,
-	} = await useFetch(`/api/registrations/participants`, {
-		headers: useRequestHeaders(["cookie"]),
-		method: "POST",
-		immediate: false,
-		watch: false,
-	});
-
-	const { data: registrationExist, execute: checkRegistrationExist } =
-		await useFetch(`/api/registrations/participants/exists`, {
+	// Fetch setup for saving registration
+	const { status: SavingRegistration, execute: SaveRegistration } =
+		await useFetch(`/api/registrations/participants`, {
 			headers: useRequestHeaders(["cookie"]),
-			method: "GET",
-			params: {
-				eventID: eventID,
-				participantID: selectedParticipantId,
-			},
+			method: "POST",
 			immediate: false,
 			watch: false,
 		});
 
+	// Function to save a registration
 	const OnSaveRegistration = async () => {
 		try {
 			await SaveRegistration();
-			if (SavingRegistration.value == "success") {
+			if (SavingRegistration.value === "success") {
 				closeModal();
 			}
-		} catch {
-			console.log(error);
+		} catch (err) {
+			console.error("Error saving registration:");
 		}
 	};
 
-	const OnSelectParticipant = async (id, participantName) => {
+	// Function to select a participant
+	const OnSelectParticipant = (id, participantName) => {
 		searchQuery.value = participantName;
 		selectedParticipantId.value = id;
 
-		await checkRegistrationExist();
-		if (registrationExist.value != null) {
-			isRegistrationExist.value = true;
-		} else {
-			isRegistrationExist.value = false;
+		IsParticipantRegistered(id);
+	};
+
+	const IsParticipantRegistered = async (participantID) => {
+		try {
+			// Fetch data to check if the participant is registered
+			const { data, error } = await useFetch(
+				"/api/registrations/participants/exists",
+				{
+					headers: useRequestHeaders(["cookie"]),
+					method: "GET",
+					params: { eventID, participantID },
+				}
+			);
+
+			// Handle the response
+			if (error.value) {
+				console.error(
+					"Error fetching registration status:",
+					error.value
+				);
+				canRegister.value = false;
+				return;
+			}
+
+			// Update `canRegister` based on the API response
+			canRegister.value =
+				data.value && Object.keys(data.value).length > 0;
+		} catch (err) {
+			// Log unexpected errors and set `canRegister` to false
+			console.error("Unexpected error checking registration:", err);
+			canRegister.value = false;
+		}
+	};
+
+	// Fetch setup for participant search
+	const { data: SearchResult, execute: SearchParticipants } = await useFetch(
+		`/api/participants/search`,
+		{
+			method: "GET",
+			params: { query: searchQuery },
+			immediate: false,
+		}
+	);
+
+	// Debounced input search function
+	const OnInputSearch = debounce(async () => {
+		try {
+			if (searchQuery.value == "") {
+				selectedParticipantId.value == null;
+				canRegister.value = false;
+			}
+			await SearchParticipants();
+		} catch (err) {
+			console.error("Error during search:");
+		}
+	}, 300);
+
+	const registrationStatusLabel = (status) => {
+		switch (status) {
+			case "Registered":
+				return "text-primary";
+			case "Cancelled":
+				return "text-danger";
+			default:
+				return "text-secondary";
 		}
 	};
 
 	const closeModal = () => {
 		if (registerParticipant) {
 			registerParticipant.hide();
+			searchQuery.value = "";
+			selectedParticipantId.value = null;
 		}
 	};
 
