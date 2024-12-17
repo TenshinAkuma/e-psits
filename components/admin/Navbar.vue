@@ -4,7 +4,7 @@
 			class="px-3 d-flex justify-content-between align-items-center"
 			style="height: 56px">
 			<div class="d-flex align-items-center gap-2">
-				<SideBar />
+				<AdminSideBar />
 				<div class="fs-4 fw-bold">E-PSITS</div>
 			</div>
 			<div class="text-dark">Administrator Panel</div>
