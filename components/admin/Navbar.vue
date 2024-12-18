@@ -26,6 +26,6 @@
 
 	const handleLogout = async () => {
 		const { error } = await client.auth.signOut();
-		router.push("/signIn");
+		router.push("/auth/signIn");
 	};
 </script>
