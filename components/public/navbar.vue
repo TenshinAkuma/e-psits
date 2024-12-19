@@ -17,7 +17,10 @@
 			<button class="btn fw-bold p-3" @click="ToSignIn">
 				Sign in
 			</button>
-			<button type="button" class="btn btn-primary fw-bold p-3">
+			<button
+				type="button"
+				class="btn btn-primary fw-bold p-3"
+				@click="ToSignUp">
 				Become a member
 			</button>
 		</div>
@@ -27,6 +30,10 @@
 <script setup>
 	const ToSignIn = () => {
 		navigateTo("/auth/signIn");
+	};
+
+	const ToSignUp = () => {
+		navigateTo("/auth/signUp");
 	};
 </script>
 

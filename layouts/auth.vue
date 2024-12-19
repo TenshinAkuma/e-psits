@@ -1,6 +1,8 @@
 <template>
-	<div
-		class="container-xl d-flex justify-content-center align-items-center h-100">
-		<slot />
+	<div class="h-100 overflow-y-auto">
+		<AuthNavbar />
+		<div class="container-xxl">
+			<slot />
+		</div>
 	</div>
 </template>
