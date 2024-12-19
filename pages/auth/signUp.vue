@@ -21,7 +21,10 @@
 
 			<template #step-role>
 				<!-- ROLE -->
-				<form class="mb-5" id="newUserForm">
+				<form
+					@submit.prevent="OnSaveNewUser"
+					class="mb-5"
+					id="newUserForm">
 					<h5 class="fw-bold text-center">Choose Your Role</h5>
 					<p
 						class="text-secondary text-center ls-sm"
@@ -81,11 +84,13 @@
 					<input
 						type="email"
 						class="form-control border-secondary mb-3"
-						placeholder="Email" />
+						placeholder="Email"
+						v-model="credentials.email" />
 					<input
 						type="password"
 						class="form-control border-secondary"
-						placeholder="Password" />
+						placeholder="Password"
+						v-model="credentials.password" />
 				</form>
 
 				<!-- COORDINATOR DETAILS -->
@@ -123,11 +128,13 @@
 					<input
 						type="email"
 						class="form-control border-secondary mb-3"
-						placeholder="Email" />
+						placeholder="Email"
+						v-model="credentials.email" />
 					<input
 						type="password"
 						class="form-control border-secondary"
-						placeholder="Password" />
+						placeholder="Password"
+						v-model="credentials.password" />
 				</form>
 			</template>
 			<template #step-institution>
@@ -176,6 +183,7 @@
 		</AuthSignUpWizard>
 
 		{{ userRole }} <br />
+		{{ credentials }} <br />
 		{{ newParticipant }} <br />
 		{{ newCoordinator }} <br />
 		{{ newInstitution }} <br />
@@ -225,6 +233,47 @@
 			watch: false,
 		}
 	);
+
+	const { execute: SaveParticipantData } = await useFetch(
+		`/api/participants`,
+		{
+			headers: useRequestHeaders(["cookie"]),
+			method: "POST",
+			body: newParticipant,
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const { execute: SaveCoordinatorData } = await useFetch(
+		`/api/coordinators`,
+		{
+			headers: useRequestHeaders(["cookie"]),
+			method: "POST",
+			body: newCoordinator,
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const { execute: SaveInstitutionData } = await useFetch(
+		`/api/institutions`,
+		{
+			headers: useRequestHeaders(["cookie"]),
+			method: "POST",
+			body: newInstitution,
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const OnSaveNewUser = async () => {
+		try {
+			await SignUpNewUser();
+		} catch {
+			console.log("Sign up failed");
+		}
+	};
 
 	const { data: institutions } = await useFetch("/api/institutions");
 </script>

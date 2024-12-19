@@ -5,5 +5,11 @@ export default defineEventHandler(async (event) => {
 	const body = await readBody(event);
 
 	console.log(body);
-	return (await client.auth.signUp(body)).data;
+	const { data, error } = await client.auth.signUp(body);
+
+	try {
+		console.log("data", data);
+	} catch {
+		console.log("error", error);
+	}
 });
