@@ -11,7 +11,7 @@
 				</p>
 			</template>
 			<template #body>
-				<form @submit.prevent="OnSaveNewUser">
+				<form @submit.prevent="OnRegisterParticipant">
 					<label class="fw-bold mb-1">
 						Personal Information
 					</label>
@@ -41,7 +41,7 @@
 							participantRegistration.participantData.email
 						" />
 					<input
-						type="password"
+						type="text"
 						class="form-control border-secondary mb-4"
 						placeholder="Address"
 						v-model="participantRegistration.address" />
@@ -51,7 +51,7 @@
 						class="form-select border-secondary mb-3"
 						v-model="
 							participantRegistration.participantData
-								.institution_id
+								.participantData.institution_id
 						">
 						<option value="" select hidden>
 							Choose your institution
@@ -109,9 +109,9 @@
 						<button
 							type="submit"
 							class="btn btn-primary px-5"
-							:disabled="StatusSavingUser === 'pending'">
+							:disabled="registrationStatus === 'pending'">
 							<span
-								v-if="StatusSavingUser === 'pending'"
+								v-if="registrationStatus === 'pending'"
 								class="spinner-border spinner-border-sm"
 								aria-hidden="true" />
 							<span role="status">Register</span>
@@ -146,6 +146,32 @@
 	);
 
 	const { data: eventOptions } = await useFetch("/api/events/selectEvents");
+
+	const {
+		data: registration,
+		execute: RegisterParticipant,
+		status: registrationStatus,
+		error: registrationError,
+	} = await useFetch("/api/registrations/participants", {
+		method: "POST",
+		body: participantRegistration,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnRegisterParticipant = async () => {
+		try {
+			await RegisterParticipant();
+			if (registration.value.success) {
+				await navigateTo("/");
+			}
+		} catch {
+			console.log(
+				"Participant registration failed",
+				registrationError.value
+			);
+		}
+	};
 </script>
 
 <style></style>
