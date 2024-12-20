@@ -21,21 +21,25 @@
 							class="form-control border-secondary"
 							placeholder="First name"
 							v-model="
-								participantRegistration.first_name
+								participantRegistration.participantData
+									.first_name
 							" />
 						<input
 							type="text"
 							class="form-control border-secondary"
 							placeholder="Last name"
 							v-model="
-								participantRegistration.last_name
+								participantRegistration.participantData
+									.last_name
 							" />
 					</div>
 					<input
 						type="email"
 						class="form-control border-secondary mb-3"
 						placeholder="Email"
-						v-model="participantRegistration.email" />
+						v-model="
+							participantRegistration.participantData.email
+						" />
 					<input
 						type="password"
 						class="form-control border-secondary mb-4"
@@ -45,7 +49,10 @@
 					<label class="fw-bold mb-1">School Information</label>
 					<select
 						class="form-select border-secondary mb-3"
-						v-model="participantRegistration.institution_id">
+						v-model="
+							participantRegistration.participantData
+								.institution_id
+						">
 						<option value="" select hidden>
 							Choose your institution
 						</option>
@@ -61,7 +68,10 @@
 							type="text"
 							placeholder="Course"
 							class="form-control border-secondary text-dark w-75"
-							v-model="participantRegistration.course" />
+							v-model="
+								participantRegistration.participantData
+									.course
+							" />
 
 						<input
 							type="number"
@@ -70,14 +80,15 @@
 							placeholder="Year"
 							class="form-control border-secondary text-dark w-25"
 							v-model="
-								participantRegistration.year_level
+								participantRegistration.participantData
+									.year_level
 							" />
 					</div>
 
 					<label class="fw-bold mb-1">Event Information</label>
 					<select
 						class="form-select border-secondary mb-5"
-						v-model="participantRegistration.institution_id">
+						v-model="participantRegistration.event_id">
 						<option value="" select hidden>
 							Choose your event
 						</option>
@@ -118,13 +129,15 @@
 	});
 
 	const participantRegistration = reactive({
-		first_name: "",
-		last_name: "",
-		email: "",
-		institution_id: "",
-		course: "",
-		year_level: "",
-		address: "",
+		participantData: {
+			first_name: "",
+			last_name: "",
+			email: "",
+			institution_id: "",
+			course: "",
+			year_level: "",
+			address: "",
+		},
 		event_id: "",
 	});
 
