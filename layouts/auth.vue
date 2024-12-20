@@ -1,7 +1,7 @@
 <template>
-	<div class="h-100 overflow-y-auto">
+	<div class="d-flex flex-column overflow-y-auto h-100">
 		<AuthNavbar />
-		<div class="container-xxl">
+		<div class="container-xxl h-100">
 			<slot />
 		</div>
 	</div>

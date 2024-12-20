@@ -1,5 +1,5 @@
 <template>
-	<nav class="bg-light sticky-top">
+	<nav class="bg-light sticky-top border-bottom border-2">
 		<div class="container-xxl d-flex justify-content-between p-3">
 			<NuxtLink
 				to="/"

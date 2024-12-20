@@ -37,12 +37,20 @@
 							<p class="fw-bold text-secondary">
 								Personal Information
 							</p>
-							<input
-								type="text"
-								placeholder="Name"
-								class="form-control border-secondary text-dark mb-3"
-								v-model="participant.name"
-								required />
+							<div class="hstack gap-2">
+								<input
+									type="text"
+									placeholder="First name"
+									class="form-control border-secondary text-dark mb-3"
+									v-model="participant.first_name"
+									required />
+								<input
+									type="text"
+									placeholder="Last name"
+									class="form-control border-secondary text-dark mb-3"
+									v-model="participant.last_name"
+									required />
+							</div>
 
 							<div class="input-group mb-3">
 								<span
@@ -139,12 +147,12 @@
 	let createParticipantModal;
 
 	const participant = reactive({
-		name: "",
+		first_name: "",
+		last_name: "",
 		dob: new Date().toISOString().split("T")[0],
 		address: "",
 		email: "",
 		phone_number: "",
-		school: "",
 		course: null,
 		year: null,
 	});
