@@ -20,8 +20,8 @@
 			<button
 				type="button"
 				class="btn btn-primary fw-bold p-3"
-				@click="ToSignUp">
-				Become a member
+				@click="ToRegister">
+				Register Now
 			</button>
 		</div>
 	</div>
@@ -32,8 +32,8 @@
 		navigateTo("/auth/signIn");
 	};
 
-	const ToSignUp = () => {
-		navigateTo("/auth/signUp");
+	const ToRegister = () => {
+		navigateTo("/register");
 	};
 </script>
 

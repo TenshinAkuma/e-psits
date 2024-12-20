@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<AuthSignUp>
+		<PublicRegister>
 			<template #header>
 				<h1 class="fw-bold lh-sm">
 					Lead the Way for the Future Innovators
@@ -55,9 +55,7 @@
 							placeholder="Password" />
 					</div>
 					<div class="d-flex justify-content-between mt-5">
-						<NuxtLink
-							to="/auth/signUp"
-							class="btn hstack gap-2">
+						<NuxtLink to="/register" class="btn hstack gap-2">
 							<i class="bi bi-arrow-left" />Back
 						</NuxtLink>
 						<button
@@ -68,7 +66,7 @@
 					</div>
 				</form>
 			</template>
-		</AuthSignUp>
+		</PublicRegister>
 	</div>
 </template>
 

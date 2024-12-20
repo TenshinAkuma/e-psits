@@ -3,13 +3,13 @@
 		<div
 			class="d-flex flex-column justify-content-between"
 			style="width: 720px">
-			<div class="mb-5">
+			<div class="">
 				<slot name="header">
 					<h1 class="fw-bold lh-sm">
 						Collaborate and Innovate for the Future
 					</h1>
 					<h5 class="text-secondary lh-sm">
-						Sign up now and streamline your experience, and
+						Register now and streamline your experience, and
 						connect with other
 						<code class="fw-bold text-primary"
 							>Information Technology Students</code
@@ -18,7 +18,7 @@
 					</h5>
 				</slot>
 			</div>
-			<div class="overflow-y-auto">
+			<div class="">
 				<slot name="body" />
 			</div>
 		</div>
