@@ -50,7 +50,7 @@
 							Choose your institution
 						</option>
 						<option
-							v-for="institution in institutionsList"
+							v-for="institution in institutionOptions.InstitutionOptions"
 							:key="institution.id"
 							:value="institution.id">
 							{{ institution.name }}
@@ -82,14 +82,17 @@
 							Choose your event
 						</option>
 						<option
-							v-for="institution in institutionsList"
-							:key="institution.id"
-							:value="institution.id">
-							{{ institution.name }}
+							v-for="event in eventOptions.EventOptions"
+							:key="event.id"
+							:value="event.id">
+							{{ event.title }}
 						</option>
 					</select>
+
 					<div class="d-flex justify-content-between">
-						<NuxtLink to="/register" class="btn hstack gap-2">
+						<NuxtLink
+							to="/register"
+							class="btn hstack px-0 gap-2">
 							<i class="bi bi-arrow-left" />Back
 						</NuxtLink>
 						<button
@@ -125,7 +128,11 @@
 		event_id: "",
 	});
 
-	const { data: institutionsList } = await useFetch(`/api/institutions`);
+	const { data: institutionOptions } = await useFetch(
+		`/api/institutions/selectInstitutions`
+	);
+
+	const { data: eventOptions } = await useFetch("/api/events/selectEvents");
 </script>
 
 <style></style>
