@@ -19,7 +19,7 @@
 
 			<div class="col-9">
 				<TabsContent>
-					<TabsPane Id="participant" :Active="true">
+					<TabsPane Id="participants" :Active="true">
 						<EventsTabsParticipants />
 					</TabsPane>
 					<TabsPane Id="criteria">

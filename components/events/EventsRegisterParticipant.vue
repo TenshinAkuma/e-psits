@@ -144,38 +144,38 @@
 	const registerParticipantRef = ref(null);
 	let registerParticipant;
 
-	// Route parameter
-	const eventID = useRoute().params.eventID;
-
 	// Reactive variables
 	const searchQuery = ref("");
 
 	const newRegistration = ref({
-		event_id: eventID,
+		event_id: useRoute().params.eventID,
 		participant_id: null,
 	});
 
 	const canRegister = ref(true);
 
 	// Fetch setup for saving registration
-	const { status: SavingRegistration, execute: SaveRegistration } =
-		await useFetch(`/api/registrations/participants`, {
-			headers: useRequestHeaders(["cookie"]),
-			method: "POST",
-			body: newRegistration,
-			immediate: false,
-			watch: false,
-		});
+	const {
+		data: registration,
+		status: SavingRegistration,
+		execute: SaveRegistration,
+	} = await useFetch("/api/registrations/participants/ByParticipantId", {
+		headers: useRequestHeaders(["cookie"]),
+		method: "POST",
+		body: newRegistration,
+		immediate: false,
+		watch: false,
+	});
 
 	// Function to save a registration
 	const OnSaveRegistration = async () => {
 		try {
 			await SaveRegistration();
-			if (SavingRegistration.value === "success") {
+			if (registration.value.success) {
 				closeModal();
 			}
 		} catch (err) {
-			console.error("Error saving registration:");
+			console.error(registration.value.error);
 		}
 	};
 
