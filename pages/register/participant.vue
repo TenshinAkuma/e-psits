@@ -44,14 +44,17 @@
 						type="text"
 						class="form-control border-secondary mb-4"
 						placeholder="Address"
-						v-model="participantRegistration.address" />
+						v-model="
+							participantRegistration.participantData
+								.address
+						" />
 
 					<label class="fw-bold mb-1">School Information</label>
 					<select
 						class="form-select border-secondary mb-3"
 						v-model="
 							participantRegistration.participantData
-								.participantData.institution_id
+								.institution_id
 						">
 						<option value="" select hidden>
 							Choose your institution

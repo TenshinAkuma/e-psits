@@ -3,6 +3,7 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
+
 	console.log(body);
 	try {
 		const { data: Participant, error: ParticipantError } = await client
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event) => {
 		}
 
 		const { data: Registration, error: RegistrationError } = await client
-			.from("ParticipantRegistrations")
+			.from("event_registrations")
 			.insert({
 				event_id: body.event_id,
 				participant_id: Participant.id,

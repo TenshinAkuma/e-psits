@@ -16,7 +16,7 @@
 				Register your school today
 			</button>
 			<button class="btn btn-primary p-3 fw-bold">
-				Join as an individual member
+				Register as a participant
 			</button>
 		</div>
 	</div>
