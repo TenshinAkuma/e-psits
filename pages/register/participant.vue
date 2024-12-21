@@ -104,11 +104,11 @@
 					</select>
 
 					<div class="d-flex justify-content-between">
-						<NuxtLink
-							to="/register"
+						<button
+							@click="OnBack"
 							class="btn hstack px-0 gap-2">
 							<i class="bi bi-arrow-left" />Back
-						</NuxtLink>
+						</button>
 						<button
 							type="submit"
 							class="btn btn-primary px-5"
@@ -131,6 +131,12 @@
 		layout: "auth",
 	});
 
+	const router = useRouter();
+
+	const OnBack = () => {
+		router.back();
+	};
+
 	const participantRegistration = reactive({
 		participantData: {
 			first_name: "",
@@ -141,7 +147,7 @@
 			year_level: "",
 			address: "",
 		},
-		event_id: "",
+		event_id: Number,
 	});
 
 	const { data: institutionOptions } = await useFetch(

@@ -84,9 +84,9 @@
 					</div>
 
 					<div class="d-flex justify-content-between mt-5">
-						<NuxtLink to="/register" class="btn hstack gap-2">
+						<button @click="OnBack" class="btn hstack gap-2">
 							<i class="bi bi-arrow-left" />Back
-						</NuxtLink>
+						</button>
 						<button
 							type="submit"
 							class="btn btn-primary px-5"
@@ -108,6 +108,12 @@
 	definePageMeta({
 		layout: "auth",
 	});
+
+	const router = useRouter();
+
+	const OnBack = () => {
+		router.back();
+	};
 
 	const registration = reactive({
 		coordinator: {

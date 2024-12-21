@@ -23,7 +23,7 @@
 					</div>
 
 					<div
-						@click="ToRegisterPage('coordinator')"
+						@click="ToRegisterPage('institution')"
 						class="role-select d-flex align-items-center border border-secondary rounded-3 gap-4 p-4 w-100">
 						<i class="bi bi-building-fill fs-5" />
 						<div>
