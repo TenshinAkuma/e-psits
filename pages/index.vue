@@ -12,11 +12,15 @@
 			ease.
 		</p>
 		<div class="d-flex justify-content-center gap-4">
-			<button class="btn btn-outline-dark p-3 fw-bold">
+			<button
+				class="btn btn-outline-dark p-3 fw-bold"
+				@click="NavigateToRegister('institution')">
 				Register your school today
 			</button>
-			<button class="btn btn-primary p-3 fw-bold">
-				Join as an individual member
+			<button
+				class="btn btn-primary p-3 fw-bold"
+				@click="NavigateToRegister('	')">
+				Register as a participant
 			</button>
 		</div>
 	</div>
@@ -26,6 +30,10 @@
 	definePageMeta({
 		layout: "public",
 	});
+
+	const NavigateToRegister = (registrationType: String) => {
+		navigateTo(`/register/${registrationType}`);
+	};
 </script>
 
 <style></style>
