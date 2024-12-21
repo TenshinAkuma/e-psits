@@ -10,10 +10,10 @@ export default defineEventHandler(async (event) => {
 		await client
 			.from("participants")
 			.select(
-				"id, first_name, surname, institutions(name), participant_registrations(id, event_id, registration_status)"
+				"id, first_name, last_name, institutions(name), event_registrations(id, event_id, registration_status)"
 			)
 			.or(
-				`first_name.ilike.%${firstName}%,surname.ilike.%${lastName}%`
+				`first_name.ilike.%${firstName}%,last_name.ilike.%${lastName}%`
 			)
 			.limit(10)
 	).data;

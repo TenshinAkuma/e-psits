@@ -4,49 +4,30 @@
 			<div class="d-flex justify-content-between align-items-center">
 				<EventsEditsTitle :EventTitle="event.title" />
 				<div class="hstack gap-2">
-					<EventsCreateParticipant />
+					<EventsRegisterParticipant />
 					<EventsCreateModal />
 					<EventsDelete />
 				</div>
 			</div>
-			<nav class="mb-4">
-				<div class="nav nav-tabs" id="nav-tab" role="tablist">
-					<button
-						class="nav-link active"
-						id="nav-participants-tab"
-						data-bs-toggle="tab"
-						data-bs-target="#nav-participants"
-						type="button"
-						role="tab"
-						aria-controls="nav-participants"
-						aria-selected="true">
-						Participants
-					</button>
-					<button
-						class="nav-link"
-						id="nav-results-tab"
-						data-bs-toggle="tab"
-						data-bs-target="#nav-results"
-						type="button"
-						role="tab"
-						aria-controls="nav-results"
-						aria-selected="true">
-						Results
-					</button>
-				</div>
-			</nav>
+
+			<TabsHeader class="mb-3">
+				<TabsNavButtons Id="participants" :Active="true">
+					Participants
+				</TabsNavButtons>
+				<TabsNavButtons Id="criteria"> Criteria </TabsNavButtons>
+			</TabsHeader>
+
 			<div class="col-9">
-				<div class="tab-content" id="nav-tabContent">
-					<div
-						class="tab-pane show active"
-						id="nav-participants"
-						role="tabpanel"
-						aria-labelledby="nav-participants-tab"
-						tabindex="0">
+				<TabsContent>
+					<TabsPane Id="participant" :Active="true">
 						<EventsTabsParticipants />
-					</div>
-				</div>
+					</TabsPane>
+					<TabsPane Id="criteria">
+						<h1>Event Criteria</h1>
+					</TabsPane>
+				</TabsContent>
 			</div>
+
 			<div class="col-3">
 				<p class="fw-bold">Basic Information</p>
 				<EventsEditsDescription

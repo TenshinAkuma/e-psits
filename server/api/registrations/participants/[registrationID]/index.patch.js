@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 	console.log(body);
 
 	const { data, error } = await client
-		.from("participant_registrations")
+		.from("event_registrations")
 		.update(body)
 		.eq("id", registrationID)
 		.select();

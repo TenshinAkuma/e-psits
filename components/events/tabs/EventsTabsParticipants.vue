@@ -7,7 +7,7 @@
 				<div>Registration status</div>
 			</div>
 			<li
-				v-for="registration in registrations"
+				v-for="registration in registrations.data"
 				:key="registration.id"
 				class="list-group-item d-flex justify-content-between align-items-center">
 				<EventsParticipantsCard :registration="registration" />
@@ -30,11 +30,3 @@
 		error,
 	} = await useFetch(`/api/events/${eventID}/getParticipants`);
 </script>
-
-<style scoped>
-	table thead tr th {
-		position: sticky;
-		top: 0;
-		z-index: 1;
-	}
-</style>
