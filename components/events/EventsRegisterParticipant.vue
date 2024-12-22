@@ -69,13 +69,13 @@
 									@click="
 										OnSelectParticipant(
 											participant.id,
-											`${participant.first_name} ${participant.surname}`
+											`${participant.first_name} ${participant.last_name}`
 										)
 									">
 									<div>
 										<div class="">
 											{{
-												`${participant.first_name} ${participant.surname}`
+												`${participant.first_name} ${participant.last_name}`
 											}}
 										</div>
 										<div
@@ -112,6 +112,7 @@
 								</button>
 							</ul>
 							{{ newRegistration.participant_id }}
+							{{ newRegistration.event_id }}
 						</form>
 					</div>
 
@@ -184,10 +185,10 @@
 		searchQuery.value = participantName;
 		newRegistration.value.participant_id = id;
 
-		IsParticipantRegistered(id);
+		IsParticipantRegistered();
 	};
 
-	const IsParticipantRegistered = async (participantID) => {
+	const IsParticipantRegistered = async () => {
 		try {
 			// Fetch data to check if the participant is registered
 			const { data, error } = await useFetch(
@@ -195,7 +196,7 @@
 				{
 					headers: useRequestHeaders(["cookie"]),
 					method: "GET",
-					params: { eventID, participantID },
+					body: newRegistration,
 				}
 			);
 
@@ -233,7 +234,7 @@
 	const OnInputSearch = debounce(async () => {
 		try {
 			if (searchQuery.value == "") {
-				selectedParticipantId.value == null;
+				newRegistration.value.participant_id = null;
 				canRegister.value = false;
 			}
 			await SearchParticipants();

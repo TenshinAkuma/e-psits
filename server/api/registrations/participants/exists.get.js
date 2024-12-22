@@ -2,14 +2,16 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { participantID, eventID } = await getQuery(event);
+	const body = await readBody(event);
 
+	console.log("participantID", body.participant_id);
+	console.log("eventID", body.event_id);
 	return (
 		await client
-			.from("participant_registrations")
+			.from("event_registrations")
 			.select("id")
-			.eq("event_id", eventID)
-			.eq("participant_id", participantID)
+			.eq("event_id", body.event_id)
+			.eq("participant_id", body.participant_id)
 			.single()
 	).data;
 });

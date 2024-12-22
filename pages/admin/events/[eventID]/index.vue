@@ -10,7 +10,7 @@
 				</div>
 			</div>
 
-			<TabsHeader class="mb-3">
+			<TabsHeader class="mb-5">
 				<TabsNavButtons Id="participants" :Active="true">
 					Participants
 				</TabsNavButtons>
@@ -23,7 +23,7 @@
 						<EventsTabsParticipants />
 					</TabsPane>
 					<TabsPane Id="criteria">
-						<h1>Event Criteria</h1>
+						<EventsTabsCriteria />
 					</TabsPane>
 				</TabsContent>
 			</div>
