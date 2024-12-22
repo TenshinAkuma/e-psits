@@ -23,7 +23,7 @@
 					)
 				">
 				{{
-					`${registration.participants.first_name} ${registration.participants.surname}`
+					`${registration.participants.first_name} ${registration.participants.last_name}`
 				}}
 			</h5>
 			<p
