@@ -11,8 +11,8 @@
 			</template>
 
 			<template #Body>
-				This action cannot be undone. <br />
-				<b>Are you sure you want to delete this criteria?</b>
+				<b>This action cannot be undone.</b> <br />
+				Are you sure you want to delete this criteria?
 			</template>
 
 			<template #Submit>
