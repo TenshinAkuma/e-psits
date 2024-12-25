@@ -1,9 +1,9 @@
 <template>
 	<div>
 		<Dialog
-			dialogId="deleteCrtieria"
+			dialogId="deleteCriteria"
 			dialogTitle="Remove Criteria"
-			ref="criteriaDeleteDialog">
+			ref="deleteCriteriaDialog">
 			<template #ButtonLabel>
 				<i
 					class="bi bi-trash-fill text-secondary"
@@ -37,7 +37,7 @@
 		criteriaId: Number,
 	});
 	const eventID = useRoute().params.eventID;
-	const criteriaDeleteDialog = ref(null);
+	const deleteCriteriaDialog = ref(null);
 
 	const {
 		data: criteriaData,
@@ -54,7 +54,7 @@
 		try {
 			await DeleteCriteria();
 			if (criteriaData.value.success) {
-				criteriaDeleteDialog.value.closeDialog();
+				deleteCriteriaDialog.value.closeDialog();
 			}
 		} catch (error) {
 			console.error(error);

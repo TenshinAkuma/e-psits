@@ -14,18 +14,21 @@
 					<tr
 						v-for="criteria in criteriaData.criteria"
 						:key="criteria.id"
-						style="height: 56px">
+						style="height: 114px">
 						<td class="fw-bold">{{ criteria.name }}</td>
 						<td class="text-secondary">
-							{{ criteria.description }}
+							<p style="max-width: 48ch; margin: 0">
+								{{ criteria.description }}
+							</p>
 						</td>
-						<td class="fw-bold">{{ criteria.rating }}%</td>
-						<td class="hstack">
-							<button type="button " class="btn">
-								<i
-									class="bi bi-pencil-fill"
-									style="font-size: 0.8rem" />
-							</button>
+						<td class="fw-bold">
+							<div class="w-100">
+								{{ criteria.rating }}%
+							</div>
+						</td>
+						<td>
+							<EventsCriteriaEdit
+								:criteriaId="criteria.id" />
 							<EventsCriteriaDelete
 								:criteriaId="criteria.id" />
 						</td>

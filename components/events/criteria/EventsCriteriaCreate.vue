@@ -57,18 +57,9 @@
 								required
 								v-model="newCriteria.description" />
 							<hr />
-							<p
-								class="text-secondary lh-sm"
-								style="font-size: 0.8rem">
-								Specify the weight of this criterion in
-								percentage (%). This value determines
-								how much this criterion contributes to
-								the overall score.
-								<b>
-									Ensure the total weight of all
-									criteria adds up to 100% for
-									accurate scoring.
-								</b>
+
+							<p class="fw-bold text-secondary mb-1">
+								Rating percentage
 							</p>
 							<div class="input-group mb-2">
 								<input
@@ -85,6 +76,19 @@
 									<i class="bi bi-percent" />
 								</span>
 							</div>
+							<p
+								class="text-secondary lh-sm"
+								style="font-size: 0.8rem">
+								Specify the weight of this criterion in
+								percentage (%). This value determines
+								how much this criterion contributes to
+								the overall score.
+								<b>
+									Ensure the total weight of all
+									criteria adds up to 100% for
+									accurate scoring.
+								</b>
+							</p>
 						</form>
 						{{ maxRating }}
 					</div>
