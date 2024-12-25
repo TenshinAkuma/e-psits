@@ -1,38 +1,38 @@
 <template>
-	<div class="table-responsive rounded-3">
-		<table class="table table-borderles align-middle">
-			<thead class="table-secondary">
-				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Description</th>
-					<th scope="col">Rating</th>
-					<th scope="col"></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr
-					v-for="criteria in criteriaData.criteria"
-					:key="criteria.id"
-					style="height: 72px">
-					<td class="h5 fw-bold">{{ criteria.name }}</td>
-					<td class="text-secondary">
-						{{ criteria.description }}
-					</td>
-					<td class="h5 fw-bold">{{ criteria.rating }}%</td>
-					<td>
-						<div class="hstack gap-2">
-							<button
-								class="btn btn-success hstack gap-2 ms-auto">
-								<i class="bi bi-pen-fill" />
+	<div>
+		<div class="table-responsive rounded-3">
+			<table class="table align-middle" style="cursor: pointer">
+				<thead>
+					<tr>
+						<th scope="col">Name</th>
+						<th scope="col">Description</th>
+						<th scope="col">Rating</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr
+						v-for="criteria in criteriaData.criteria"
+						:key="criteria.id"
+						style="height: 56px">
+						<td class="fw-bold">{{ criteria.name }}</td>
+						<td class="text-secondary">
+							{{ criteria.description }}
+						</td>
+						<td class="fw-bold">{{ criteria.rating }}%</td>
+						<td class="hstack">
+							<button type="button " class="btn">
+								<i
+									class="bi bi-pencil-fill"
+									style="font-size: 0.8rem" />
 							</button>
-							<button class="btn btn-danger">
-								<i class="bi bi-trash-fill" />
-							</button>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+							<EventsCriteriaDelete
+								:criteriaId="criteria.id" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </template>
 
