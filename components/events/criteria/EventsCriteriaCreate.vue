@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<button
-			class="btn btn-outline-dark"
+			class="btn btn-outline-primary"
 			id="createCriteriaBtn"
 			data-bs-toggle="modal"
 			data-bs-target="#createCriteria">
