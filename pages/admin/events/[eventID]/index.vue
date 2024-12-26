@@ -1,55 +1,96 @@
 <template>
 	<div class="w-100 pb-5">
-		<div v-if="status === 'success'" class="row">
-			<div class="d-flex justify-content-between align-items-center">
-				<EventsEditsTitle :EventTitle="event.title" />
-				<div class="hstack gap-2">
-					<EventsRegisterParticipant />
-					<EventsCreateModal />
-					<EventsDelete />
+		<EventsDetails>
+			<template #tabs>
+				<div v-if="registrations != null">
+					<div class="table-responsive">
+						<table
+							class="table table-borderless align-middle"
+							style="cursor: pointer">
+							<thead>
+								<tr>
+									<th scope="col">Participants</th>
+									<th scope="col" class="text-end">
+										Registration status
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr
+									v-for="registration in registrations.data"
+									:key="registration.id"
+									style="height: 114px">
+									<td>
+										<Avatar
+											:name="
+												registration
+													.participants
+													.first_name
+											"
+											:gender="
+												registration
+													.participants
+													.sex
+											"
+											size="56">
+											<template #name>
+												<div
+													class="flex-grow-1">
+													<p
+														class="avatar-link text-dark fw-bold m-0"
+														style="
+															width: max-content;
+														"
+														@click="
+															navigateTo(
+																`/admin/participants/${registration.participants.id}`
+															)
+														">
+														{{
+															`${registration.participants.first_name} ${registration.participants.last_name}`
+														}}
+													</p>
+													<p
+														class="avatar-link text-secondary m-0"
+														style="
+															cursor: pointer;
+															font-size: 0.8rem;
+														"
+														@click="
+															navigateTo(
+																`/admin/institutions/${registration.participants.institutions.id}`
+															)
+														">
+														{{
+															registration
+																.participants
+																.institutions
+																.name
+														}}
+													</p>
+												</div>
+											</template></Avatar
+										>
+									</td>
+
+									<td class="text-end">
+										<RegistrationsStatusUpdate
+											:RegistrationStatus="
+												registration.registration_status
+											"
+											:ParticipantRegistrationID="
+												registration.id
+											" />
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
 
-			<TabsHeader class="mb-5">
-				<TabsNavButtons Id="participants" :Active="true">
-					Participants
-				</TabsNavButtons>
-				<TabsNavButtons Id="criteria"> Criteria </TabsNavButtons>
-			</TabsHeader>
-
-			<div class="col-9">
-				<TabsContent>
-					<TabsPane Id="participants" :Active="true">
-						<EventsTabsParticipants />
-					</TabsPane>
-					<TabsPane Id="criteria">
-						<EventsTabsCriteria />
-					</TabsPane>
-				</TabsContent>
-			</div>
-
-			<div class="col-3">
-				<p class="fw-bold">Basic Information</p>
-				<EventsEditsDescription
-					:EventDescription="event.description" />
-				<EventsEditsModality :EventModality="event.type" />
-				<EventsEditsCategory :EventCategory="event.category" />
-
-				<hr />
-				<p class="fw-bold">Schedule</p>
-				<EventsEditsDate :EventDate="event.date" />
-				<EventsEditsTime :EventTime="event.date" />
-				<hr />
-				<p class="fw-bold">Location</p>
-				<EventsEditsVenue :EventVenue="event.venue" />
-				<EventsEditsAddress :EventAddress="event.address" />
-			</div>
-		</div>
-		<div v-else>
-			<div class="spinner-border" role="status">
-				<span class="visually-hidden">Loading...</span>
-			</div>
-		</div>
+				<div v-else>No Participants</div>
+			</template>
+		</EventsDetails>
 	</div>
 </template>
 
@@ -59,19 +100,19 @@
 	});
 
 	const eventID = useRoute().params.eventID;
-
-	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
-		headers: useRequestHeaders(["cookie"]),
-		method: "GET",
-	});
+	const {
+		data: registrations,
+		status,
+		error,
+	} = await useFetch(`/api/events/${eventID}/getParticipants`);
 </script>
 
 <style scoped>
-	.nav-link {
-		color: #424242;
+	.avatar-link {
+		cursor: pointer;
 	}
-	.nav-link.active {
-		color: #242424 !important;
-		font-weight: bold;
+
+	.avatar-link:hover {
+		color: #1976d2 !important;
 	}
 </style>

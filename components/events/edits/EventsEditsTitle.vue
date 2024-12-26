@@ -1,5 +1,5 @@
 <template>
-	<div class="mb-3">
+	<div>
 		<div v-if="!IsEditing" class="d-flex align-items-start gap-2">
 			<h1 id="event-title" class="fw-bold m-0">
 				{{ EventTitle }}

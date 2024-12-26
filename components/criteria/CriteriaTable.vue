@@ -27,10 +27,8 @@
 							</div>
 						</td>
 						<td>
-							<EventsCriteriaEdit
-								:criteriaId="criteria.id" />
-							<EventsCriteriaDelete
-								:criteriaId="criteria.id" />
+							<CriteriaEdit :criteriaId="criteria.id" />
+							<CriteriaDelete :criteriaId="criteria.id" />
 						</td>
 					</tr>
 				</tbody>
