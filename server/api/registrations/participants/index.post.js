@@ -13,7 +13,10 @@ export default defineEventHandler(async (event) => {
 			.single();
 
 		if (ParticipantError) {
-			throw new Error(ParticipantError.message);
+			throw new Error(
+				"Error while saving participant data",
+				ParticipantError.message
+			);
 		}
 
 		const { data: Registration, error: RegistrationError } = await client
@@ -29,10 +32,11 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			success: true,
+			data: Participant,
 		};
 	} catch (err) {
 		// Log the error and return an error response
-		console.error("Error during participant registration:", err.message);
+		console.error(err.message);
 		return {
 			success: false,
 			error: err.message,

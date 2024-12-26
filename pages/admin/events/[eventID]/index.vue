@@ -2,7 +2,9 @@
 	<div class="w-100 pb-5">
 		<EventsDetails>
 			<template #tabs>
-				<div v-if="registrations != null">
+				<!-- <EventsRegisterParticipant /> -->
+				<EventsRegisterParticipantV2 />
+				<div>
 					<div class="table-responsive">
 						<table
 							class="table table-borderless align-middle"
@@ -17,9 +19,8 @@
 							</thead>
 							<tbody>
 								<tr
-									v-for="registration in registrations.data"
-									:key="registration.id"
-									style="height: 114px">
+									v-for="registration in eventParticipants"
+									:key="registration.id">
 									<td>
 										<Avatar
 											:name="
@@ -87,8 +88,6 @@
 						</table>
 					</div>
 				</div>
-
-				<div v-else>No Participants</div>
 			</template>
 		</EventsDetails>
 	</div>
@@ -100,11 +99,12 @@
 	});
 
 	const eventID = useRoute().params.eventID;
-	const {
-		data: registrations,
-		status,
-		error,
-	} = await useFetch(`/api/events/${eventID}/getParticipants`);
+	const { eventParticipants, loading, getAllEventParticipants } =
+		useEventRegistrations();
+
+	onMounted(() => {
+		getAllEventParticipants(eventID);
+	});
 </script>
 
 <style scoped>

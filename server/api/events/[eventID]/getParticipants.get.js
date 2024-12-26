@@ -6,28 +6,29 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		// Fetch data from Supabase
-		const { data, error } = await client
+		const { data: participants, error: errorParticipants } = await client
 			.from("event_registrations")
 			.select(
-				"id, registration_status, participants(*, institutions(id, name))"
+				"id, registration_status, participants(first_name, last_name, institutions(id, name))"
 			)
 			.eq("event_id", eventID);
 
 		// Handle Supabase errors
-		if (error) {
-			throw new Error(error.message);
+		if (errorParticipants) {
+			throw new Error(
+				"Error occurred while registering particpant ",
+				errorParticipants.message
+			);
 		}
 
 		return {
 			success: true,
-			data,
+			data: participants,
 		};
 	} catch (err) {
 		return {
 			success: false,
-			error:
-				err.message ||
-				"An unknown error occurred while fetching data.",
+			error: err.message,
 		};
 	}
 });

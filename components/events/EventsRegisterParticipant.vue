@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<button
-			class="btn btn-outline-secondary"
+			class="btn btn-outline-dark"
 			data-bs-toggle="modal"
 			data-bs-target="#registerParticipant">
 			Register Participant
@@ -33,7 +33,7 @@
 					<div class="modal-body">
 						<form
 							@submit="OnSaveRegistration"
-							id="createEvent">
+							id="registerParticipant">
 							<div
 								class="d-flex justify-content-between align-items-center mb-2">
 								<div class="fw-bold text-secondary">
@@ -90,25 +90,6 @@
 											}}
 										</div>
 									</div>
-									<div
-										v-for="(
-											registration, index
-										) in participant.participant_registrations"
-										:key="index">
-										<div
-											v-if="
-												registration.event_id ==
-												eventID
-											"
-											style="font-size: 0.8rem"
-											:class="`${registrationStatusLabel(
-												registration.registration_status
-											)}`">
-											{{
-												registration.registration_status
-											}}
-										</div>
-									</div>
 								</button>
 							</ul>
 							{{ newRegistration.participant_id }}
@@ -125,9 +106,8 @@
 						</button>
 						<button
 							type="submit"
-							form="createEvent"
-							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="canRegister">
+							form="registerParticipant"
+							class="d-flex align-items-center btn btn-primary gap-2">
 							<span
 								v-if="SavingRegistration === 'pending'"
 								class="spinner-border spinner-border-sm"
@@ -156,17 +136,14 @@
 	const canRegister = ref(true);
 
 	// Fetch setup for saving registration
-	const {
-		data: registration,
-		status: SavingRegistration,
-		execute: SaveRegistration,
-	} = await useFetch("/api/registrations/participants/ByParticipantId", {
-		headers: useRequestHeaders(["cookie"]),
-		method: "POST",
-		body: newRegistration,
-		immediate: false,
-		watch: false,
-	});
+	const { status: SavingRegistration, execute: SaveRegistration } =
+		await useFetch("/api/registrations/participants/ByParticipantId", {
+			headers: useRequestHeaders(["cookie"]),
+			method: "POST",
+			body: newRegistration,
+			immediate: false,
+			watch: false,
+		});
 
 	// Function to save a registration
 	const OnSaveRegistration = async () => {
@@ -184,40 +161,6 @@
 	const OnSelectParticipant = (id, participantName) => {
 		searchQuery.value = participantName;
 		newRegistration.value.participant_id = id;
-
-		IsParticipantRegistered();
-	};
-
-	const IsParticipantRegistered = async () => {
-		try {
-			// Fetch data to check if the participant is registered
-			const { data, error } = await useFetch(
-				"/api/registrations/participants/exists",
-				{
-					headers: useRequestHeaders(["cookie"]),
-					method: "GET",
-					body: newRegistration,
-				}
-			);
-
-			// Handle the response
-			if (error.value) {
-				console.error(
-					"Error fetching registration status:",
-					error.value
-				);
-				canRegister.value = false;
-				return;
-			}
-
-			// Update `canRegister` based on the API response
-			canRegister.value =
-				data.value && Object.keys(data.value).length > 0;
-		} catch (err) {
-			// Log unexpected errors and set `canRegister` to false
-			console.error("Unexpected error checking registration:", err);
-			canRegister.value = false;
-		}
 	};
 
 	// Fetch setup for participant search
@@ -242,17 +185,6 @@
 			console.error("Error during search:");
 		}
 	}, 300);
-
-	const registrationStatusLabel = (status) => {
-		switch (status) {
-			case "Registered":
-				return "text-primary";
-			case "Cancelled":
-				return "text-danger";
-			default:
-				return "text-secondary";
-		}
-	};
 
 	const closeModal = () => {
 		if (registerParticipant) {
