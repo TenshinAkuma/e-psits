@@ -35,7 +35,9 @@ export default defineEventHandler(async (event) => {
 		const { data: Participant, error: registrationError } = await client
 			.from("event_registrations")
 			.insert(body)
-			.select()
+			.select(
+				"participants(first_name, last_name, institutions(name))"
+			)
 			.single();
 
 		if (registrationError) {
@@ -44,7 +46,7 @@ export default defineEventHandler(async (event) => {
 			);
 		}
 
-		console.log("Participant successfully registered.");
+		console.log(Participant);
 		// Registration successful
 		return {
 			success: true,

@@ -69,8 +69,6 @@
 					style="font-size: 0.8rem">
 					Error: {{ errorMessage }}
 				</div>
-				<div>{{ newRegistration.event_id }}</div>
-				<div>{{ newRegistration.participant_id }}</div>
 			</template>
 
 			<template #Submit>
