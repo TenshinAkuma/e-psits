@@ -36,7 +36,7 @@ export default defineEventHandler(async (event) => {
 			.from("event_registrations")
 			.insert(body)
 			.select(
-				"participants(first_name, last_name, institutions(name))"
+				"id, registration_status, participants(id, first_name, last_name, sex, institutions(name))"
 			)
 			.single();
 

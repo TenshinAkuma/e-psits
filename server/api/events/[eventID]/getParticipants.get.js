@@ -9,14 +9,14 @@ export default defineEventHandler(async (event) => {
 		const { data: participants, error: errorParticipants } = await client
 			.from("event_registrations")
 			.select(
-				"id, registration_status, participants(first_name, last_name, institutions(id, name))"
+				"id, registration_status, participants(id, first_name, last_name, sex, institutions(id, name))"
 			)
 			.eq("event_id", eventID);
 
 		// Handle Supabase errors
 		if (errorParticipants) {
 			throw new Error(
-				"Error occurred while registering particpant ",
+				"Error occurred while registering participant ",
 				errorParticipants.message
 			);
 		}

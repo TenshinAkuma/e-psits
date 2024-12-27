@@ -86,6 +86,7 @@
 								</tr>
 							</tbody>
 						</table>
+						{{ eventParticipants }}
 					</div>
 				</div>
 			</template>
@@ -102,8 +103,8 @@
 	const { eventParticipants, loading, getAllEventParticipants } =
 		useEventRegistrations();
 
-	onMounted(() => {
-		getAllEventParticipants(eventID);
+	onMounted(async () => {
+		await getAllEventParticipants(eventID);
 	});
 </script>
 
