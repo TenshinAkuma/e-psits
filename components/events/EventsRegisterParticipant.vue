@@ -20,15 +20,23 @@
 				</div>
 				<form
 					id="registerParticipantForm"
-					@submit.prevent="OnRegisterParticipant">
+					@submit.prevent="OnRegisterParticipant"
+					class="mb-3">
 					<input
 						type="text"
-						class="form-control border-secondary mb-3"
+						class="form-control border-secondary mb-1"
 						placeholder="Search participant"
 						list="participantListOptions"
 						required
 						v-model="searchQuery"
 						@input="OnInputSearch" />
+
+					<div
+						v-if="errorMessage != ''"
+						class="text-danger"
+						style="font-size: 0.8rem">
+						Error: {{ errorMessage }}
+					</div>
 				</form>
 
 				<div
@@ -63,12 +71,6 @@
 						</Avatar>
 					</div>
 				</div>
-				<div
-					v-if="errorMessage != ''"
-					class="text-danger"
-					style="font-size: 0.8rem">
-					Error: {{ errorMessage }}
-				</div>
 			</template>
 
 			<template #Submit>
@@ -76,9 +78,9 @@
 					type="submit"
 					form="registerParticipantForm"
 					class="btn btn-success px-5 hstack gap-2"
-					:disabled="loading">
+					:disabled="_registrationStatus === 'pending'">
 					<span
-						v-if="loading"
+						v-if="_registrationStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span>Register</span>
@@ -90,11 +92,7 @@
 
 <script setup>
 	const registerParticipantDialogRef = ref(null);
-	const {
-		createEventParticipant,
-		loading,
-		errorMessage: error,
-	} = useEventRegistrations();
+	const participantRegistrations = useParticipantRegistrations();
 	const searchQuery = ref("");
 	const errorMessage = ref("");
 
@@ -108,19 +106,31 @@
 		newRegistration.value.participant_id = participantId;
 	};
 
-	const OnRegisterParticipant = () => {
-		loading.value = true;
+	const {
+		data: _registration,
+		status: _registrationStatus,
+		error: _registrationError,
+		execute: RegisterParticipant,
+	} = await useFetch("/api/registrations/participants/ByParticipantId", {
+		method: "POST",
+		body: newRegistration,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnRegisterParticipant = async () => {
 		try {
-			createEventParticipant(newRegistration.value);
-			registerParticipantDialogRef.value.closeDialog();
-		} catch {
-			console.error(error);
-			errorMessage.value = error;
-			setTimeout(() => {
-				errorMessage.value = "";
-			}, 3000);
-		} finally {
-			loading.value = false;
+			await RegisterParticipant();
+			if (_registration.value.error) {
+				errorMessage.value = _registration.value.error;
+			}
+
+			participantRegistrations.value.push(_registration.value.data);
+			registerParticipantDialogRef.value?.closeDialog();
+			errorMessage.value = "";
+		} catch (err) {
+			console.error("Registration failed:", err);
+			errorMessage.value = "An error occurred during registration.";
 		}
 	};
 
@@ -140,6 +150,7 @@
 				newRegistration.value.participant_id = null;
 			}
 			await SearchParticipants();
+			errorMessage.value = "";
 		} catch (err) {
 			console.error("Error during search:");
 		}

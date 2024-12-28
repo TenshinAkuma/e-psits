@@ -22,7 +22,7 @@
 <script setup>
 	const eventID = useRoute().params.eventID;
 
-	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
+	const { data: event, status } = await useFetch(`/api/events/${eventID}`, {
 		headers: useRequestHeaders(["cookie"]),
 		method: "GET",
 	});

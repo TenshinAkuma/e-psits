@@ -25,10 +25,9 @@ export default defineEventHandler(async (event) => {
 
 		if (participantExists) {
 			// Prevent duplicate registration
-			return {
-				success: false,
-				error: "Participant is already registered for this event.",
-			};
+			throw new Error(
+				"Participant is already registered for this event."
+			);
 		}
 
 		// Insert the new registration
@@ -36,7 +35,7 @@ export default defineEventHandler(async (event) => {
 			.from("event_registrations")
 			.insert(body)
 			.select(
-				"id, registration_status, participants(id, first_name, last_name, sex, institutions(name))"
+				"id, registration_status, participants(id, first_name, last_name, sex, institutions(id, name))"
 			)
 			.single();
 
@@ -46,11 +45,9 @@ export default defineEventHandler(async (event) => {
 			);
 		}
 
-		console.log(Participant);
 		// Registration successful
 		return {
 			success: true,
-			message: "Participant successfully registered.",
 			data: Participant,
 		};
 	} catch (err) {

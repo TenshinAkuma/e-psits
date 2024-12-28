@@ -3,9 +3,7 @@
 		<div class="mb-3">
 			<EventsRegisterParticipant />
 		</div>
-		<div
-			class="table-responsive overflow-y-auto"
-			style="max-height: 576px">
+		<div class="table-responsive overflow-y-auto" style="height: 576px">
 			<table
 				class="table table-borderless align-middle"
 				style="cursor: pointer">
@@ -19,7 +17,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="registration in eventParticipants"
+						v-for="registration in participantRegistrations"
 						:key="registration.id"
 						style="height: 114px">
 						<td>
@@ -87,12 +85,12 @@
 
 <script setup>
 	const eventID = useRoute().params.eventID;
-	const { eventParticipants, loading, getAllEventParticipants } =
-		useEventRegistrations();
+	const participantRegistrations = useParticipantRegistrations();
 
-	onMounted(() => {
-		getAllEventParticipants(eventID);
-	});
+	const { data: _registrations, status: _registrationsState } =
+		await useFetch(`/api/events/${eventID}/getParticipants`);
+
+	participantRegistrations.value = _registrations.value.data;
 </script>
 
 <style scoped>

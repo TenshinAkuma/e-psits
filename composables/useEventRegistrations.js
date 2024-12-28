@@ -5,9 +5,6 @@ export const useEventRegistrations = () => {
 	// Reactive variable to store error messages, if any
 	const errorMessage = ref("");
 
-	// Reactive variable to indicate loading state for asynchronous operations
-	const loading = ref(false);
-
 	/**
 	 * Fetch all participants for a specific event and store them in the global state.
 	 *
@@ -15,7 +12,7 @@ export const useEventRegistrations = () => {
 	 * @returns {void}
 	 */
 	const getAllEventParticipants = async (eventID) => {
-		loading.value = true; // Indicate the fetch operation is in progress
+		eventParticipants.value.length = 0;
 
 		// Fetch participants from the API using the provided eventID
 		const { data: participants, error } = await $fetch(
@@ -29,7 +26,6 @@ export const useEventRegistrations = () => {
 
 		// Update the global state with the fetched participants data
 		eventParticipants.value = participants;
-		loading.value = false; // Indicate the fetch operation is complete
 	};
 
 	/**
@@ -39,8 +35,6 @@ export const useEventRegistrations = () => {
 	 * @returns {void}
 	 */
 	const createEventParticipant = async (newEventParticipant) => {
-		console.log(newEventParticipant);
-
 		// Send a POST request to add a new participant
 		const { data: _newEventParticipant, error } = await $fetch(
 			"/api/registrations/participants/ByParticipantId",
@@ -88,7 +82,6 @@ export const useEventRegistrations = () => {
 	return {
 		eventParticipants, // Global state of participants
 		errorMessage, // Reactive error message variable
-		loading, // Reactive loading state variable
 		getAllEventParticipants, // Function to fetch all participants for an event
 		createEventParticipant, // Function to add a new participant
 		editEventParticipantRegistration, // Function to edit a participant's registration

@@ -2,12 +2,14 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
+	const { eventID } = event.context.params;
 
 	try {
 		// Fetch criteria data from the database
 		const { data: criteria, error } = await client
 			.from("event_criteria")
-			.select("id, name, description, rating");
+			.select("id, name, description, rating")
+			.eq("event_id", eventID);
 
 		// Handle Supabase query errors
 		if (error) {
@@ -22,8 +24,7 @@ export default defineEventHandler(async (event) => {
 		// Return successful response with the fetched data
 		return {
 			success: true,
-			message: "Criteria fetched successfully.",
-			criteria,
+			data: criteria,
 		};
 	} catch (err) {
 		// Log the error for debugging
@@ -32,7 +33,7 @@ export default defineEventHandler(async (event) => {
 		// Return error response
 		return {
 			success: false,
-			message: err.message || "An unexpected error occurred.",
+			error: err.message || "An unexpected error occurred.",
 		};
 	}
 });

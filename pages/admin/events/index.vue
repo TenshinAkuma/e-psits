@@ -53,10 +53,10 @@
 	definePageMeta({
 		layout: "main",
 	});
-	const { data: events, status } = useFetch("/api/events");
+	const { data: events, status } = await useFetch("/api/events");
 
-	const ToEventDetailsPage = (id) => {
-		navigateTo(`/admin/events/	${id}`);
+	const ToEventDetailsPage = async (id) => {
+		await navigateTo(`/admin/events/	${id}`);
 	};
 </script>
 
