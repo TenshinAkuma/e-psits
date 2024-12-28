@@ -7,24 +7,27 @@ export default defineEventHandler(async (event) => {
 
 	console.log("body", body);
 	try {
-		const { error } = await client
+		const { data: criteria, error } = await client
 			.from("event_criteria")
 			.update(body)
-			.eq("id", criteriaId);
+			.eq("id", criteriaId)
+			.select("id, name, description, rating")
+			.single();
 
 		if (error) {
 			throw new Error(error.message);
 		}
 
+		console.log("response", criteria);
 		return {
 			success: true,
-			message: "Criteria updated successfully",
+			data: criteria,
 		};
 	} catch (err) {
 		console.error("Error occurred while updating criteria", err.message);
 		return {
-			success: true,
-			message: "Criteria updated successfully",
+			success: false,
+			error: "Error occurred while updating criteria",
 		};
 	}
 });

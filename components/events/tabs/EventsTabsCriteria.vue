@@ -1,9 +1,17 @@
 <template>
-	<div v-if="criteriaData.success">
+	<div
+		v-if="eventCriteria == null || criteriaLength == 0"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 576px">
+		<p class="fs-7">Event criteria is empty.</p>
+		<CriteriaCreate />
+	</div>
+
+	<div v-else>
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<CriteriaCreate />
 		</div>
-		<div class="table-responsive rounded-3">
+		<div class="table-responsive overflow-y-auto" style="height: 576px">
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
@@ -14,7 +22,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="criteria in criteriaData.data"
+						v-for="criteria in _criteria.data"
 						:key="criteria.id"
 						style="height: 114px">
 						<td>
@@ -34,8 +42,8 @@
 						</td>
 						<td>
 							<div class="d-flex justify-content-end">
-								<CriteriaEdit
-									:criteriaId="criteria.id" />
+								<CriteriaEdit :criteria="criteria" />
+
 								<CriteriaDelete
 									:criteriaId="criteria.id" />
 							</div>
@@ -43,21 +51,23 @@
 					</tr>
 				</tbody>
 			</table>
+			{{ eventCriteria }}
 		</div>
-	</div>
-
-	<div v-else class="d-flex flex-column align-items-center p-5">
-		<p class="text-center fw-bold">Event criteria is empty.</p>
-		<CriteriaCreate />
 	</div>
 </template>
 
 <script setup>
 	const eventID = useRoute().params.eventID;
-	const { data: criteriaData, status } = await useFetch(
+	const eventCriteria = useEventCriteria();
+
+	const { data: _criteria, status } = await useFetch(
 		`/api/events/${eventID}/criteria`,
 		{
 			method: "GET",
 		}
 	);
+
+	eventCriteria.value = _criteria.value?.data;
+
+	const criteriaLength = computed(() => eventCriteria.value?.length);
 </script>
