@@ -119,19 +119,14 @@
 	});
 
 	const OnRegisterParticipant = async () => {
-		try {
-			await RegisterParticipant();
-			if (_registration.value.error) {
-				errorMessage.value = _registration.value.error;
-			}
-
-			participantRegistrations.value.push(_registration.value.data);
-			registerParticipantDialogRef.value?.closeDialog();
-			errorMessage.value = "";
-		} catch (err) {
-			console.error("Registration failed:", err);
-			errorMessage.value = "An error occurred during registration.";
+		await RegisterParticipant();
+		if (_registration.value?.error) {
+			errorMessage.value = _registration.value.error;
+			return;
 		}
+
+		participantRegistrations.value.push(_registration.value?.data);
+		registerParticipantDialogRef.value?.closeDialog();
 	};
 
 	const { data: searchResult, execute: SearchParticipants } = await useFetch(
@@ -148,7 +143,9 @@
 		try {
 			if (searchQuery.value == "") {
 				newRegistration.value.participant_id = null;
+				return;
 			}
+
 			await SearchParticipants();
 			errorMessage.value = "";
 		} catch (err) {

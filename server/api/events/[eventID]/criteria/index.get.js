@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (err) {
 		// Log the error for debugging
-		console.error("Error fetching event criteria:", err.message);
+		console.log("Error fetching event criteria:", err.message);
 
 		// Return error response
 		return {

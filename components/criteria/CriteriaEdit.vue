@@ -1,81 +1,75 @@
 <template>
-	<div>
-		<Dialog
-			dialogId="editCriteria"
-			dialogTitle="Edit Criteria"
-			ref="editCriteriaDialog">
-			<template #ButtonLabel>
-				<i
-					class="bi bi-pencil-fill text-secondary"
-					style="font-size: 0.8rem" />
-			</template>
+	<Dialog
+		dialogId="editCriteria"
+		dialogTitle="Edit Criteria"
+		ref="editCriteriaDialog">
+		<template #ButtonLabel>
+			<i
+				class="bi bi-pencil-fill text-secondary"
+				style="font-size: 0.8rem" />
+		</template>
 
-			<template #Body>
-				<form id="editCriteriaForm" @submit="OnSaveCriteriaUpdate">
+		<template #Body>
+			<form id="editCriteriaForm" @submit="OnSaveCriteriaUpdate">
+				<input
+					type="text"
+					class="form-control border-secondary mb-3"
+					placeholder="Name"
+					required
+					v-model="newCriteria.name" />
+
+				<textarea
+					class="form-control border-secondary mb-3"
+					placeholder="Description"
+					rows="3"
+					style="resize: vertical; max-height: 216px"
+					required
+					v-model="newCriteria.description" />
+				<hr />
+
+				<p class="fw-bold text-secondary mb-1">Rating percentage</p>
+				<div class="input-group mb-2">
 					<input
-						type="text"
-						class="form-control border-secondary mb-3"
-						placeholder="Name"
+						type="number"
+						class="form-control border-secondary"
+						placeholder="Rating"
+						:max="maxRating"
+						min="0"
+						step="5"
 						required
-						v-model="newCriteria.name" />
-
-					<textarea
-						class="form-control border-secondary mb-3"
-						placeholder="Description"
-						rows="3"
-						style="resize: vertical; max-height: 216px"
-						required
-						v-model="newCriteria.description" />
-					<hr />
-
-					<p class="fw-bold text-secondary mb-1">
-						Rating percentage
-					</p>
-					<div class="input-group mb-2">
-						<input
-							type="number"
-							class="form-control border-secondary"
-							placeholder="Rating"
-							:max="maxRating"
-							min="0"
-							step="5"
-							required
-							v-model="newCriteria.rating" />
-						<span
-							class="input-group-text bg-secondary bg-opacity-25 rounded-end border-secondary">
-							<i class="bi bi-percent" />
-						</span>
-					</div>
-
-					<p
-						class="text-secondary lh-sm"
-						style="font-size: 0.8rem">
-						Specify the weight of this criterion in percentage
-						(%). This value determines how much this criterion
-						contributes to the overall score.
-						<b
-							>Ensure the total weight of all criteria adds
-							up to 100% for accurate scoring.</b
-						>
-					</p>
-				</form>
-			</template>
-
-			<template #Submit>
-				<button
-					type="submit"
-					form="editCriteriaForm"
-					class="btn btn-success px-5 hstack gap-2"
-					:disabled="saveCriteriaStatus === 'pending'">
+						v-model="newCriteria.rating" />
 					<span
-						v-if="saveCriteriaStatus === 'pending'"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true" />
-					<span>Save</span>
-				</button>
-			</template>
-		</Dialog>
-	</div>
+						class="input-group-text bg-secondary bg-opacity-25 rounded-end border-secondary">
+						<i class="bi bi-percent" />
+					</span>
+				</div>
+
+				<p class="text-secondary lh-sm" style="font-size: 0.8rem">
+					Specify the weight of this criterion in percentage (%).
+					This value determines how much this criterion
+					contributes to the overall score.
+					<b
+						>Ensure the total weight of all criteria adds up
+						to 100% for accurate scoring.</b
+					>
+				</p>
+			</form>
+		</template>
+
+		<template #Submit>
+			<button
+				type="submit"
+				form="editCriteriaForm"
+				class="btn btn-success px-5 hstack gap-2"
+				:disabled="saveCriteriaStatus === 'pending'">
+				<span
+					v-if="saveCriteriaStatus === 'pending'"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+				<span>Save</span>
+			</button>
+		</template>
+	</Dialog>
 </template>
 
 <script setup>

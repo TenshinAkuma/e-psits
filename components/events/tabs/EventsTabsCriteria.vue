@@ -4,13 +4,10 @@
 			<CriteriaCreate />
 		</div>
 		<div class="table-responsive rounded-3">
-			<table
-				class="table table-borderless align-middle"
-				style="cursor: pointer">
+			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
-						<th scope="col">Name</th>
-						<th scope="col">Description</th>
+						<th scope="col">Criteria</th>
 						<th scope="col">Rating</th>
 						<th scope="col"></th>
 					</tr>
@@ -20,9 +17,13 @@
 						v-for="criteria in criteriaData.data"
 						:key="criteria.id"
 						style="height: 114px">
-						<td class="fw-bold">{{ criteria.name }}</td>
-						<td class="text-secondary">
-							<p style="max-width: 48ch; margin: 0">
+						<td>
+							<p class="fw-bold mb-1">
+								{{ criteria.name }}
+							</p>
+							<p
+								class="fs-7 lh-sm text-secondary"
+								style="max-width: 56ch">
 								{{ criteria.description }}
 							</p>
 						</td>
@@ -32,8 +33,12 @@
 							</div>
 						</td>
 						<td>
-							<CriteriaEdit :criteriaId="criteria.id" />
-							<CriteriaDelete :criteriaId="criteria.id" />
+							<div class="d-flex justify-content-end">
+								<CriteriaEdit
+									:criteriaId="criteria.id" />
+								<CriteriaDelete
+									:criteriaId="criteria.id" />
+							</div>
 						</td>
 					</tr>
 				</tbody>
