@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Brief Description</div>
+			<div class="text-secondary fs-7">Brief Description</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,11 +9,14 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingDescription" class="text-dark">
+		<p
+			v-if="!IsEditingDescription"
+			class="fw-bold fs-7 lh-sm"
+			style="max-width: 32ch">
 			{{ EventDescription }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewDescription" class="mt-1">
+		<form v-else @submit.prevent="OnSaveNewDescription" class="mt-1 mb-3">
 			<textarea
 				class="form-control border-secondary p-2 mb-3"
 				style="max-height: 216px; resize: vertical"

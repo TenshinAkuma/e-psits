@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Dialog
-			id="editCriteria"
+			dialogId="editCriteria"
 			dialogTitle="Edit Criteria"
 			ref="editCriteriaDialog">
 			<template #ButtonLabel>

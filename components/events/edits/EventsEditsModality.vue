@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Modality</div>
+			<div class="text-secondary fs-7">Modality</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,11 +9,11 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingModality" class="text-dark">
+		<p v-if="!IsEditingModality" class="fw-bold fs-7 lh-sm">
 			{{ EventModality || "Input event type" }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewModality" class="mt-1">
+		<form v-else @submit.prevent="OnSaveNewModality" class="mt-1 mb-3">
 			<select
 				v-model="newModality"
 				class="form-select border-secondary p-2 mb-3 w-100">

@@ -1,5 +1,5 @@
 <template>
-	<header class="border-bottom border-2">
+	<header class="border-bottom bg-white border-bottom sticky-top">
 		<div
 			class="px-3 d-flex justify-content-between align-items-center"
 			style="height: 56px">

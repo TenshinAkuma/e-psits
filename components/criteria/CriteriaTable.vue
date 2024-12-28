@@ -1,7 +1,9 @@
 <template>
 	<div>
 		<div class="table-responsive rounded-3">
-			<table class="table align-middle" style="cursor: pointer">
+			<table
+				class="table table-borderless align-middle"
+				style="cursor: pointer">
 				<thead>
 					<tr>
 						<th scope="col">Name</th>

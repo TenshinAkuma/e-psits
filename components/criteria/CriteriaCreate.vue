@@ -5,7 +5,7 @@
 			id="createCriteriaBtn"
 			data-bs-toggle="modal"
 			data-bs-target="#createCriteria">
-			Add criteria
+			<i class="bi bi-plus" /> Add criteria
 		</button>
 		<div
 			class="modal"

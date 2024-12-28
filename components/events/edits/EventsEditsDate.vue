@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Date</div>
+			<div class="text-secondary fs-7">Date</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,9 +9,11 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingDate">{{ formatDate(EventDate) }}</p>
+		<p v-if="!IsEditingDate" class="fw-bold fs-7 lh-sm">
+			{{ formatDate(EventDate) }}
+		</p>
 
-		<form v-else @submit.prevent="OnSaveNewDate" class="mt-1">
+		<form v-else @submit.prevent="OnSaveNewDate" class="mt-1 mb-3">
 			<input
 				v-model="newDate"
 				type="date"

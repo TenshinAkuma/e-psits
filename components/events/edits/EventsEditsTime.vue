@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Time</div>
+			<div class="text-secondary fs-7">Time</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,11 +9,11 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingTime">
+		<p v-if="!IsEditingTime" class="fw-bold fs-7 lh-sm">
 			{{ formattedTime }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewTime" class="mt-1">
+		<form v-else @submit.prevent="OnSaveNewTime" class="mt-1 mb-3">
 			<input
 				type="time"
 				v-model="newTime"
