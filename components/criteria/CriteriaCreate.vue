@@ -2,7 +2,8 @@
 	<Dialog
 		dialogId="createCriteria"
 		dialogTitle="Add New Criteria"
-		openButtonStyle="btn-outline-dark fw-bold">
+		openButtonStyle="btn-outline-dark fw-bold"
+		ref="createCriteriaRef">
 		<template #ButtonLabel>
 			<i class="bi bi-plus" /> Add new criteria
 		</template>
@@ -13,7 +14,7 @@
 				participants during the event. Please provide clear details
 				to ensure accurate assessments.
 			</p>
-			<form @submit="OnAddCriteria" id="AddNewCriteria">
+			<form @submit.prevent="OnAddCriteria" id="AddNewCriteria">
 				<input
 					type="text"
 					class="form-control border-secondary mb-3"
@@ -56,7 +57,6 @@
 					</b>
 				</p>
 			</form>
-			{{ maxRating }}
 		</template>
 
 		<template #Submit>
@@ -77,9 +77,10 @@
 
 <script setup>
 	const createCriteriaRef = ref(null);
-	let createCriteria;
 
+	const eventCriteria = useEventCriteria();
 	const eventID = useRoute().params.eventID;
+	const errorMessage = ref("");
 
 	const newCriteria = ref({
 		name: "",
@@ -89,7 +90,7 @@
 	});
 
 	const {
-		data: criteriaData,
+		data: _criteria,
 		status,
 		execute: AddCriteria,
 	} = await useFetch(`/api/events/${eventID}/criteria`, {
@@ -100,42 +101,39 @@
 	});
 
 	const OnAddCriteria = async () => {
-		try {
-			await AddCriteria();
-			if (!criteriaData.value.success) {
-				console.error(criteriaData.value.error);
-			}
+		await AddCriteria();
+		if (_criteria.value?.error) {
+			errorMessage.value = _criteria.value?.error;
 
-			closeModal();
-		} catch {
-			console.error("An error occurred while adding criteria.");
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+
+			return;
 		}
+
+		eventCriteria.value?.push(_criteria.value.data);
+		resetInput();
+		createCriteriaRef.value.closeDialog();
 	};
-
-	const { data: weightData } = await useFetch(
-		`/api/events/${eventID}/criteria/weight`,
-		{
-			method: "GET",
-		}
-	);
 
 	const maxRating = computed(() => {
-		if (weightData.value) {
-			return 100 - weightData.value.totalRating;
+		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
+			return 0;
 		}
-		return 100;
+
+		return (
+			100 -
+			eventCriteria.value?.reduce(
+				(total, criteria) => total + criteria.rating,
+				0
+			)
+		);
 	});
 
-	const closeModal = () => {
-		if (createCriteria) {
-			createCriteria.hide();
-		}
+	const resetInput = () => {
+		newCriteria.value.name = "";
+		newCriteria.value.description = "";
+		newCriteria.value.rating = 0;
 	};
-
-	onMounted(() => {
-		// Access the global `bootstrap` object to initialize the Modal
-		if (createCriteriaRef.value) {
-			createCriteria = new bootstrap.Modal(createCriteriaRef.value);
-		}
-	});
 </script>

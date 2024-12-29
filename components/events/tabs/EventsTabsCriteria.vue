@@ -51,7 +51,6 @@
 					</tr>
 				</tbody>
 			</table>
-			{{ eventCriteria }}
 		</div>
 	</div>
 </template>
