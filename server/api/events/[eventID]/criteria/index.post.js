@@ -7,20 +7,22 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: Criteria, error: CriteriaError } = await client
 			.from("event_criteria")
-			.insert(body);
+			.insert(body)
+			.select("id, name, description, rating")
+			.single();
 
 		if (CriteriaError) {
 			throw new Error(
-				`Error creating criteria: ${CriteriaError.message}`
+				`Error adding criteria: ${CriteriaError.message}`
 			);
 		}
 
 		return {
 			success: true,
-			message: "Criteria successfully created.",
+			data: Criteria,
 		};
 	} catch (err) {
-		console.error("Error during criteria creation:", err.message);
+		console.error(err.message);
 		return {
 			success: false,
 			error: err.message,

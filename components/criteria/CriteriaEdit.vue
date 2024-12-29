@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Dialog
-			id="editCriteria"
+			:dialogId="`editCriteria-${criteria.id}`"
 			dialogTitle="Edit Criteria"
 			ref="editCriteriaDialog">
 			<template #ButtonLabel>
@@ -11,7 +11,9 @@
 			</template>
 
 			<template #Body>
-				<form id="editCriteriaForm" @submit="OnSaveCriteriaUpdate">
+				<form
+					:id="`editCriteriaForm-${criteria.id}`"
+					@submit.prevent="OnSaveCriteriaUpdate">
 					<input
 						type="text"
 						class="form-control border-secondary mb-3"
@@ -58,17 +60,24 @@
 							up to 100% for accurate scoring.</b
 						>
 					</p>
+
+					<div
+						v-if="errorMessage != ''"
+						class="fs-7 text-center text-danger">
+						{{ errorMessage }}
+					</div>
+					{{ criteria }}
 				</form>
 			</template>
 
 			<template #Submit>
 				<button
 					type="submit"
-					form="editCriteriaForm"
+					:form="`editCriteriaForm-${criteria.id}`"
 					class="btn btn-success px-5 hstack gap-2"
-					:disabled="saveCriteriaStatus === 'pending'">
+					:disabled="_criteriaStatus === 'pending'">
 					<span
-						v-if="saveCriteriaStatus === 'pending'"
+						v-if="_criteriaStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span>Save</span>
@@ -80,61 +89,73 @@
 
 <script setup>
 	const props = defineProps({
-		criteriaId: Number,
+		criteria: Object,
 	});
+
+	const eventCriteria = useEventCriteria();
 	const eventID = useRoute().params.eventID;
 	const editCriteriaDialog = ref(null);
-
-	const { data: criteriaData, status: GetCriteria } = await useFetch(
-		`/api/events/${eventID}/criteria/${props.criteriaId}`,
-		{
-			method: "GET",
-		}
-	);
+	const errorMessage = ref("");
 
 	const newCriteria = ref({
-		name: criteriaData.value.criteria.name,
-		description: criteriaData.value.criteria.description,
-		rating: criteriaData.value.criteria.rating,
+		name: props.criteria?.name,
+		description: props.criteria?.description,
+		rating: props.criteria?.rating,
 	});
 
 	const {
-		data: saveCriteriaData,
-		status: saveCriteriaStatus,
+		data: _criteria,
+		status: _criteriaStatus,
 		execute: SaveCriteria,
-	} = await useFetch(`/api/events/${eventID}/criteria/${props.criteriaId}`, {
-		method: "PATCH",
-		body: newCriteria,
-		immediate: false,
-		watch: false,
-	});
-
-	const OnSaveCriteriaUpdate = async () => {
-		try {
-			await SaveCriteria();
-			if (!saveCriteriaData.value.success) {
-				throw new Error(saveCriteriaData.value.message);
-			}
-			editCriteriaDialog.value.closeDialog();
-		} catch (err) {
-			console.error(
-				"Error occurred while updating criteria",
-				err.value
-			);
-		}
-	};
-
-	const { data: weightData } = await useFetch(
-		`/api/events/${eventID}/criteria/weight`,
+	} = await useFetch(
+		`/api/events/${eventID}/criteria/${props.criteria?.id}`,
 		{
-			method: "GET",
+			method: "PATCH",
+			body: newCriteria,
+			immediate: false,
+			watch: false,
 		}
 	);
 
-	const maxRating = computed(() => {
-		if (weightData.value) {
-			return 100 - weightData.value.totalRating;
+	const OnSaveCriteriaUpdate = async () => {
+		await SaveCriteria();
+		if (_criteria.value.error) {
+			errorMessage.value = _criteria.value.error;
+			console.log(errorMessage.value);
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+			return;
 		}
-		return 100;
+
+		const criteriaIndex = eventCriteria.value?.findIndex(
+			(c) => c.id === props.criteria?.id
+		);
+
+		if (criteriaIndex < 0) {
+			errorMessage.value = "Could not find criteria.";
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+			return;
+		}
+
+		eventCriteria.value[criteriaIndex] = _criteria.value?.data;
+		editCriteriaDialog.value.closeDialog();
+	};
+
+	const maxRating = computed(() => {
+		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
+			return 0;
+		}
+
+		return (
+			100 -
+			eventCriteria.value?.reduce(
+				(total, criteria) => total + criteria.rating,
+				0
+			)
+		);
 	});
 </script>

@@ -3,15 +3,30 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { eventID } = event.context.params;
-	const { column } = getQuery(event);
 	const body = await readBody(event);
 
-	console.log(column, body);
-	return (
-		await client
+	try {
+		const { data: event, error: eventError } = await client
 			.from("events")
-			.update({ [column]: body.value })
+			.update(body)
 			.eq("id", eventID)
 			.select()
-	).data;
+			.single();
+
+		if (eventError) {
+			throw new Error(eventError.message);
+		}
+
+		return {
+			success: true,
+			data: event,
+		};
+	} catch (err) {
+		console.log("Error while updating event", err.message);
+
+		return {
+			success: false,
+			error: err.message,
+		};
+	}
 });

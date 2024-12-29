@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="text-secondary fs-7">Category</div>
+			<div class="text-secondary fs-7">Type</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -10,28 +10,24 @@
 			</button>
 		</div>
 		<p v-if="!IsEditing" class="fw-bold fs-7 lh-sm">
-			{{ eventDetails.category }}
+			{{ eventDetails?.type || "No event type yet" }}
 		</p>
 
 		<form v-else @submit.prevent="OnSaveEventEdit" class="mt-1 mb-3">
 			<select
-				v-model="newCategory.category"
+				v-model="newType.type"
 				class="form-select border-secondary p-2 mb-2 w-100">
 				<option value="" selected disabled hidden>
-					{{ newCategory.category }}
+					{{ newType.type || "Choose event type" }}
 				</option>
 				<option
-					v-for="(category, index) in categories"
+					v-for="(type, index) in Types"
 					:key="index"
-					:value="category">
-					{{ category }}
+					:value="type">
+					{{ type }}
 				</option>
 			</select>
-
-			<p class="fs-7 text-danger">
-				{{ errorMessage }}
-			</p>
-
+			<p class="fs-7 text-danger">{{ errorMessage }}</p>
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
@@ -60,8 +56,8 @@
 	const eventDetails = useEventDetails();
 	const errorMessage = ref("");
 
-	const newCategory = ref({
-		category: eventDetails.value?.category,
+	const newType = ref({
+		type: eventDetails.value?.type,
 	});
 
 	const IsEditing = ref(false);
@@ -70,7 +66,7 @@
 		IsEditing.value = !IsEditing.value;
 
 		if (!IsEditing.value) {
-			newCategory.value.category = eventDetails.value?.category;
+			newType.value.type = eventDetails.value?.type;
 		}
 	};
 
@@ -80,7 +76,7 @@
 		execute: SaveEventEdit,
 	} = await useFetch(`/api/events/${eventID}`, {
 		method: "PATCH",
-		body: newCategory,
+		body: newType,
 		immediate: false,
 		watch: false,
 	});
@@ -102,10 +98,7 @@
 		IsEditing.value = false;
 	};
 
-	const categories = [
-		"Competition",
-		"Workshop",
-		"Career Fare",
-		"Keynote Speech",
-	];
+	const Types = ["In-person", "Virtual"];
 </script>
+
+<style></style>

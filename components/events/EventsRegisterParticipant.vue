@@ -1,227 +1,135 @@
 <template>
 	<div>
-		<button
-			class="btn btn-outline-secondary"
-			data-bs-toggle="modal"
-			data-bs-target="#registerParticipant">
-			Register Participant
-		</button>
-		<div
-			class="modal"
+		<Dialog
 			id="registerParticipant"
-			data-bs-backdrop="static"
-			data-bs-keyboard="false"
-			tabindex="-1"
-			aria-labelledby="registerParticipant"
-			aria-hidden="true"
-			ref="registerParticipantRef">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5
-							class="modal-title fw-bold"
-							id="staticBackdropLabel">
-							Register Participant
-						</h5>
-						<button
-							type="button"
-							class="btn-close"
-							@click="closeModal"
-							aria-label="Close"></button>
-					</div>
+			dialogTitle="Register Participant"
+			openButtonStyle="btn-outline-dark fw-bold"
+			ref="registerParticipantDialogRef">
+			<template #ButtonLabel>
+				<i class="bi bi-plus" /> Register Participant
+			</template>
+			<template #Body>
+				<div
+					class="d-flex justify-content-between align-items-center mb-2">
+					<div class="fw-bold text-secondary">Participant</div>
+					<a
+						class="link-primary link-offset-2"
+						style="font-size: 0.8rem">
+						Register new participant
+					</a>
+				</div>
+				<form
+					id="registerParticipantForm"
+					@submit.prevent="OnRegisterParticipant"
+					class="mb-3">
+					<input
+						type="text"
+						class="form-control border-secondary mb-1"
+						placeholder="Search participant"
+						list="participantListOptions"
+						required
+						v-model="searchQuery"
+						@input="OnInputSearch" />
 
-					<div class="modal-body">
-						<form
-							@submit="OnSaveRegistration"
-							id="createEvent">
-							<div
-								class="d-flex justify-content-between align-items-center mb-2">
-								<div class="fw-bold text-secondary">
-									Participant
-								</div>
-								<a
-									class="link-primary link-offset-2"
+					<div
+						v-if="errorMessage != ''"
+						class="text-danger"
+						style="font-size: 0.8rem">
+						Error: {{ errorMessage }}
+					</div>
+				</form>
+
+				<div
+					class="vstack gap-3 overflow-y-auto"
+					style="max-height: 360px; cursor: pointer">
+					<div
+						v-for="participant in searchResult"
+						:key="participant.id"
+						class="participant-link"
+						@click="
+							OnSelectParticipant(
+								`${participant.first_name} ${participant.last_name}`,
+								participant.id
+							)
+						">
+						<Avatar
+							:name="participant.first_name"
+							:gender="participant.sex"
+							size="48">
+							<template #name>
+								<p class="fw-bold m-0">
+									{{
+										`${participant.first_name} ${participant.last_name}`
+									}}
+								</p>
+								<p
+									class="text-secondary m-0"
 									style="font-size: 0.8rem">
-									Register new participant
-								</a>
-							</div>
-
-							<input
-								type="text"
-								class="form-control border-secondary mb-3"
-								placeholder="Search participant"
-								list="participantListOptions"
-								v-model="searchQuery"
-								@input="OnInputSearch"
-								required />
-
-							<ul
-								class="list-group mb-3"
-								style="
-									max-height: 360px;
-									overflow-y: auto;
-								">
-								<button
-									type="button"
-									v-for="participant in SearchResult"
-									:key="participant.id"
-									class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-									@click="
-										OnSelectParticipant(
-											participant.id,
-											`${participant.first_name} ${participant.last_name}`
-										)
-									">
-									<div>
-										<div class="">
-											{{
-												`${participant.first_name} ${participant.last_name}`
-											}}
-										</div>
-										<div
-											class="text-secondary"
-											style="
-												font-size: 0.9rem;
-											">
-											{{
-												participant
-													.institutions
-													.name
-											}}
-										</div>
-									</div>
-									<div
-										v-for="(
-											registration, index
-										) in participant.participant_registrations"
-										:key="index">
-										<div
-											v-if="
-												registration.event_id ==
-												eventID
-											"
-											style="font-size: 0.8rem"
-											:class="`${registrationStatusLabel(
-												registration.registration_status
-											)}`">
-											{{
-												registration.registration_status
-											}}
-										</div>
-									</div>
-								</button>
-							</ul>
-							{{ newRegistration.participant_id }}
-							{{ newRegistration.event_id }}
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<button
-							type="button"
-							class="btn"
-							@click="closeModal">
-							Cancel
-						</button>
-						<button
-							type="submit"
-							form="createEvent"
-							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="canRegister">
-							<span
-								v-if="SavingRegistration === 'pending'"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true" />
-							<span role="status">Register</span>
-						</button>
+									{{ participant.institutions.name }}
+								</p>
+							</template>
+						</Avatar>
 					</div>
 				</div>
-			</div>
-		</div>
+			</template>
+
+			<template #Submit>
+				<button
+					type="submit"
+					form="registerParticipantForm"
+					class="btn btn-success px-5 hstack gap-2"
+					:disabled="_registrationStatus === 'pending'">
+					<span
+						v-if="_registrationStatus === 'pending'"
+						class="spinner-border spinner-border-sm"
+						aria-hidden="true" />
+					<span>Register</span>
+				</button>
+			</template>
+		</Dialog>
 	</div>
 </template>
 
 <script setup>
-	const registerParticipantRef = ref(null);
-	let registerParticipant;
-
-	// Reactive variables
+	const registerParticipantDialogRef = ref(null);
+	const participantRegistrations = useParticipantRegistrations();
 	const searchQuery = ref("");
+	const errorMessage = ref("");
 
 	const newRegistration = ref({
-		event_id: useRoute().params.eventID,
+		event_id: Number(useRoute().params.eventID), // Ensures eventID is converted to a number
 		participant_id: null,
 	});
 
-	const canRegister = ref(true);
+	const OnSelectParticipant = (participantName, participantId) => {
+		searchQuery.value = participantName;
+		newRegistration.value.participant_id = participantId;
+	};
 
-	// Fetch setup for saving registration
 	const {
-		data: registration,
-		status: SavingRegistration,
-		execute: SaveRegistration,
+		data: _registration,
+		status: _registrationStatus,
+		error: _registrationError,
+		execute: RegisterParticipant,
 	} = await useFetch("/api/registrations/participants/ByParticipantId", {
-		headers: useRequestHeaders(["cookie"]),
 		method: "POST",
 		body: newRegistration,
 		immediate: false,
 		watch: false,
 	});
 
-	// Function to save a registration
-	const OnSaveRegistration = async () => {
-		try {
-			await SaveRegistration();
-			if (registration.value.success) {
-				closeModal();
-			}
-		} catch (err) {
-			console.error(registration.value.error);
+	const OnRegisterParticipant = async () => {
+		await RegisterParticipant();
+		if (_registration.value?.error) {
+			errorMessage.value = _registration.value.error;
+			return;
 		}
+
+		participantRegistrations.value.push(_registration.value?.data);
+		registerParticipantDialogRef.value?.closeDialog();
 	};
 
-	// Function to select a participant
-	const OnSelectParticipant = (id, participantName) => {
-		searchQuery.value = participantName;
-		newRegistration.value.participant_id = id;
-
-		IsParticipantRegistered();
-	};
-
-	const IsParticipantRegistered = async () => {
-		try {
-			// Fetch data to check if the participant is registered
-			const { data, error } = await useFetch(
-				"/api/registrations/participants/exists",
-				{
-					headers: useRequestHeaders(["cookie"]),
-					method: "GET",
-					body: newRegistration,
-				}
-			);
-
-			// Handle the response
-			if (error.value) {
-				console.error(
-					"Error fetching registration status:",
-					error.value
-				);
-				canRegister.value = false;
-				return;
-			}
-
-			// Update `canRegister` based on the API response
-			canRegister.value =
-				data.value && Object.keys(data.value).length > 0;
-		} catch (err) {
-			// Log unexpected errors and set `canRegister` to false
-			console.error("Unexpected error checking registration:", err);
-			canRegister.value = false;
-		}
-	};
-
-	// Fetch setup for participant search
-	const { data: SearchResult, execute: SearchParticipants } = await useFetch(
+	const { data: searchResult, execute: SearchParticipants } = await useFetch(
 		`/api/participants/search`,
 		{
 			method: "GET",
@@ -235,39 +143,19 @@
 		try {
 			if (searchQuery.value == "") {
 				newRegistration.value.participant_id = null;
-				canRegister.value = false;
+				return;
 			}
+
 			await SearchParticipants();
+			errorMessage.value = "";
 		} catch (err) {
 			console.error("Error during search:");
 		}
 	}, 300);
-
-	const registrationStatusLabel = (status) => {
-		switch (status) {
-			case "Registered":
-				return "text-primary";
-			case "Cancelled":
-				return "text-danger";
-			default:
-				return "text-secondary";
-		}
-	};
-
-	const closeModal = () => {
-		if (registerParticipant) {
-			registerParticipant.hide();
-			searchQuery.value = "";
-			newRegistration.value.participant_id = null;
-		}
-	};
-
-	onMounted(() => {
-		// Access the global `bootstrap` object to initialize the Modal
-		if (registerParticipantRef.value) {
-			registerParticipant = new bootstrap.Modal(
-				registerParticipantRef.value
-			);
-		}
-	});
 </script>
+
+<style scoped>
+	.participant-link:hover {
+		color: #0d6efd;
+	}
+</style>

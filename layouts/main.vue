@@ -1,10 +1,8 @@
 <template>
-	<div style="height: 100%">
+	<div class="d-flex flex-column overflow-y-auto h-100">
 		<AdminNavbar />
-		<div style="height: 100%; overflow: auto">
-			<div class="container-xxl pt-5 w-100">
-				<slot />
-			</div>
+		<div class="container-xxl pt-5">
+			<slot />
 		</div>
 	</div>
 </template>

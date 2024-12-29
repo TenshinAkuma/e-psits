@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Address</div>
+			<div class="text-secondary fs-7">Address</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,23 +9,29 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingAddress">
-			{{ newAddress || `To be announced` }}
+		<p v-if="!IsEditing" class="fw-bold fs-7 lh-sm">
+			{{ eventDetails.address || `To be announced` }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewAddress" class="mt-1">
+		<form v-else @submit.prevent="OnSaveEventEdit" class="mt-1 mb-3">
 			<input
 				type="text"
-				v-model="newAddress"
-				class="form-select border-secondary p-2 mb-3 w-100" />
+				v-model="newAddress.address"
+				placeholder="Venue address"
+				class="form-control border-secondary p-2 mb-2 w-100" />
+
+			<p class="fs-7 text-danger">
+				{{ errorMessage }}
+			</p>
+
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
 					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_eventStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_eventStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
@@ -43,35 +49,52 @@
 
 <script setup>
 	const eventID = useRoute().params.eventID;
-	const EventAddress = defineModel("EventAddress");
+	const eventDetails = useEventDetails();
+	const errorMessage = ref("");
 
-	const newAddress = ref();
-	const IsEditingAddress = ref(false);
+	const newAddress = ref({
+		address: eventDetails.value?.address,
+	});
 
-	const { status, execute } = await useFetch(
-		`/api/events/${eventID}?column=address`,
-		{
-			method: "PATCH",
-			body: { value: newAddress },
-			immediate: false,
-			watch: false,
-		}
-	);
+	const IsEditing = ref(false);
 
-	const OnSaveNewAddress = async () => {
+	const {
+		data: _event,
+		status: _eventStatus,
+		execute: SaveEventEdit,
+	} = await useFetch(`/api/events/${eventID}`, {
+		method: "PATCH",
+		body: newAddress,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnSaveEventEdit = async () => {
 		try {
-			await execute();
+			await SaveEventEdit();
+
+			if (_event.value?.error) {
+				throw new Error(_event.value?.error);
+			}
+
+			eventDetails.value = _event.value?.data;
 			ToggleEdit();
-			EventAddress.value = newAddress.value;
-		} catch (err) {
-			console.log("Failed to update address", err);
+		} catch (error) {
+			console.log("Failed to update address", error);
+
+			errorMessage.value = error.message;
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	};
 
 	const ToggleEdit = () => {
-		IsEditingAddress.value = !IsEditingAddress.value;
-		if (IsEditingAddress.value) {
-			newAddress.value = EventAddress.value;
+		IsEditing.value = !IsEditing.value;
+
+		if (!IsEditing.value) {
+			newAddress.address = eventDetails.value?.address;
 		}
 	};
 </script>

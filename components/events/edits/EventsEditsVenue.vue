@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Venue</div>
+			<div class="text-secondary fs-7">Venue</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -9,23 +9,26 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingVenue">
-			{{ EventVenue || `To be announced` }}
+		<p v-if="!IsEditing" class="fw-bold fs-7 lh-sm">
+			{{ eventDetails.venue || `To be announced` }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewVenue" class="mt-1">
+		<form v-else @submit.prevent="OnSaveEventEdit" class="mt-1 mb-3">
 			<input
 				type="text"
-				v-model="newVenue"
-				class="form-control border-secondary p-2 mb-3 w-100" />
+				v-model="newVenue.venue"
+				class="form-control border-secondary p-2 mb-2 w-100" />
+
+			<p class="fs-7 text-danger">{{ errorMessage }}</p>
+
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
 					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_eventStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_eventStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
@@ -43,35 +46,52 @@
 
 <script setup>
 	const eventID = useRoute().params.eventID;
-	const EventVenue = defineModel("EventVenue");
+	const eventDetails = useEventDetails();
+	const errorMessage = ref("");
 
-	const newVenue = ref();
-	const IsEditingVenue = ref(false);
+	const newVenue = ref({
+		venue: eventDetails.value?.venue,
+	});
 
-	const { status, execute } = await useFetch(
-		`/api/events/${eventID}?column=venue`,
-		{
-			method: "PATCH",
-			body: { value: newVenue },
-			immediate: false,
-			watch: false,
-		}
-	);
+	const IsEditing = ref(false);
 
-	const OnSaveNewVenue = async () => {
+	const {
+		data: _event,
+		status: _eventStatus,
+		execute: SaveEventEdit,
+	} = await useFetch(`/api/events/${eventID}`, {
+		method: "PATCH",
+		body: newVenue,
+		immediate: false,
+		watch: false,
+	});
+
+	const OnSaveEventEdit = async () => {
 		try {
-			await execute();
+			await SaveEventEdit();
+
+			if (_event.value?.error) {
+				throw new Error(_event.value?.error);
+			}
+
+			eventDetails.value = _event.value?.data;
 			ToggleEdit();
-			EventVenue.value = newVenue.value;
-		} catch (err) {
+		} catch (error) {
 			console.log("Failed to update venue", err);
+
+			errorMessage.value = error.message;
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	};
 
 	const ToggleEdit = () => {
-		IsEditingVenue.value = !IsEditingVenue.value;
-		if (IsEditingVenue.value) {
-			newVenue.value = EventVenue.value;
+		IsEditing.value = !IsEditing.value;
+
+		if (!IsEditing.value) {
+			newVenue.value.venue = eventDetails.value?.venue;
 		}
 	};
 </script>

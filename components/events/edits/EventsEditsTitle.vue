@@ -1,8 +1,8 @@
 <template>
-	<div class="mb-3">
+	<div>
 		<div v-if="!IsEditing" class="d-flex align-items-start gap-2">
 			<h1 id="event-title" class="fw-bold m-0">
-				{{ EventTitle }}
+				{{ eventDetails.title }}
 			</h1>
 			<button
 				type="button"
@@ -14,26 +14,27 @@
 
 		<form
 			v-else
-			@submit.prevent="OnSaveNewTitle"
-			class="hstack align-items-center gap-2">
+			@submit.prevent="OnSaveEventEdit"
+			class="d-flex align-items-center gap-2">
 			<input
 				type="text"
-				class="form-control border-secondary w-100 border p-2 me-3 fw-bold"
+				class="form-control border-secondary fw-bold fs-4"
 				style="font-size: 1.25rem"
-				v-model="NewTitle" />
+				v-model="newTitle.title" />
+			<p class="fs-7 text-danger">{{ errorMessage }}</p>
 			<button
 				type="submit"
-				class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+				class="d-flex align-items-center btn btn-success fw-bold gap-2"
 				style="height: min-content"
-				:disabled="status === 'pending'">
+				:disabled="_eventStatus === 'pending'">
 				<span
-					v-if="status === 'pending'"
+					v-if="_eventStatus === 'pending'"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
 				<span role="status">Save</span>
 			</button>
 			<button
-				class="btn btn-sm btn-outline-secondary"
+				class="btn btn-outline-secondary"
 				style="height: min-content"
 				:onclick="ToggleEdit">
 				Cancel
@@ -43,40 +44,50 @@
 </template>
 
 <script setup>
-	const EventId = useRoute().params.eventID;
-	const EventTitle = defineModel("EventTitle");
+	const eventID = useRoute().params.eventID;
+	const eventDetails = useEventDetails();
+	const errorMessage = ref("");
 
-	const NewTitle = ref();
+	const newTitle = ref({
+		title: eventDetails.value?.title,
+	});
 
 	const IsEditing = ref(false);
 
 	const ToggleEdit = () => {
 		IsEditing.value = !IsEditing.value;
-		if (IsEditing.value) {
-			NewTitle.value = EventTitle.value;
+
+		if (!IsEditing.value) {
+			newTitle.value.title = eventDetails.value?.title;
 		}
 	};
 
-	const { status, execute } = await useFetch(
-		`/api/events/${EventId}?column=title`,
-		{
-			method: "PATCH",
-			body: { value: NewTitle },
-			immediate: false,
-			watch: false,
-		}
-	);
+	const {
+		data: _event,
+		status: _eventStatus,
+		execute: SaveEventEdit,
+	} = await useFetch(`/api/events/${eventID}`, {
+		method: "PATCH",
+		body: newTitle,
+		immediate: false,
+		watch: false,
+	});
 
-	const OnSaveNewTitle = async () => {
-		try {
-			await execute();
-			if (status.value == "success") {
-				ToggleEdit();
-				EventTitle.value = NewTitle.value;
-			}
-		} catch (err) {
-			NewTitle.value = err.message;
+	const OnSaveEventEdit = async () => {
+		await SaveEventEdit();
+
+		if (_event.value?.error) {
+			errorMessage.value = _event.value?.error;
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+
+			return;
 		}
+
+		eventDetails.value = _event.value?.data;
+		IsEditing.value = false;
 	};
 </script>
 

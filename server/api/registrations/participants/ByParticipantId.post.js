@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
+	console.log(body);
 	try {
 		// Check if the participant is already registered for the event
 		const { data: participantExists, error: participantError } =
@@ -13,9 +14,9 @@ export default defineEventHandler(async (event) => {
 				.select("id")
 				.eq("event_id", body.event_id)
 				.eq("participant_id", body.participant_id)
-				.single();
+				.maybeSingle();
 
-		if (participantError && participantError.code !== "PGRST116") {
+		if (participantError) {
 			// Handle unexpected errors (e.g., database issues)
 			throw new Error(
 				`Error checking participant registration: ${participantError.message}`
@@ -24,16 +25,19 @@ export default defineEventHandler(async (event) => {
 
 		if (participantExists) {
 			// Prevent duplicate registration
-			return {
-				success: false,
-				error: "Participant is already registered for this event.",
-			};
+			throw new Error(
+				"Participant is already registered for this event."
+			);
 		}
 
 		// Insert the new registration
-		const { error: registrationError } = await client
+		const { data: Participant, error: registrationError } = await client
 			.from("event_registrations")
-			.insert(body);
+			.insert(body)
+			.select(
+				"id, registration_status, participants(id, first_name, last_name, sex, institutions(id, name))"
+			)
+			.single();
 
 		if (registrationError) {
 			throw new Error(
@@ -44,11 +48,11 @@ export default defineEventHandler(async (event) => {
 		// Registration successful
 		return {
 			success: true,
-			message: "Participant successfully registered.",
+			data: Participant,
 		};
 	} catch (err) {
 		// Log and return error response
-		console.error("Error during participant registration:", err.message);
+		console.error(err.message);
 		return {
 			success: false,
 			error: err.message,

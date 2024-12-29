@@ -20,3 +20,7 @@
 ::-webkit-scrollbar-thumb:hover {
 	background: #c5c5c5;
 }
+
+.fs-7 {
+	font-size: 0.875rem;
+}

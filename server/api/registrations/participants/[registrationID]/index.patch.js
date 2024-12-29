@@ -7,16 +7,28 @@ export default defineEventHandler(async (event) => {
 
 	console.log(body);
 
-	const { data, error } = await client
-		.from("event_registrations")
-		.update(body)
-		.eq("id", registrationID)
-		.select();
-
 	try {
-		console.log(data);
-		return data;
-	} catch {
-		console.log(error.message);
+		const { data: participant, error: errorParticipant } = await client
+			.from("event_registrations")
+			.update(body)
+			.eq("id", registrationID)
+			.select();
+
+		if (errorParticipant) {
+			throw new Error(
+				"Error occurred while updating registration status"
+			);
+		}
+
+		return {
+			data: participant,
+			success: true,
+		};
+	} catch (err) {
+		console.error(err.message);
+		return {
+			success: false,
+			error: err.message,
+		};
 	}
 });

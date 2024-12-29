@@ -1,14 +1,14 @@
 <template>
 	<div>
 		<button
-			:class="['nav-link', { active: Active }]"
-			:id="`tab-header-${Id}`"
+			:class="['nav-link', { active: active }]"
+			:id="`tab-header-${id}`"
 			data-bs-toggle="tab"
-			:data-bs-target="`#tab-content-${Id}`"
+			:data-bs-target="`#tab-content-${id}`"
 			type="button"
 			role="tab"
-			:aria-controls="`tab-content-${Id}`"
-			:aria-selected="Active">
+			:aria-controls="`tab-content-${id}`"
+			:aria-selected="active">
 			<slot> Tab Header </slot>
 		</button>
 	</div>
@@ -16,8 +16,8 @@
 
 <script setup>
 	const props = defineProps({
-		Active: false,
-		Id: "sample_tab",
+		active: false,
+		id: "sample_tab",
 	});
 </script>
 

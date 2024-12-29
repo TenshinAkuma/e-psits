@@ -9,9 +9,7 @@ export default defineEventHandler(async (event) => {
 	return (
 		await client
 			.from("participants")
-			.select(
-				"id, first_name, last_name, institutions(name), event_registrations(id, event_id, registration_status)"
-			)
+			.select("id, first_name, last_name, sex, institutions(name)")
 			.or(
 				`first_name.ilike.%${firstName}%,last_name.ilike.%${lastName}%`
 			)

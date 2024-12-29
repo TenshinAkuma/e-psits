@@ -112,11 +112,11 @@
 	const registrationStatusButton = (status) => {
 		switch (status) {
 			case "Registered":
-				return "btn-outline-primary";
+				return "text-primary";
 			case "Cancelled":
-				return "btn-outline-danger";
+				return "text-danger";
 			default:
-				return "btn-outline-secondary";
+				return "text-secondary";
 		}
 	};
 </script>

@@ -1,53 +1,51 @@
 <template>
-	<div class="w-100 pb-5">
-		<div v-if="status === 'success'" class="row">
-			<div class="d-flex justify-content-between align-items-center">
-				<EventsEditsTitle :EventTitle="event.title" />
-				<div class="hstack gap-2">
-					<EventsRegisterParticipant />
-					<EventsCreateModal />
-					<EventsDelete />
+	<div>
+		<div
+			class="d-flex justify-content-between align-items-center gap-5 mb-5">
+			<EventsEditsTitle class="flex-grow-1" />
+			<div class="hstack gap-2">
+				<EventsCreateModal />
+				<EventsDelete />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<div class="border rounded-3 p-3">
+					<p class="fw-bold">About</p>
+					<EventsEditsDescription />
+					<EventsEditsType />
+					<EventsEditsCategory />
+
+					<hr />
+
+					<p class="fw-bold">Schedule</p>
+					<EventsEditsDate />
+					<EventsEditsTime />
+
+					<hr />
+
+					<p class="fw-bold">Location</p>
+					<EventsEditsVenue />
+					<EventsEditsAddress />
 				</div>
 			</div>
-
-			<TabsHeader class="mb-5">
-				<TabsNavButtons Id="participants" :Active="true">
-					Participants
-				</TabsNavButtons>
-				<TabsNavButtons Id="criteria"> Criteria </TabsNavButtons>
-			</TabsHeader>
-
 			<div class="col-9">
-				<TabsContent>
-					<TabsPane Id="participants" :Active="true">
+				<TabsHeader>
+					<TabsNavButtons id="participants" :active="true">
+						Participants
+					</TabsNavButtons>
+					<TabsNavButtons id="criteria">
+						Criteria
+					</TabsNavButtons>
+				</TabsHeader>
+				<TabsContent class="py-5">
+					<TabsPane id="participants" :active="true">
 						<EventsTabsParticipants />
 					</TabsPane>
-					<TabsPane Id="criteria">
+					<TabsPane id="criteria">
 						<EventsTabsCriteria />
 					</TabsPane>
 				</TabsContent>
-			</div>
-
-			<div class="col-3">
-				<p class="fw-bold">Basic Information</p>
-				<EventsEditsDescription
-					:EventDescription="event.description" />
-				<EventsEditsModality :EventModality="event.type" />
-				<EventsEditsCategory :EventCategory="event.category" />
-
-				<hr />
-				<p class="fw-bold">Schedule</p>
-				<EventsEditsDate :EventDate="event.date" />
-				<EventsEditsTime :EventTime="event.date" />
-				<hr />
-				<p class="fw-bold">Location</p>
-				<EventsEditsVenue :EventVenue="event.venue" />
-				<EventsEditsAddress :EventAddress="event.address" />
-			</div>
-		</div>
-		<div v-else>
-			<div class="spinner-border" role="status">
-				<span class="visually-hidden">Loading...</span>
 			</div>
 		</div>
 	</div>
@@ -59,19 +57,16 @@
 	});
 
 	const eventID = useRoute().params.eventID;
+	const eventDetails = useEventDetails();
 
-	const { data: event, status } = useFetch(`/api/events/${eventID}`, {
-		headers: useRequestHeaders(["cookie"]),
-		method: "GET",
-	});
+	const { data: _eventDetails, status } = await useFetch(
+		`/api/events/${eventID}`,
+		{
+			method: "GET",
+		}
+	);
+
+	eventDetails.value = _eventDetails.value.data;
 </script>
 
-<style scoped>
-	.nav-link {
-		color: #424242;
-	}
-	.nav-link.active {
-		color: #242424 !important;
-		font-weight: bold;
-	}
-</style>
+<style scoped></style>

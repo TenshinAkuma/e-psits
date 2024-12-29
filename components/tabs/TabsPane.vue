@@ -1,9 +1,9 @@
 <template>
 	<div
-		:class="['tab-pane fade', { 'show active': Active }]"
-		:id="`tab-content-${Id}`"
+		:class="['tab-pane fade', { 'show active': active }]"
+		:id="`tab-content-${id}`"
 		role="tabpanel"
-		:aria-labelledby="`tab-header-${Id}`"
+		:aria-labelledby="`tab-header-${id}`"
 		tabindex="0">
 		<slot> Tab Content </slot>
 	</div>
@@ -11,7 +11,7 @@
 
 <script setup>
 	const props = defineProps({
-		Active: false,
-		Id: "sample_tab",
+		active: false,
+		id: "sample_tab",
 	});
 </script>
