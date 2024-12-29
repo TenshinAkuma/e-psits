@@ -9,16 +9,16 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
-		<p v-if="!IsEditingCategory" class="fw-bold fs-7 lh-sm">
-			{{ EventCategory }}
+		<p v-if="!IsEditing" class="fw-bold fs-7 lh-sm">
+			{{ eventDetails.category }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewCategory" class="mt-1 mb-3">
+		<form v-else @submit.prevent="OnSaveEventEdit" class="mt-1 mb-3">
 			<select
-				v-model="newCategory"
-				class="form-select border-secondary p-2 mb-3 w-100">
-				<option :value="newCategory" selected disabled hidden>
-					{{ newCategory }}
+				v-model="newCategory.category"
+				class="form-select border-secondary p-2 mb-2 w-100">
+				<option value="" selected disabled hidden>
+					{{ newCategory.category }}
 				</option>
 				<option
 					v-for="(category, index) in categories"
@@ -27,14 +27,19 @@
 					{{ category }}
 				</option>
 			</select>
+
+			<p class="fs-7 text-danger">
+				{{ errorMessage }}
+			</p>
+
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="submit"
 					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_eventStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_eventStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
@@ -52,36 +57,49 @@
 
 <script setup>
 	const eventID = useRoute().params.eventID;
-	const EventCategory = defineModel("EventCategory");
+	const eventDetails = useEventDetails();
+	const errorMessage = ref("");
 
-	const newCategory = ref("");
-	const IsEditingCategory = ref(false);
+	const newCategory = ref({
+		category: eventDetails.value?.category,
+	});
+
+	const IsEditing = ref(false);
 
 	const ToggleEdit = () => {
-		IsEditingCategory.value = !IsEditingCategory.value;
-		if (IsEditingCategory.value) {
-			newCategory.value = EventCategory.value;
+		IsEditing.value = !IsEditing.value;
+
+		if (!IsEditing.value) {
+			newCategory.value.category = eventDetails.value?.category;
 		}
 	};
 
-	const { status, execute, refresh } = await useFetch(
-		`/api/events/${eventID}?column=category`,
-		{
-			method: "PATCH",
-			body: { value: newCategory },
-			immediate: false,
-			watch: false,
-		}
-	);
+	const {
+		data: _event,
+		status: _eventStatus,
+		execute: SaveEventEdit,
+	} = await useFetch(`/api/events/${eventID}`, {
+		method: "PATCH",
+		body: newCategory,
+		immediate: false,
+		watch: false,
+	});
 
-	const OnSaveNewCategory = async () => {
-		try {
-			await execute();
-			ToggleEdit();
-			EventCategory.value = newCategory.value;
-		} catch (err) {
-			console.log("Failed to update category", err);
+	const OnSaveEventEdit = async () => {
+		await SaveEventEdit();
+
+		if (_event.value?.error) {
+			errorMessage.value = _event.value?.error;
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+
+			return;
 		}
+
+		eventDetails.value = _event.value?.data;
+		IsEditing.value = false;
 	};
 
 	const categories = [

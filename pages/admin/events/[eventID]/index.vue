@@ -14,12 +14,11 @@
 					<p class="fw-bold">About</p>
 					<EventsEditsDescription />
 					<EventsEditsType />
-					<!-- <EventsEditsCategory
-						:EventCategory="eventDetails.category" />
+					<EventsEditsCategory />
 
 					<hr />
 
-					<p class="fw-bold">Schedule</p>
+					<!-- <p class="fw-bold">Schedule</p>
 					<EventsEditsDate :EventDate="eventDetails.date" />
 					<EventsEditsTime :EventTime="eventDetails.date" />
 
