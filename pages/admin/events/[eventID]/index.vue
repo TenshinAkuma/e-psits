@@ -13,20 +13,21 @@
 				<div class="border rounded-3 p-3">
 					<p class="fw-bold">About</p>
 					<EventsEditsDescription />
-					<!-- <EventsEditsModality :EventModality="eventDetails.type" />
-		<EventsEditsCategory :EventCategory="eventDetails.category" />
+					<EventsEditsType />
+					<!-- <EventsEditsCategory
+						:EventCategory="eventDetails.category" />
 
-		<hr />
+					<hr />
 
-		<p class="fw-bold">Schedule</p>
-		<EventsEditsDate :EventDate="eventDetails.date" />
-		<EventsEditsTime :EventTime="eventDetails.date" />
+					<p class="fw-bold">Schedule</p>
+					<EventsEditsDate :EventDate="eventDetails.date" />
+					<EventsEditsTime :EventTime="eventDetails.date" />
 
-		<hr />
+					<hr />
 
-		<p class="fw-bold">Location</p>
-		<EventsEditsVenue :EventVenue="eventDetails.venue" />
-		<EventsEditsAddress :EventAddress="event.address" /> -->
+					<p class="fw-bold">Location</p>
+					<EventsEditsVenue :EventVenue="eventDetails.venue" />
+					<EventsEditsAddress :EventAddress="event.address" /> -->
 				</div>
 			</div>
 			<div class="col-9">
