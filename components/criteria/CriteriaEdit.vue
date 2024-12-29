@@ -134,7 +134,6 @@
 
 		if (criteriaIndex < 0) {
 			errorMessage.value = "Could not find criteria.";
-			console.log(errorMessage.value);
 
 			setTimeout(() => {
 				errorMessage.value = "";
@@ -146,17 +145,17 @@
 		editCriteriaDialog.value.closeDialog();
 	};
 
-	const { data: weightData } = await useFetch(
-		`/api/events/${eventID}/criteria/weight`,
-		{
-			method: "GET",
-		}
-	);
-
 	const maxRating = computed(() => {
-		if (weightData.value) {
-			return 100 - weightData.value.totalRating;
+		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
+			return 0;
 		}
-		return 100;
+
+		return (
+			100 -
+			eventCriteria.value?.reduce(
+				(total, criteria) => total + criteria.rating,
+				0
+			)
+		);
 	});
 </script>

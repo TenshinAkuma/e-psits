@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<div class="d-flex justify-content-between align-items-center mb-5">
-			<EventsEditsTitle :EventTitle="'No Title'" />
+		<div
+			class="d-flex justify-content-between align-items-center gap-5 mb-5">
+			<EventsEditsTitle class="flex-grow-1" />
 			<div class="hstack gap-2">
 				<EventsCreateModal />
 				<EventsDelete />
@@ -9,7 +10,24 @@
 		</div>
 		<div class="row">
 			<div class="col-3">
-				<EventsDetails />
+				<div class="border rounded-3 p-3">
+					<p class="fw-bold">About</p>
+					<EventsEditsDescription />
+					<!-- <EventsEditsModality :EventModality="eventDetails.type" />
+		<EventsEditsCategory :EventCategory="eventDetails.category" />
+
+		<hr />
+
+		<p class="fw-bold">Schedule</p>
+		<EventsEditsDate :EventDate="eventDetails.date" />
+		<EventsEditsTime :EventTime="eventDetails.date" />
+
+		<hr />
+
+		<p class="fw-bold">Location</p>
+		<EventsEditsVenue :EventVenue="eventDetails.venue" />
+		<EventsEditsAddress :EventAddress="event.address" /> -->
+				</div>
 			</div>
 			<div class="col-9">
 				<TabsHeader>
@@ -37,14 +55,18 @@
 	definePageMeta({
 		layout: "main",
 	});
+
+	const eventID = useRoute().params.eventID;
+	const eventDetails = useEventDetails();
+
+	const { data: _eventDetails, status } = await useFetch(
+		`/api/events/${eventID}`,
+		{
+			method: "GET",
+		}
+	);
+
+	eventDetails.value = _eventDetails.value.data;
 </script>
 
-<style scoped>
-	.nav-link {
-		color: #424242;
-	}
-	.nav-link.active {
-		color: #242424 !important;
-		font-weight: bold;
-	}
-</style>
+<style scoped></style>
