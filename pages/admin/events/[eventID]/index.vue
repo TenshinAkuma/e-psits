@@ -20,10 +20,10 @@
 
 					<p class="fw-bold">Schedule</p>
 					<EventsEditsDate />
-					<!-- <EventsEditsTime :EventTime="eventDetails.date" />
+					<EventsEditsTime />
 
 					<hr />
-
+					<!-- 
 					<p class="fw-bold">Location</p>
 					<EventsEditsVenue :EventVenue="eventDetails.venue" />
 					<EventsEditsAddress :EventAddress="event.address" /> -->
