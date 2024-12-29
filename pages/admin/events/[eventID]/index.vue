@@ -18,9 +18,9 @@
 
 					<hr />
 
-					<!-- <p class="fw-bold">Schedule</p>
-					<EventsEditsDate :EventDate="eventDetails.date" />
-					<EventsEditsTime :EventTime="eventDetails.date" />
+					<p class="fw-bold">Schedule</p>
+					<EventsEditsDate />
+					<!-- <EventsEditsTime :EventTime="eventDetails.date" />
 
 					<hr />
 
