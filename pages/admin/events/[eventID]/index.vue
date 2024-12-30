@@ -37,6 +37,9 @@
 					<TabsNavButtons id="criteria">
 						Criteria
 					</TabsNavButtons>
+					<TabsNavButtons id="rules">
+						Guidelines
+					</TabsNavButtons>
 				</TabsHeader>
 				<TabsContent class="py-5">
 					<TabsPane id="participants" :active="true">
@@ -44,6 +47,9 @@
 					</TabsPane>
 					<TabsPane id="criteria">
 						<EventsTabsCriteria />
+					</TabsPane>
+					<TabsPane id="rules">
+						<EventsTabsRules />
 					</TabsPane>
 				</TabsContent>
 			</div>
