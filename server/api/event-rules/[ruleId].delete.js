@@ -1,12 +1,11 @@
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
-	const client = serverSupabaseClient(event);
+	const client = await serverSupabaseClient(event);
 	const { ruleId } = event.context.params;
-	const body = await readBody(event);
 
 	try {
-		const { data: rulesData, error: rulesError } = (await client)
+		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
 			.delete()
 			.eq("id", ruleId);

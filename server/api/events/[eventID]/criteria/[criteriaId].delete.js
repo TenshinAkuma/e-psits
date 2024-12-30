@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { criteriaId } = event.context.params;
 
-	console.log("criteriaId", criteriaId);
 	try {
 		const { data: criteria, error } = await client
 			.from("event_criteria")

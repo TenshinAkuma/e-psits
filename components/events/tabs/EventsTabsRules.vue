@@ -12,9 +12,7 @@
 					<p class="fw-bold m-0">{{ rule.name }}</p>
 					<div class="hstack gap-2">
 						<RulesEdit :ruleData="rule" />
-						<button class="btn btn-sm">
-							<i class="bi bi-trash-fill" />
-						</button>
+						<RulesDelete :ruleId="rule.id" />
 					</div>
 				</div>
 				<p
