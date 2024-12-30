@@ -1,5 +1,8 @@
 <template>
 	<div>
+		<div class="mb-3">
+			<RulesCreate :rulesId="0" />
+		</div>
 		<ul class="list-group">
 			<li class="list-group-item p-3">
 				<div class="d-flex justify-content-between">
