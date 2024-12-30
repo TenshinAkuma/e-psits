@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			success: true,
-			data: criteria,
 		};
 	} catch (err) {
 		console.error("Error during criteria deletion:", err.message);
