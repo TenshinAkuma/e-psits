@@ -4,9 +4,7 @@
 			<EventsRegisterParticipant />
 		</div>
 		<div class="table-responsive overflow-y-auto" style="height: 576px">
-			<table
-				class="table table-borderless align-middle"
-				style="cursor: pointer">
+			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
 						<th scope="col">Participants</th>

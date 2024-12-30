@@ -53,33 +53,30 @@
 	});
 
 	const OnDeleteCriteria = async () => {
-		await DeleteCriteria();
+		try {
+			await DeleteCriteria();
 
-		if (_criteria.value?.error) {
-			errorMessage.value = _criteria.value.error;
-			console.log(errorMessage.value);
+			if (_criteria.value?.error) {
+				throw new Error(criteria.value?.error);
+			}
+
+			const criteriaIndex = eventCriteria.value?.findIndex(
+				(c) => c.id === props.criteriaId
+			);
+
+			if (criteriaIndex < 0) {
+				throw new Error("Could not delete criteria");
+			}
+
+			eventCriteria.value?.splice(criteriaIndex, 1);
+			deleteCriteriaDialog.value?.closeDialog();
+		} catch (err) {
+			errorMessage.value = err.message;
+
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-			return;
 		}
-
-		const criteriaIndex = eventCriteria.value?.findIndex(
-			(c) => c.id === props.criteriaId
-		);
-
-		if (criteriaIndex < 0) {
-			errorMessage.value = "Could not find criteria.";
-			console.log(errorMessage.value);
-
-			setTimeout(() => {
-				errorMessage.value = "";
-			}, 3000);
-			return;
-		}
-
-		eventCriteria.value?.splice(criteriaIndex, 1);
-		deleteCriteriaDialog.value?.closeDialog();
 	};
 </script>
 
