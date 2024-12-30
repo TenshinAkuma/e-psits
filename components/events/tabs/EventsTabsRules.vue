@@ -11,9 +11,7 @@
 				<div class="d-flex justify-content-between">
 					<p class="fw-bold m-0">{{ rule.name }}</p>
 					<div class="hstack gap-2">
-						<button class="btn btn-sm">
-							<i class="bi bi-pencil-fill" />
-						</button>
+						<RulesEdit :ruleData="rule" />
 						<button class="btn btn-sm">
 							<i class="bi bi-trash-fill" />
 						</button>
