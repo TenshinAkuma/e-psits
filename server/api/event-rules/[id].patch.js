@@ -2,14 +2,14 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { ruleId } = event.context.params;
+	const { id } = event.context.params;
 	const body = await readBody(event);
 
 	try {
 		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
 			.update(body)
-			.eq("id", ruleId)
+			.eq("id", id)
 			.select("id, name, description")
 			.single();
 

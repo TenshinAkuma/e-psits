@@ -16,11 +16,6 @@ export default defineEventHandler(async (event) => {
 			throw new Error(`Error fetching criteria: ${error.message}`);
 		}
 
-		// Handle empty criteria case
-		if (!criteria || criteria.length === 0) {
-			throw new Error("No criteria found for this event.");
-		}
-
 		// Return successful response with the fetched data
 		return {
 			success: true,

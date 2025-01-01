@@ -2,13 +2,13 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { ruleId } = event.context.params;
+	const { id } = event.context.params;
 
 	try {
 		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
-			.delete()
-			.eq("id", ruleId);
+			.select("id, name, description")
+			.eq("event_id", id);
 
 		if (rulesError) {
 			throw new Error(rulesError.message);
@@ -16,12 +16,10 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			success: true,
+			data: rulesData,
 		};
 	} catch (err) {
-		console.error(
-			"Error occurred while deleting event rule",
-			err.message
-		);
+		console.error("Error while fetching event rules", err.message);
 
 		return {
 			success: false,
