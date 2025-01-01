@@ -70,20 +70,18 @@
 
 	const editRulesRef = ref(null);
 	const eventRules = useEventRules();
-	const eventID = useRoute().params.eventID;
 	const errorMessage = ref("");
 
 	const ruleEdit = ref({
 		name: props.ruleData?.name,
 		description: props.ruleData?.description,
-		event_id: eventID,
 	});
 
 	const {
 		data: _rulesData,
 		status: _rulesStatus,
 		execute: SaveRulesEdit,
-	} = await useFetch(`/api/event-rules/${props.ruleData?.id}`, {
+	} = await useFetch(`/api/event-rules/${props.ruleData.id}`, {
 		method: "PATCH",
 		body: ruleEdit,
 		immediate: false,

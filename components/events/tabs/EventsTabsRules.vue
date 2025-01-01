@@ -1,9 +1,17 @@
 <template>
-	<div>
+	<div
+		v-if="eventRules.length === 0 || eventRules == null"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 576px">
+		<p class="fs-7">Event criteria is empty.</p>
+		<RulesCreate />
+	</div>
+
+	<div v-else>
 		<div class="mb-3">
 			<RulesCreate :rulesId="0" />
 		</div>
-		<ul class="list-group">
+		<ul class="list-group overflow-y-auto" style="max-height: 576px">
 			<li
 				v-for="rule in eventRules"
 				:key="rule.id"
@@ -15,9 +23,7 @@
 						<RulesDelete :ruleId="rule.id" />
 					</div>
 				</div>
-				<p
-					class="fs-7 text-secondary lh-sm"
-					style="max-width: 56ch">
+				<p class="fs-7 text-secondary lh-sm">
 					{{ rule.description }}
 				</p>
 			</li>
@@ -27,9 +33,10 @@
 
 <script setup>
 	const eventRules = useEventRules();
+	const eventID = useRoute().params.eventID;
 
 	const { data: _rulesData, status: _rulesStatus } = await useFetch(
-		"/api/event-rules",
+		`/api/event-rules/${eventID}`,
 		{
 			method: "GET",
 		}
