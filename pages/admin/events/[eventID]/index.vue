@@ -38,10 +38,10 @@
 						Criteria for Judging
 					</TabsNavButtons>
 					<TabsNavButtons id="rules">
-						Evaluation Guidelines
+						Rules and Guidelines
 					</TabsNavButtons>
 					<TabsNavButtons id="results">
-						Results and Rankings
+						Results and Evaluation
 					</TabsNavButtons>
 				</TabsHeader>
 				<TabsContent class="py-5">

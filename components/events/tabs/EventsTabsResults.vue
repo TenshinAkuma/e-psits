@@ -7,13 +7,15 @@
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
-						<th scope="col">Rank</th>
 						<th scope="col">Participant</th>
-						<th scope="col">Score</th>
+						<th v-for="criterion in eventCriteria" :key="criterion.id" scope="col" class="text-center">{{ criterion.name }}</th>
 						<th scope="col">Total</th>
 					</tr>
 				</thead>
 				<tbody>
+					<tr v-for="participant in registeredParticipants" :key="participant.id">
+						<td>{{ `${participant.participants.first_name} ${participant.participants.last_name}` }}</td>
+					</tr>
 				</tbody>
 			</table>
 		</div>
@@ -21,6 +23,11 @@
 </template>
 
 <script setup>
-</script>
+	const eventCriteria = useEventCriteria();
+	const eventParticipants = useParticipantRegistrations();
 
-<style></style>
+	const registeredParticipants = eventParticipants.value.filter(
+		(participant) => participant.registration_status.toLowerCase() === "registered"
+	);
+
+</script>
