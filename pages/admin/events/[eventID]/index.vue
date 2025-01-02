@@ -72,6 +72,7 @@
 	const eventDetails = useEventDetails();
 	const eventCriteria = useEventCriteria();
 	const participantRegistrations = useParticipantRegistrations();
+	const eventScores = useEventScores();
 
 	const { data: _eventDetails, status } = await useFetch(
 		`/api/events/${eventID}`,
@@ -90,7 +91,16 @@
 	const { data: _registrations, status: _registrationsState } =
 		await useFetch(`/api/events/${eventID}/getParticipants`);
 
-	eventDetails.value = _eventDetails.value.data;
+
+	const { data: _scoresData } = await useFetch(
+		`/api/event-results/${eventID}`,
+		{
+			method: "GET",
+		}
+	);
+
+	eventScores.value = _scoresData.value?.data;
+	eventDetails.value = _eventDetails.value?.data;
 	eventCriteria.value = _criteria.value?.data;
 	participantRegistrations.value = _registrations.value.data;
 </script>

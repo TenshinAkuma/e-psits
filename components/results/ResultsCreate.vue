@@ -72,8 +72,6 @@
 			<p class="fs-7 text-danger text-center m-0">
 				{{ errorMessage }}
 			</p>
-			
-			{{ payload }}
 		</template>
 
 		<template #Submit>
@@ -96,6 +94,7 @@
 	const evaluateParticipantRef = ref(null);
 	const registeredParticipants = useParticipantRegistrations();
 	const eventCriteria = useEventCriteria();
+	const eventScores = useEventScores();
 	const errorMessage = ref("");
 
 	const evaluation = ref({
@@ -148,7 +147,9 @@
 				throw new Error(_resultData.value.error);
 			}
 
+			eventScores.value?.push(..._resultData.value.data);
 			evaluateParticipantRef.value.closeDialog();
+
 		} catch (error) {
 			console.error(error);
 

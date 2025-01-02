@@ -4,20 +4,30 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
-	console.log("body", body);
+	console.log("body", body[0].registration_id);
 	try {
+		const { data: scoreExistsData, error: scoreExistsError } =
+			await client
+				.from("event_scores")
+				.select("id")
+				.eq("registration_id", body[0].registration_id);
+
+		if (scoreExistsData.length > 0) {
+			throw new Error("Participant has already been evaluated.");
+		}
+
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.insert(body)
 			.select();
 
-		if (resultError) {
-			throw new Error(resultError.message);
+		if (scoreError) {
+			throw new Error(scoreError.message);
 		}
 
 		return {
 			success: true,
-			data: resultData,
+			data: scoreData,
 		};
 	} catch (err) {
 		console.error(
