@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
 	console.log("body", body);
 	try {
-		const { data: resultData, error: resultError } = await client
+		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.insert(body)
 			.select();
