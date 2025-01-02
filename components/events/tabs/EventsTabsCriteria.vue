@@ -22,7 +22,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="criteria in _criteria.data"
+						v-for="criteria in eventCriteria"
 						:key="criteria.id"
 						style="height: 114px">
 						<td>
@@ -43,7 +43,6 @@
 						<td>
 							<div class="d-flex justify-content-end">
 								<CriteriaEdit :criteria="criteria" />
-
 								<CriteriaDelete
 									:criteriaId="criteria.id" />
 							</div>
@@ -58,15 +57,6 @@
 <script setup>
 	const eventID = useRoute().params.eventID;
 	const eventCriteria = useEventCriteria();
-
-	const { data: _criteria, status } = await useFetch(
-		`/api/events/${eventID}/criteria`,
-		{
-			method: "GET",
-		}
-	);
-
-	eventCriteria.value = _criteria.value?.data;
 
 	const criteriaLength = computed(() => eventCriteria.value?.length);
 </script>
