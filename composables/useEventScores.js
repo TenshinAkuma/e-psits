@@ -1,1 +1,1 @@
-export const useEventScores = () => useState("EventScores", () => {});
+export const useEventScores = () => useState("EventScores", () => []);

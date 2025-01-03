@@ -4,12 +4,11 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 
-	console.log("body", body);
 	try {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.select(
-				"score, event_criteria(id, name), event_registrations(event_id)"
+				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))"
 			)
 			.eq("event_registrations.event_id", id);
 

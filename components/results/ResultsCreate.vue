@@ -148,6 +148,7 @@
 			}
 
 			eventScores.value?.push(..._resultData.value.data);
+			console.log(eventScores.value);
 			evaluateParticipantRef.value.closeDialog();
 
 		} catch (error) {
