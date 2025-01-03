@@ -155,7 +155,7 @@
 			eventCriteria.value?.reduce(
 				(total, criteria) => total + criteria.rating,
 				0
-			)
+			) + newCriteria.value.rating
 		);
 	});
 </script>
