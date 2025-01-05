@@ -44,7 +44,7 @@
 							:key="criteria.id"
 							class="text-center text-secondary">
 							<div
-								class="d-flex justify-content-center gap-2">
+								class="d-flex justify-content-center align-items-center gap-2">
 								<div>
 									{{
 										getScoreDetails(
@@ -69,19 +69,20 @@
 										).value?.computedScore
 									}}
 								</div>
+								<ResultsEdit :score="participant.scores[criteria.id]"/>
 							</div>
 						</td>
 						<td class="text-end fw-bold">
 							{{ getTotalScore(participant.registration_id) }} pts
 						</td>
 						<td>
-							<ResultsDelete
-								:registrationId="participant.registration_id" />
+								<ResultsDelete :registrationId="participant.registration_id" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
+		{{ transformedData }}
 	</div>
 </template>
 
@@ -141,13 +142,12 @@
 			if (!groupedData[registration_id]) {
 				groupedData[registration_id] = {
 					registration_id,
-					criteria_id,
 					scores: {},
 					totalScore: 0,
 				};
 			}
 
-			groupedData[registration_id].scores[score_id] = {
+			groupedData[registration_id].scores[criteria_id] = {
 				score_id,
 				score,
 			};
