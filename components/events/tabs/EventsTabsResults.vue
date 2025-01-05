@@ -10,129 +10,132 @@
 						<th scope="col">Rank</th>
 						<th scope="col">Participant</th>
 						<th
-							v-for="criteria in criteriaColumns"
-							:key="criteria"
+							v-for="criteria in eventCriteria"
+							:key="criteria.id"
 							scope="col"
 							class="text-center">
 							{{
 								`${criteria.name} - ${criteria.rating}%`
 							}}
 						</th>
-						<th scope="col">Total</th>
+						<th scope="col" class="text-end">
+							Weighted Score
+						</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr
-						v-for="(row, index) in transformedData"
-						:key="row.registration_id">
-						<td>{{ index + 1 }}</td>
-						<td>{{ row.participantName }}</td>
-						<td
-							v-for="criteria in criteriaColumns"
-							:key="criteria"
-							class="">
-							<div
-								class="d-flex justify-content-center align-items-center text-secondary gap-3 mx-auto">
-								<span>{{
-									row.scores[criteria.name].score
-								}}</span>
-								<i class="bi bi-arrow-right" />
-								<span class="text-dark">{{
-									computeRating(
-										row.scores[criteria.name]
-											.score,
-										row.scores[criteria.name]
-											.rating
-									)
-								}}</span>
+						v-for="(
+							participant, index
+						) in registeredParticipants"
+						:key="participant.id">
+						<td>
+							<div class="fw-bold">
+								{{ `# ${index + 1}` }}
 							</div>
 						</td>
 						<td>
-							<div class="fw-bold">
-								{{ `${row.totalScore} pts` }}
+							{{
+								`${participant.participants.first_name} ${participant.participants.last_name}`
+							}}
+						</td>
+						<td
+							v-for="criteria in eventCriteria"
+							:key="criteria.id"
+							class="text-center text-secondary">
+							<div
+								class="d-flex justify-content-center gap-2">
+								<div>
+									{{
+										getScoreDetails(
+											participant.id,
+											criteria.id
+										)?.score
+									}}
+								</div>
+								<i v-if="getScoreDetails(participant.id, criteria.id)?.score" class="bi bi-arrow-right" />
+								<div class="text-dark">
+									{{
+										getScoreDetails(
+											participant.id,
+											criteria.id
+										)?.computedScore
+									}}
+								</div>
 							</div>
 						</td>
-						<td class="d-flex justify-content-end">
-							<button class="btn btn-sm">
-								<i class="bi bi-trash-fill text-secondary" style="font-size: .5rem;"/>
-							</button>
+						<td class="text-end fw-bold">
+							{{ getTotalScore(participant.id) }} pts
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		{{ transformedData }}
+		{{ eventScores }}
 	</div>
 </template>
 
 <script setup>
 	const eventScores = useEventScores();
+	const eventCriteria = useEventCriteria();
+	const participantsRegistrations = useParticipantRegistrations();
 
-	const criteriaColumns = computed(() => {
-		// Use a Map to ensure unique criteria based on the name
-		const criteriaSet = new Map();
+	const getScoreDetails = (registrationId, criteriaId) => {
+		// Find the object that matches the registrationId and criteriaId
+		const result = eventScores.value?.find(
+			(item) =>
+				item.registration_id === registrationId &&
+				item.criteria_id === criteriaId
+		);
 
-		eventScores.value?.forEach((entry) => {
-			const scoreId = entry.id;
-			const name = entry.event_criteria.name.trim();
-			const rating = entry.event_criteria.rating;
+		// If no match is found, return null
+		if (!result) return null;
 
-			// Only add if the name is not already in the Map
-			if (!criteriaSet.has(name)) {
-				criteriaSet.set(name, { scoreId, name, rating });
-			}
-		});
+		// Extract the score and rating
+		const { score } = result;
+		const { rating } = result.event_criteria;
 
-		// Convert the Map values into an array
-		return Array.from(criteriaSet.values());
+		// Compute the computed score
+		const computedScore = (score * (rating / 100)).toFixed(2);
+
+		// Return the score and computed score
+		return {
+			score,
+			computedScore: parseFloat(computedScore), // Parse to ensure it's a number
+		};
+
+		// return `${score}  =>  ${parseFloat(computedScore)}`
+	};
+
+	const registeredParticipants = computed(() => {
+		return participantsRegistrations.value?.filter(
+			(participant) =>
+				participant.registration_status.toLowerCase() ===
+				"registered"
+		);
 	});
 
-	const transformedData = computed(() => {
-		const groupedData = {};
+	const getTotalScore = (registrationId) => {
+		// Use a computed property to ensure reactivity
+		return computed(() => {
+			// Filter the reactive eventScores array for the given registration ID
+			const scores = eventScores.value?.filter(
+				(p) => p.registration_id === registrationId
+			);
 
-		eventScores.value?.forEach((entry) => {
-			const registrationId = entry.registration_id;
-			const participantName = `${entry.event_registrations.participants.last_name}, ${entry.event_registrations.participants.first_name}`;
-			const criteriaName = entry.event_criteria.name.trim();
-			const scoreId = entry.id;
-			const score = entry.score;
-			const rating = entry.event_criteria.rating;
+			// Guard clause to handle undefined or empty scores
+			if (!scores || scores.length === 0) return 0;
 
-			if (!groupedData[registrationId]) {
-				groupedData[registrationId] = {
-					participantName,
-					scores: {},
-					scoreIdArray: [],
-					totalScore: 0,
-				};
-			}
-
-			groupedData[registrationId].scores[criteriaName] = {
-				scoreId,
-				criteriaName,
-				score,
-				rating,
-			};
-
-			// Collect all scoreIds for this registration
-			groupedData[registrationId].scoreIdArray.push(scoreId);
-
-			groupedData[registrationId].totalScore = Object.values(
-				groupedData[registrationId].scores
-			).reduce((acc, curr) => {
-				return (
-					acc +
-					parseFloat(computeRating(curr.score, curr.rating))
-				);
+			// Calculate the total weighted score
+			const totalScore = scores.reduce((total, item) => {
+				const score = item.score;
+				const rating = item.event_criteria.rating;
+				const weightedScore = score * (rating / 100);
+				return total + weightedScore;
 			}, 0);
+
+			// Return the computed total score
+			return parseFloat(totalScore.toFixed(2)); // Ensure consistent decimal places
 		});
-
-		return Object.values(groupedData).sort(
-			(a, b) => b.totalScore - a.totalScore
-		); // Convert grouped object to array
-	});
-
-	const computeRating = (score, rating) => {
-		return (score * (rating / 100)).toFixed(2);
 	};
 </script>

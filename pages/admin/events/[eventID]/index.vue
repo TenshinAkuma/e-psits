@@ -74,7 +74,7 @@
 	const participantRegistrations = useParticipantRegistrations();
 	const eventScores = useEventScores();
 
-	const { data: _eventDetails, status } = await useFetch(
+	const { data: _eventDetails } = await useFetch(
 		`/api/events/${eventID}`,
 		{
 			method: "GET",
@@ -88,7 +88,7 @@
 		}
 	);
 
-	const { data: _registrations, status: _registrationsState } =
+	const { data: _registrations } =
 		await useFetch(`/api/events/${eventID}/getParticipants`);
 
 

@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.select(
-				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))"
+				"id, score, registration_id, criteria_id,event_criteria(rating), event_registrations(event_id)"
 			)
 			.eq("event_registrations.event_id", id);
 
