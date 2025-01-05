@@ -28,7 +28,8 @@
 						v-for="(
 							participant, index
 						) in registeredParticipants"
-						:key="participant.id">
+						:key="participant.id"
+						style="height: 72px">
 						<td>
 							<div class="fw-bold">
 								{{ `# ${index + 1}` }}
@@ -49,23 +50,32 @@
 									{{
 										getScoreDetails(
 											participant.id,
-											criteria.id
-										)?.score
+											criteria.id).value?.score
 									}}
 								</div>
-								<i v-if="getScoreDetails(participant.id, criteria.id)?.score" class="bi bi-arrow-right" />
+								<i
+									v-if="
+										getScoreDetails(
+											participant.id,
+											criteria.id
+										).value?.score
+									"
+									class="bi bi-arrow-right" />
 								<div class="text-dark">
 									{{
 										getScoreDetails(
 											participant.id,
-											criteria.id
-										)?.computedScore
+											criteria.id).value?.computedScore
 									}}
 								</div>
 							</div>
 						</td>
 						<td class="text-end fw-bold">
 							{{ getTotalScore(participant.id) }} pts
+						</td>
+						<td>
+							<ResultsDelete
+								:registrationId="participant.id" />
 						</td>
 					</tr>
 				</tbody>
@@ -81,31 +91,32 @@
 	const participantsRegistrations = useParticipantRegistrations();
 
 	const getScoreDetails = (registrationId, criteriaId) => {
-		// Find the object that matches the registrationId and criteriaId
-		const result = eventScores.value?.find(
-			(item) =>
-				item.registration_id === registrationId &&
-				item.criteria_id === criteriaId
-		);
+		return computed(() => {
+			// Find the object that matches the registrationId and criteriaId
+			const result = eventScores.value?.find(
+				(item) =>
+					item.registration_id === registrationId &&
+					item.criteria_id === criteriaId
+			);
 
-		// If no match is found, return null
-		if (!result) return null;
+			// If no match is found, return null
+			if (!result) return null;
 
-		// Extract the score and rating
-		const { score } = result;
-		const { rating } = result.event_criteria;
+			// Extract the score and rating
+			const { score } = result;
+			const { rating } = result.event_criteria;
 
-		// Compute the computed score
-		const computedScore = (score * (rating / 100)).toFixed(2);
+			// Compute the computed score
+			const computedScore = (score * (rating / 100)).toFixed(2);
 
-		// Return the score and computed score
-		return {
-			score,
-			computedScore: parseFloat(computedScore), // Parse to ensure it's a number
-		};
-
-		// return `${score}  =>  ${parseFloat(computedScore)}`
+			// Return the score and computed score
+			return {
+				score,
+				computedScore: parseFloat(computedScore), // Parse to ensure it's a number
+			};
+		});
 	};
+
 
 	const registeredParticipants = computed(() => {
 		return participantsRegistrations.value?.filter(

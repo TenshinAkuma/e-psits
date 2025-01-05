@@ -79,7 +79,7 @@
 				type="submit"
 				form="evaluateParticipant"
 				class="btn btn-primary hstack gap-2 px-5"
-				:disabled="_resultStatus.value === 'pending'">
+				:disabled="_resultStatus === 'pending'">
 				<span
 					v-if="_resultStatus === 'pending'"
 					class="spinner-border spinner-border-sm"
@@ -148,7 +148,7 @@
 			}
 
 			eventScores.value?.push(..._resultData.value.data);
-			console.log(eventScores.value);
+			resetInput();
 			evaluateParticipantRef.value.closeDialog();
 
 		} catch (error) {
@@ -161,4 +161,13 @@
 			}, 3000);
 		}
 	};
+
+	// A function to reset the `scores` property of `evaluation.value` to an empty object
+	const resetInput = () => {
+		if (evaluation?.value) { // Check if `evaluation` and `evaluation.value` exist
+			evaluation.value.scores = {}; // Safely reset `scores` to an empty object
+			evaluation.value.registration_id = 0;
+		}
+	};
+
 </script>
