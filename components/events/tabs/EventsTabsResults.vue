@@ -14,9 +14,8 @@
 							:key="criteria.id"
 							scope="col"
 							class="text-center">
-							{{
-								`${criteria.name} - ${criteria.rating}%`
-							}}
+							{{ criteria.name }} <br />
+							{{ `${criteria.rating}%` }}
 						</th>
 						<th scope="col" class="text-end">
 							Weighted Score
@@ -25,9 +24,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(
-							participant, index
-						) in registeredParticipants"
+						v-for="(participant, index) in transformedData"
 						:key="participant.id"
 						style="height: 72px">
 						<td>
@@ -37,7 +34,9 @@
 						</td>
 						<td>
 							{{
-								`${participant.participants.first_name} ${participant.participants.last_name}`
+	getParticipant(
+		participant.registration_id
+	)
 							}}
 						</td>
 						<td
@@ -49,14 +48,15 @@
 								<div>
 									{{
 										getScoreDetails(
-											participant.id,
-											criteria.id).value?.score
+											participant.registration_id,
+											criteria.id
+										).value?.score
 									}}
 								</div>
 								<i
 									v-if="
 										getScoreDetails(
-											participant.id,
+											participant.registration_id,
 											criteria.id
 										).value?.score
 									"
@@ -64,24 +64,24 @@
 								<div class="text-dark">
 									{{
 										getScoreDetails(
-											participant.id,
-											criteria.id).value?.computedScore
+											participant.registration_id,
+											criteria.id
+										).value?.computedScore
 									}}
 								</div>
 							</div>
 						</td>
 						<td class="text-end fw-bold">
-							{{ getTotalScore(participant.id) }} pts
+							{{ getTotalScore(participant.registration_id) }} pts
 						</td>
 						<td>
 							<ResultsDelete
-								:registrationId="participant.id" />
+								:registrationId="participant.registration_id" />
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		{{ eventScores }}
 	</div>
 </template>
 
@@ -117,12 +117,54 @@
 		});
 	};
 
+	const getParticipant = (registrationId) =>
+		computed(() => {
+			const participant = participantsRegistrations.value?.find(
+				(participant) => participant.id == registrationId
+			);
 
-	const registeredParticipants = computed(() => {
-		return participantsRegistrations.value?.filter(
-			(participant) =>
-				participant.registration_status.toLowerCase() ===
-				"registered"
+			return `${participant.participants.first_name} ${participant.participants.last_name}`;
+		});
+
+
+
+	const transformedData = computed(() => {
+		const groupedData = {};
+
+		eventScores.value?.forEach((entry) => {
+			const registration_id = entry.registration_id;
+			const criteria_id = entry.criteria_id;
+			const score_id = entry.id;
+			const score = entry.score;
+			const rating = entry.event_criteria.rating;
+
+			if (!groupedData[registration_id]) {
+				groupedData[registration_id] = {
+					registration_id,
+					criteria_id,
+					scores: {},
+					totalScore: 0,
+				};
+			}
+
+			groupedData[registration_id].scores[score_id] = {
+				score_id,
+				score,
+			};
+
+			// Compute totalScore dynamically
+			groupedData[registration_id].totalScore = Object.values(
+				groupedData[registration_id].scores
+			)
+				.reduce((acc) => {
+					return acc + parseFloat(score * (rating / 100));
+				}, 0)
+				.toFixed(2);
+		});
+
+		// Convert grouped object to array and sort by totalScore
+		return Object.values(groupedData).sort(
+			(a, b) => a.totalScore - b.totalScore
 		);
 	});
 
