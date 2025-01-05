@@ -69,14 +69,15 @@
 										).value?.computedScore
 									}}
 								</div>
-								<ResultsEdit :score="participant.scores[criteria.id]"/>
+								{{ participant.scores[criteria.id] }}
+								<ResultsEdit :scoreData="participant.scores[criteria.id]" class="fs-6"/>
 							</div>
 						</td>
 						<td class="text-end fw-bold">
 							{{ getTotalScore(participant.registration_id) }} pts
 						</td>
 						<td>
-								<ResultsDelete :registrationId="participant.registration_id" />
+								<ResultsDelete :registrationId="participant.registration_id" class="fs-6"/>
 						</td>
 					</tr>
 				</tbody>
@@ -150,21 +151,21 @@
 			groupedData[registration_id].scores[criteria_id] = {
 				score_id,
 				score,
+				rating
 			};
 
 			// Compute totalScore dynamically
 			groupedData[registration_id].totalScore = Object.values(
 				groupedData[registration_id].scores
 			)
-				.reduce((acc) => {
-					return acc + parseFloat(score * (rating / 100));
-				}, 0)
-				.toFixed(2);
+				.reduce((acc, curr) => {
+					return acc + parseFloat(curr.score * (curr.rating / 100));
+				}, 0);
 		});
 
 		// Convert grouped object to array and sort by totalScore
 		return Object.values(groupedData).sort(
-			(a, b) => a.totalScore - b.totalScore
+			(a, b) => b.totalScore - a.totalScore
 		);
 	});
 

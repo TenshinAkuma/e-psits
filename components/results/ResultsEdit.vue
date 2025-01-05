@@ -1,18 +1,19 @@
 <template>
 	<Dialog
-		:dialogId="`editResult-${score.score_id}`"
+		:dialogId="`editResult-${scoreData.score_id}`"
 		dialogTitle="Edit Participant Evaluation"
-		openButtonStyle="btn-sm text-secondary">
+		openButtonStyle="btn-sm text-secondary"
+      ref="editScoresRef">
 		<template #ButtonLabel>
 			<i class="bi bi-pencil-fill" style="font-size: 0.5rem" />
 		</template>
 
 		<template #Body>
-			<p class="text-start text-dark lh-sm fs-6">
+			<p class="text-start text-dark lh-sm">
 				Update <b>{{ `${getParticipantName}'s` }}</b> score on
 				<b>{{ `${eventScore.event_criteria.name}.` }}</b>
 			</p>
-			<form :id="`editResultForm-${score.score_id}`">
+			<form :id="`editResultForm-${scoreData.score_id}`" class="mb-3" @submit.prevent="OnSaveEvaluationEdit">
 				<div class="hstack gap-2">
 					<div class="input-group">
 						<span
@@ -30,14 +31,22 @@
 					</div>
 				</div>
 			</form>
+         <p class="fs-7 text-danger text-center m-0">
+				{{ errorMessage }}
+			</p>
 		</template>
 
 		<template #Submit>
 			<button
 				type="submit"
-				:form="`editResultForm-${score.score_id}`"
-				class="btn btn-success px-5">
-				Save
+				:form="`editResultForm-${scoreData.score_id}`"
+				class="btn btn-success hstack gap-2 px-5"
+            :disabled="_scoreStatus === 'pending'">
+				<span
+					v-if="_scoreStatus === 'pending'"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+				<span role="status">Save evaluation</span>
 			</button>
 		</template>
 	</Dialog>
@@ -45,19 +54,21 @@
 
 <script setup>
    const props = defineProps({
-      score: Object,
+      scoreData: Object,
    });
 
    const evaluationEdit = ref({
-      score: props.score.score,
-      score_id: props.score.score_id,
+      score: props.scoreData.score,
    });
 
+
+   const editScoresRef = ref(null)
    const eventScores = useEventScores();
    const participantsRegistrations = useParticipantRegistrations();
+   const errorMessage = ref("")
 
    const eventScore = computed(() => {
-      return eventScores.value?.find((e) => e.id == props.score?.score_id);
+      return eventScores.value?.find((e) => e.id == props.scoreData?.score_id);
    });
 
    const getParticipantName = computed(() => {
@@ -69,6 +80,45 @@
 
       return `${participant.participants.first_name} ${participant.participants.last_name}`;
    });
+
+   const {
+      data: _scoreData,
+      status: _scoreStatus,
+      execute: SaveEvaluationEdit,
+   } = await useFetch(`/api/event-results/${props.scoreData?.score_id}`, {
+      method: "PATCH",
+      body: evaluationEdit,
+      immediate: false,
+      watch: false,
+   });
+
+   const OnSaveEvaluationEdit = async () => {
+      try {
+         await SaveEvaluationEdit();
+
+         if (_scoreData.value?.error) {
+            throw new Error(_scoreData.value?.error);
+         }
+
+         const scoreIndex = eventScores.value?.findIndex(
+            (s) => s.id == props.scoreData?.score_id
+         );
+
+         if (scoreIndex < 0 || scoreIndex == null) {
+            throw new Error("Score data does not exists.")
+         }
+
+         eventScores.value[scoreIndex] = _scoreData.value?.data;
+         editScoresRef.value?.closeDialog();
+      } catch (err) {
+         console.error(err);
+
+         errorMessage.value = err.message;
+         setTimeout(() => {
+            errorMessage.value = "";
+         }, 3000);
+      }
+   };
 </script>
 
 <style></style>

@@ -19,7 +19,9 @@ export default defineEventHandler(async (event) => {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.insert(body)
-			.select("score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))");
+			.select(
+				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))"
+			);
 
 		if (scoreError) {
 			throw new Error(scoreError.message);
