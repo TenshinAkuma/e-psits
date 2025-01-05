@@ -14,7 +14,6 @@
 				<br />
 				Are you sure you want to delete this?
 			</p>
-			{{ eventScores }}
 		</template>
 
 		<template #Submit>
