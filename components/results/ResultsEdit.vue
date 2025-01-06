@@ -31,9 +31,11 @@
 					</div>
 				</div>
 			</form>
+         {{ evaluationEdit.score }}
          <p class="fs-7 text-danger text-center m-0">
-				{{ errorMessage }}
+				{{ errorMessage }} 
 			</p>
+         {{ score_data }}
 		</template>
 
 		<template #Submit>
@@ -57,8 +59,10 @@
       scoreData: Object,
    });
 
-   const evaluationEdit = ref({
-      score: props.scoreData.score,
+   const score_data = toRef(() => props.scoreData)
+
+   const evaluationEdit = reactive({
+      score: toRef(() => props.scoreData.score)
    });
 
 
@@ -68,7 +72,7 @@
    const errorMessage = ref("")
 
    const eventScore = computed(() => {
-      return eventScores.value?.find((e) => e.id == props.scoreData?.score_id);
+      return eventScores.value?.find((e) => e.id == score_data.value?.score_id);
    });
 
    const getParticipantName = computed(() => {
@@ -85,7 +89,7 @@
       data: _scoreData,
       status: _scoreStatus,
       execute: SaveEvaluationEdit,
-   } = await useFetch(`/api/event-results/${props.scoreData?.score_id}`, {
+   } = await useFetch(`/api/event-results/${score_data.value?.score_id}`, {
       method: "PATCH",
       body: evaluationEdit,
       immediate: false,
@@ -101,7 +105,7 @@
          }
 
          const scoreIndex = eventScores.value?.findIndex(
-            (s) => s.id == props.scoreData?.score_id
+            (s) => s.id == score_data.value?.score_id
          );
 
          if (scoreIndex < 0 || scoreIndex == null) {
@@ -109,6 +113,7 @@
          }
 
          eventScores.value[scoreIndex] = _scoreData.value?.data;
+         console.log(eventScores.value[scoreIndex])
          editScoresRef.value?.closeDialog();
       } catch (err) {
          console.error(err);
