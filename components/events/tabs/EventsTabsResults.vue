@@ -24,8 +24,8 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(participant, index) in transformedData"
-						:key="participant.id"
+						v-for="(participant, index) in participantScores"
+						:key="participant.participant_id"
 						style="height: 72px">
 						<td>
 							<div class="fw-bold">
@@ -33,11 +33,7 @@
 							</div>
 						</td>
 						<td>
-							{{
-	getParticipant(
-		participant.registration_id
-	)
-							}}
+							{{ getParticipant(participant.registration_id) }}
 						</td>
 						<td
 							v-for="criteria in eventCriteria"
@@ -46,44 +42,29 @@
 							<div
 								class="d-flex justify-content-center align-items-center gap-2">
 								<div>
-									{{
-										getScoreDetails(
-											participant.registration_id,
-											criteria.id
-										).value?.score
-									}}
+									{{ participant.scores[criteria.id].score }}
 								</div>
 								<i
-									v-if="
-										getScoreDetails(
-											participant.registration_id,
-											criteria.id
-										).value?.score
-									"
+									v-if="participant.scores[criteria.id].score != null"
 									class="bi bi-arrow-right" />
 								<div class="text-dark">
-									{{
-										getScoreDetails(
-											participant.registration_id,
-											criteria.id
-										).value?.computedScore
-									}}
+									{{ participant.scores[criteria.id].rating }}
 								</div>
-								{{ participant.scores[criteria.id] }}
 								<ResultsEdit :scoreData="participant.scores[criteria.id]" class="fs-6"/>
 							</div>
+							<div style="font-size: .5rem;">{{ participant.scores[criteria.id] }}</div>
 						</td>
 						<td class="text-end fw-bold">
-							{{ getTotalScore(participant.registration_id) }} pts
+							{{ participant.totalScore }} pts
 						</td>
 						<td>
 								<ResultsDelete :registrationId="participant.registration_id" class="fs-6"/>
+								<div style="font-size: .5rem;">{{ participant.registration_id }}</div>
 						</td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
-		{{ transformedData }}
 	</div>
 </template>
 
@@ -91,33 +72,6 @@
 	const eventScores = useEventScores();
 	const eventCriteria = useEventCriteria();
 	const participantsRegistrations = useParticipantRegistrations();
-
-	const getScoreDetails = (registrationId, criteriaId) => {
-		return computed(() => {
-			// Find the object that matches the registrationId and criteriaId
-			const result = eventScores.value?.find(
-				(item) =>
-					item.registration_id === registrationId &&
-					item.criteria_id === criteriaId
-			);
-
-			// If no match is found, return null
-			if (!result) return null;
-
-			// Extract the score and rating
-			const { score } = result;
-			const { rating } = result.event_criteria;
-
-			// Compute the computed score
-			const computedScore = (score * (rating / 100)).toFixed(2);
-
-			// Return the score and computed score
-			return {
-				score,
-				computedScore: parseFloat(computedScore), // Parse to ensure it's a number
-			};
-		});
-	};
 
 	const getParticipant = (registrationId) =>
 		computed(() => {
@@ -127,7 +81,6 @@
 
 			return `${participant.participants.first_name} ${participant.participants.last_name}`;
 		});
-
 
 
 	const transformedData = computed(() => {
@@ -160,7 +113,7 @@
 			)
 				.reduce((acc, curr) => {
 					return acc + parseFloat(curr.score * (curr.rating / 100));
-				}, 0);
+				}, 0).toFixed(2);
 		});
 
 		// Convert grouped object to array and sort by totalScore
@@ -169,27 +122,5 @@
 		);
 	});
 
-	const getTotalScore = (registrationId) => {
-		// Use a computed property to ensure reactivity
-		return computed(() => {
-			// Filter the reactive eventScores array for the given registration ID
-			const scores = eventScores.value?.filter(
-				(p) => p.registration_id === registrationId
-			);
-
-			// Guard clause to handle undefined or empty scores
-			if (!scores || scores.length === 0) return 0;
-
-			// Calculate the total weighted score
-			const totalScore = scores.reduce((total, item) => {
-				const score = item.score;
-				const rating = item.event_criteria.rating;
-				const weightedScore = score * (rating / 100);
-				return total + weightedScore;
-			}, 0);
-
-			// Return the computed total score
-			return parseFloat(totalScore.toFixed(2)); // Ensure consistent decimal places
-		});
-	};
+	const participantScores = toRef(() => transformedData.value)
 </script>

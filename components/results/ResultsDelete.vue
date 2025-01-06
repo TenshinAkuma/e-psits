@@ -1,6 +1,6 @@
 <template>
 	<Dialog
-		:dialogId="`deleteResult-${registrationId}`"
+		:dialogId="`deleteResult-${registration_id}`"
 		dialogTitle="Remove Participant Evaluation"
 		openButtonStyle="btn-sm text-secondary"
 		ref="deleteEvaluationRef">
@@ -14,10 +14,13 @@
 				<br />
 				Are you sure you want to delete this?
 			</p>
+			{{ registration_id }}
+			{{ registrationId }}
 		</template>
 
 		<template #Submit>
 			<button
+				:id="`deleteResult-${registration_id}`"
 				@click="OnDeleteEvaluation"
 				type="button"
 				class="btn btn-danger hstack gap-2 px-5"
@@ -37,6 +40,8 @@
       registrationId: Number,
    });
 
+   const registration_id = toRef(props, "registrationId");
+
    const deleteEvaluationRef = ref(null);
    const eventScores = useEventScores();
    const errorMessage = ref("");
@@ -45,26 +50,31 @@
       data: _scoreData,
       status: _scoreStatus,
       execute: DeleteEvaluation,
-   } = await useFetch(`/api/event-results/${props?.registrationId}`, {
+   } = await useFetch('/api/event-results', {
       method: "DELETE",
+      query: { id: registration_id },
       immediate: false,
       watch: false,
    });
 
    const OnDeleteEvaluation = async () => {
       try {
+         console.log("before", registration_id.value)
          await DeleteEvaluation();
+         console.log("after", registration_id.value)
 
          if (_scoreData.value?.error) {
             throw new Error(_scoreData.value?.error);
          }
 
-         const remainingScores = eventScores.value?.filter(
-            (item) => item.registration_id != props.registrationId
-         );
-         eventScores.value = remainingScores;
-         deleteEvaluationRef.value.closeDialog();
+         const remainingScores = computed(() => {
+            return eventScores.value?.filter(
+               (item) => item.registration_id != registration_id.value
+            );
+         });
+         eventScores.value = remainingScores.value;
 
+         deleteEvaluationRef.value.closeDialog();
       } catch (error) {
          errorMessage.value = error.message;
 
@@ -74,6 +84,3 @@
       }
    };
 </script>
-
-<style></style>
-s

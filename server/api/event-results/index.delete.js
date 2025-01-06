@@ -2,13 +2,14 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { id } = event.context.params;
+	const query = getQuery(event);
 
+	console.log(query.id);
 	try {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
 			.delete()
-			.eq("registration_id", id);
+			.eq("registration_id", query.id);
 
 		if (scoreError) {
 			throw new Error(scoreError.message);
@@ -17,12 +18,12 @@ export default defineEventHandler(async (event) => {
 		return {
 			success: true,
 		};
-	} catch (err) {
-		console.err("Error occurred while deleting scores", err.message);
+	} catch (error) {
+		console.error("Error occurred while deleting scores", error.message);
 
 		return {
 			success: false,
-			error: err.message,
+			error: error.message,
 		};
 	}
 });
