@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Dialog
-			dialogId="rules"
+			dialogId="createRules"
 			dialogTitle="Add New Event Guideline"
 			openButtonStyle="btn-outline-dark fw-bold"
 			ref="createRulesRef">
@@ -21,7 +21,7 @@
 						type="text"
 						class="form-control border-secondary mb-2"
 						placeholder="Name"
-						v-model="newRule.name" />
+						v-model="newRule.name" required />
 
 					<p
 						class="text-secondary lh-sm"
@@ -37,7 +37,7 @@
 						placeholder="Description"
 						rows="5"
 						style="max-height: 288px"
-						v-model="newRule.description" />
+						v-model="newRule.description" required />
 
 					<p
 						class="text-secondary lh-sm"
@@ -93,6 +93,10 @@
 
 	const OnCreateRule = async () => {
 		try {
+			if (newRule.name == "" || newRule.description == "") {
+				throw new Error("Invalid inputs.")
+			}
+
 			await CreateRule();
 
 			if (_rulesData.value.error) {

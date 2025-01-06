@@ -1,6 +1,6 @@
 <template>
 	<Dialog
-		:dialogId="`deleteRule-${ruleId}`"
+		:dialogId="`deleteRule-${rule_id}`"
 		dialogTitle="Delete Guideline"
 		openButtonStyle="btn-sm text-secondary"
 		ref="deleteRuleRef">
@@ -22,6 +22,7 @@
 
 		<template #Submit>
 			<button
+			:id="`deleteRule-${rule_id}`"
 				@click="OnDeleteRule"
 				type="button"
 				class="btn btn-danger hstack gap-2 px-5"
@@ -41,6 +42,8 @@
 		ruleId: Number,
 	});
 
+	const rule_id = toRef(props, "ruleId")
+
 	const deleteRuleRef = ref(null);
 	const eventRules = useEventRules();
 	const errorMessage = ref("");
@@ -49,8 +52,9 @@
 		data: _rulesData,
 		status: _rulesStatus,
 		execute: DeleteRule,
-	} = await useFetch(`/api/event-rules/${props.ruleId}`, {
+	} = await useFetch(`/api/event-rules`, {
 		method: "DELETE",
+		query: { id: rule_id.value },
 		immediate: false,
 		watch: false,
 	});
