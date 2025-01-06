@@ -1,5 +1,12 @@
 <template>
-	<div>
+	<div
+		v-if="eventScores == null || eventScores.length == 0"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 576px">
+		<p class="fs-7">There are no evaluation as of now.</p>
+		<ResultsCreate />
+	</div>
+	<div v-else>
 		<div class="mb-3">
 			<ResultsCreate />
 		</div>
@@ -65,6 +72,9 @@
 				</tbody>
 			</table>
 		</div>
+	</div>
+	<div v-else>
+		Empty
 	</div>
 </template>
 
