@@ -1,6 +1,6 @@
 <template>
 	<Dialog
-		:dialogId="`edit-rules-${ruleData?.id}`"
+		:dialogId="`edit-rules-${rule_data?.id}`"
 		dialogTitle="Update Guideline"
 		openButtonStyle="btn-sm text-secondary"
 		ref="editRulesRef">
@@ -10,7 +10,7 @@
 
 		<template #Body>
 			<form
-				:id="`editRuleForm-${ruleData.id}`"
+				:id="`editRuleForm-${rule_data?.id}`"
 				@submit.prevent="OnSaveRulesEdit">
 				<p class="text-secondary lh-sm">
 					Define clear and concise guidelines to ensure a smooth
@@ -50,7 +50,7 @@
 		<template #Submit>
 			<button
 				type="submit"
-				:form="`editRuleForm-${ruleData.id}`"
+				:form="`editRuleForm-${rule_data?.id}`"
 				class="btn btn-success hstack gap-2 px-5"
 				:disabled="_rulesStatus === 'pending'">
 				<span
@@ -72,16 +72,18 @@
 	const eventRules = useEventRules();
 	const errorMessage = ref("");
 
+	const rule_data = toRef(() => props.ruleData)
+
 	const ruleEdit = ref({
-		name: props.ruleData?.name,
-		description: props.ruleData?.description,
+		name: rule_data.value?.name,
+		description: rule_data.value?.description,
 	});
 
 	const {
 		data: _rulesData,
 		status: _rulesStatus,
 		execute: SaveRulesEdit,
-	} = await useFetch(`/api/event-rules/${props.ruleData.id}`, {
+	} = await useFetch(`/api/event-rules/${rule_data.value?.id}`, {
 		method: "PATCH",
 		body: ruleEdit,
 		immediate: false,
@@ -90,6 +92,11 @@
 
 	const OnSaveRulesEdit = async () => {
 		try {
+
+			if (ruleEdit.value?.name == "" || ruleEdit.value?.description == "") {
+				throw new Error("Invalid inputs.")
+			}
+
 			await SaveRulesEdit();
 
 			if (_rulesData.value?.error) {
@@ -97,14 +104,14 @@
 			}
 
 			const ruleIndex = eventRules.value?.findIndex(
-				(r) => r.id === props.ruleData?.id
+				(r) => r.id === rule_data.value?.id
 			);
 
 			if (ruleIndex < 0) {
 				throw new Error("Invalid rule index. Rule does not exists");
 			}
 
-			eventRules.value[ruleIndex] = _rulesData.value?.data;
+			eventRules.value[ruleIndex] = _rulesData.value?.data || null;
 			editRulesRef.value?.closeDialog();
 		} catch (err) {
 			console.error(err.message);

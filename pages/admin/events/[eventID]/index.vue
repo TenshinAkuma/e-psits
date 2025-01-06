@@ -34,11 +34,11 @@
 					<TabsNavButtons id="participants" :active="true">
 						Registration Status
 					</TabsNavButtons>
-					<TabsNavButtons id="criteria">
-						Criteria for Judging
-					</TabsNavButtons>
 					<TabsNavButtons id="rules">
 						Rules and Guidelines
+					</TabsNavButtons>
+					<TabsNavButtons id="criteria">
+						Criteria for Judging
 					</TabsNavButtons>
 					<TabsNavButtons id="results">
 						Results and Evaluation
@@ -48,11 +48,11 @@
 					<TabsPane id="participants" :active="true">
 						<EventsTabsParticipants />
 					</TabsPane>
-					<TabsPane id="criteria">
-						<EventsTabsCriteria />
-					</TabsPane>
 					<TabsPane id="rules">
 						<EventsTabsRules />
+					</TabsPane>
+					<TabsPane id="criteria">
+						<EventsTabsCriteria />
 					</TabsPane>
 					<TabsPane id="results">
 						<EventsTabsResults />
