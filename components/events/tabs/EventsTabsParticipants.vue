@@ -82,13 +82,7 @@
 </template>
 
 <script setup>
-	const eventID = useRoute().params.eventID;
 	const participantRegistrations = useParticipantRegistrations();
-
-	const { data: _registrations, status: _registrationsState } =
-		await useFetch(`/api/events/${eventID}/getParticipants`);
-
-	participantRegistrations.value = _registrations.value.data;
 </script>
 
 <style scoped>

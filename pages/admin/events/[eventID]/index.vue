@@ -32,13 +32,16 @@
 			<div class="col-9">
 				<TabsHeader>
 					<TabsNavButtons id="participants" :active="true">
-						Participants
+						Registration Status
 					</TabsNavButtons>
 					<TabsNavButtons id="criteria">
-						Criteria
+						Criteria for Judging
 					</TabsNavButtons>
 					<TabsNavButtons id="rules">
-						Guidelines
+						Rules and Guidelines
+					</TabsNavButtons>
+					<TabsNavButtons id="results">
+						Results and Evaluation
 					</TabsNavButtons>
 				</TabsHeader>
 				<TabsContent class="py-5">
@@ -50,6 +53,9 @@
 					</TabsPane>
 					<TabsPane id="rules">
 						<EventsTabsRules />
+					</TabsPane>
+					<TabsPane id="results">
+						<EventsTabsResults />
 					</TabsPane>
 				</TabsContent>
 			</div>
@@ -64,15 +70,39 @@
 
 	const eventID = useRoute().params.eventID;
 	const eventDetails = useEventDetails();
+	const eventCriteria = useEventCriteria();
+	const participantRegistrations = useParticipantRegistrations();
+	const eventScores = useEventScores();
 
-	const { data: _eventDetails, status } = await useFetch(
+	const { data: _eventDetails } = await useFetch(
 		`/api/events/${eventID}`,
 		{
 			method: "GET",
 		}
 	);
 
-	eventDetails.value = _eventDetails.value.data;
+	const { data: _criteria } = await useFetch(
+		`/api/events/${eventID}/criteria`,
+		{
+			method: "GET",
+		}
+	);
+
+	const { data: _registrations } =
+		await useFetch(`/api/events/${eventID}/getParticipants`);
+
+
+	const { data: _scoresData } = await useFetch(
+		`/api/event-results/${eventID}`,
+		{
+			method: "GET",
+		}
+	);
+
+	eventScores.value = _scoresData.value?.data;
+	eventDetails.value = _eventDetails.value?.data;
+	eventCriteria.value = _criteria.value?.data;
+	participantRegistrations.value = _registrations.value.data;
 </script>
 
 <style scoped></style>

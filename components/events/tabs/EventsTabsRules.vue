@@ -8,8 +8,8 @@
 	</div>
 
 	<div v-else>
-		<div class="mb-3">
-			<RulesCreate :rulesId="0" />
+		<div class="hstack gap-3 mb-3">
+			<RulesCreate />
 		</div>
 		<ul class="list-group overflow-y-auto" style="max-height: 576px">
 			<li
@@ -44,5 +44,3 @@
 
 	eventRules.value = _rulesData.value?.data;
 </script>
-
-<style></style>

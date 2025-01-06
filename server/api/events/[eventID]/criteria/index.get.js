@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 		// Fetch criteria data from the database
 		const { data: criteria, error } = await client
 			.from("event_criteria")
-			.select("id, name, description, rating")
+			.select("id, name, description, rating, code")
 			.eq("event_id", eventID);
 
 		// Handle Supabase query errors
