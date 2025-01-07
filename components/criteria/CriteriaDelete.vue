@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<Dialog
-			:dialogId="`deleteCriteria-${criteriaId}`"
+			:dialogId="`deleteCriteria-${criteria_id}`"
 			dialogTitle="Remove Criteria"
 			ref="deleteCriteriaDialog">
 			<template #ButtonLabel>
@@ -37,17 +37,19 @@
 		criteriaId: Number,
 	});
 
+	const criteria_id = toRef(props, "criteriaId")
+
 	const eventCriteria = useEventCriteria();
-	const eventID = useRoute().params.eventID;
 	const deleteCriteriaDialog = ref(null);
 	const errorMessage = ref("");
 
 	const {
-		data: _criteria,
+		data: _criteriaData,
 		status: _criteriaStatus,
 		execute: DeleteCriteria,
-	} = await useFetch(`/api/events/${eventID}/criteria/${props.criteriaId}`, {
+	} = await useFetch(`/api/event-criteria`, {
 		method: "DELETE",
+		query: { id: criteria_id.value },
 		immediate: false,
 		watch: false,
 	});
@@ -56,16 +58,16 @@
 		try {
 			await DeleteCriteria();
 
-			if (_criteria.value?.error) {
-				throw new Error(criteria.value?.error);
+			if (_criteriaData.value?.error) {
+				throw new Error(_criteriaData.value?.error);
 			}
 
 			const criteriaIndex = eventCriteria.value?.findIndex(
-				(c) => c.id === props.criteriaId
+				(c) => c.id === criteria_id.value
 			);
 
 			if (criteriaIndex < 0) {
-				throw new Error("Could not delete criteria");
+				throw new Error("Error while deleting criteria");
 			}
 
 			eventCriteria.value?.splice(criteriaIndex, 1);

@@ -3,7 +3,7 @@
 		v-if="eventScores == null || eventScores.length == 0"
 		class="d-flex flex-column justify-content-center align-items-center"
 		style="height: 576px">
-		<p class="fs-7">There are no evaluation as of now.</p>
+		<p class="fs-7">There are no evaluations as of now.</p>
 		<ResultsCreate />
 	</div>
 	<div v-else>
@@ -31,7 +31,7 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="(participant, index) in participantScores"
+						v-for="(participant, index) in transformedData"
 						:key="participant.participant_id"
 						style="height: 72px">
 						<td>
@@ -41,6 +41,7 @@
 						</td>
 						<td>
 							{{ getParticipant(participant.registration_id) }}
+							{{ participant.registration_id }}
 						</td>
 						<td
 							v-for="criteria in eventCriteria"
@@ -65,7 +66,6 @@
 						</td>
 						<td>
 								<ResultsDelete :registrationId="participant.registration_id" class="fs-6"/>
-								<div style="font-size: .5rem;">{{ participant.registration_id }}</div>
 						</td>
 					</tr>
 				</tbody>
@@ -85,12 +85,12 @@
 				(participant) => participant.id == registrationId
 			);
 
-			return `${participant.participants.first_name} ${participant.participants.last_name}`;
+			return `${participant?.participants.first_name} ${participant?.participants.last_name}`;
 		});
 
 
 	const transformedData = computed(() => {
-		const groupedData = {};
+		const groupedData = [];
 
 		eventScores.value?.forEach((entry) => {
 			const registration_id = entry.registration_id;

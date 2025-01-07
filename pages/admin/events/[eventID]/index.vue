@@ -81,8 +81,8 @@
 		}
 	);
 
-	const { data: _criteria } = await useFetch(
-		`/api/events/${eventID}/criteria`,
+	const { data: _criteriaData } = await useFetch(
+		`/api/event-criteria/${eventID}`,
 		{
 			method: "GET",
 		}
@@ -101,7 +101,7 @@
 
 	eventScores.value = _scoresData.value?.data;
 	eventDetails.value = _eventDetails.value?.data;
-	eventCriteria.value = _criteria.value?.data;
+	eventCriteria.value = _criteriaData.value?.data;
 	participantRegistrations.value = _registrations.value.data;
 </script>
 

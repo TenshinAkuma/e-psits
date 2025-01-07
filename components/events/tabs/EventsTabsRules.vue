@@ -3,7 +3,7 @@
 		v-if="eventRules.length === 0 || eventRules == null"
 		class="d-flex flex-column justify-content-center align-items-center"
 		style="height: 576px">
-		<p class="fs-7">Event criteria is empty.</p>
+		<p class="fs-7">Event guidelines are empty.</p>
 		<RulesCreate />
 	</div>
 

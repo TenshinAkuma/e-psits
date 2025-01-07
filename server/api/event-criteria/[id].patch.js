@@ -2,20 +2,20 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { criteriaId } = event.context.params;
+	const { id } = event.context.params;
 	const body = await readBody(event);
 
 	console.log("body", body);
 	try {
-		const { data: criteria, error } = await client
+		const { data: criteriaData, error: criteriaError } = await client
 			.from("event_criteria")
 			.update(body)
-			.eq("id", criteriaId)
+			.eq("id", id)
 			.select("id, name, description, rating")
 			.single();
 
 		if (error) {
-			throw new Error(error.message);
+			throw new Error(criteriaError.message);
 		}
 
 		console.log("response", criteria);
@@ -23,11 +23,14 @@ export default defineEventHandler(async (event) => {
 			success: true,
 			data: criteria,
 		};
-	} catch (err) {
-		console.error("Error occurred while updating criteria", err.message);
+	} catch (error) {
+		console.error(
+			"Error occurred while updating criteria",
+			error.message
+		);
 		return {
 			success: false,
-			error: "Error occurred while updating criteria",
+			error: error.message,
 		};
 	}
 });

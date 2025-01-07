@@ -93,7 +93,6 @@
 	});
 
 	const eventCriteria = useEventCriteria();
-	const eventID = useRoute().params.eventID;
 	const editCriteriaDialog = ref(null);
 	const errorMessage = ref("");
 
@@ -108,7 +107,7 @@
 		status: _criteriaStatus,
 		execute: SaveCriteria,
 	} = await useFetch(
-		`/api/events/${eventID}/criteria/${props.criteria?.id}`,
+		`/api/event-criteria/${props.criteria?.id}`,
 		{
 			method: "PATCH",
 			body: newCriteria,
@@ -118,31 +117,30 @@
 	);
 
 	const OnSaveCriteriaUpdate = async () => {
-		await SaveCriteria();
-		if (_criteria.value.error) {
-			errorMessage.value = _criteria.value.error;
-			console.log(errorMessage.value);
+
+
+		try {
+			await SaveCriteria();
+			if (_criteria.value.error) {
+				throw new Error(_criteriaData.value?.error)
+			}
+
+			const criteriaIndex = eventCriteria.value?.findIndex(
+				(c) => c.id === props.criteria?.id
+			);
+
+			if (criteriaIndex < 0) {
+				throw new Error("Error while updating criteria.")
+			}
+
+			eventCriteria.value[criteriaIndex] = _criteria.value?.data;
+			editCriteriaDialog.value.closeDialog();
+		} catch (err) {
+			errorMessage.value = err.message;
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-			return;
 		}
-
-		const criteriaIndex = eventCriteria.value?.findIndex(
-			(c) => c.id === props.criteria?.id
-		);
-
-		if (criteriaIndex < 0) {
-			errorMessage.value = "Could not find criteria.";
-
-			setTimeout(() => {
-				errorMessage.value = "";
-			}, 3000);
-			return;
-		}
-
-		eventCriteria.value[criteriaIndex] = _criteria.value?.data;
-		editCriteriaDialog.value.closeDialog();
 	};
 
 	const maxRating = computed(() => {

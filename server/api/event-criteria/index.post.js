@@ -4,25 +4,24 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
+	console.log(body);
 	try {
-		const { data: Criteria, error: CriteriaError } = await client
+		const { data: _criteriaData, error: _criteriaError } = await client
 			.from("event_criteria")
 			.insert(body)
 			.select("id, name, description, rating")
 			.single();
 
-		if (CriteriaError) {
-			throw new Error(
-				`Error adding criteria: ${CriteriaError.message}`
-			);
+		if (_criteriaError) {
+			throw new Error(_criteriaError.message);
 		}
 
 		return {
 			success: true,
-			data: Criteria,
+			data: _criteriaData,
 		};
-	} catch (err) {
-		console.error(err.message);
+	} catch (error) {
+		console.error("Error while  creating criteria", error.message);
 		return {
 			success: false,
 			error: err.message,

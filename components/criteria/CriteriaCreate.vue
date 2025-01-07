@@ -93,7 +93,7 @@
 		data: _criteria,
 		status,
 		execute: AddCriteria,
-	} = await useFetch(`/api/events/${eventID}/criteria`, {
+	} = await useFetch(`/api/event-criteria`, {
 		method: "POST",
 		body: newCriteria,
 		immediate: false,
@@ -101,25 +101,27 @@
 	});
 
 	const OnAddCriteria = async () => {
-		await AddCriteria();
-		if (_criteria.value?.error) {
-			errorMessage.value = _criteria.value?.error;
+		try {
+			await AddCriteria();
+			if (_criteria.value?.error) {
+				throw new Error(_criteria.value?.error)
+			}
+
+			eventCriteria.value?.push(_criteria.value.data);
+			resetInput();
+			createCriteriaRef.value.closeDialog();
+		} catch (err) {
+			errorMessage.value = err.message;
 
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-
-			return;
 		}
-
-		eventCriteria.value?.push(_criteria.value.data);
-		resetInput();
-		createCriteriaRef.value.closeDialog();
 	};
 
 	const maxRating = computed(() => {
 		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
-			return 0;
+			return 100;
 		}
 
 		return (
