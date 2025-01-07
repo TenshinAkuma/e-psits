@@ -54,12 +54,11 @@
 								<i
 									v-if="participant.scores[criteria.id].score != null"
 									class="bi bi-arrow-right" />
-								<div class="text-dark">
-									{{ participant.scores[criteria.id].rating }}
+								<div class="text-dark fw-bold">
+									{{ participant.scores[criteria.id].rating }} pts
 								</div>
 								<ResultsEdit :scoreData="participant.scores[criteria.id]" class="fs-6"/>
 							</div>
-							<div style="font-size: .5rem;">{{ participant.scores[criteria.id] }}</div>
 						</td>
 						<td class="text-end fw-bold">
 							{{ participant.totalScore }} pts
@@ -72,9 +71,6 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
-	<div v-else>
-		Empty
 	</div>
 </template>
 
