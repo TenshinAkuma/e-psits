@@ -11,7 +11,7 @@
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<CriteriaCreate />
 		</div>
-		<div class="table-responsive overflow-y-auto" style="height: 576px">
+		<div class="table-responsive">
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>

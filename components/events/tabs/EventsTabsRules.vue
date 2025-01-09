@@ -11,7 +11,7 @@
 		<div class="hstack gap-3 mb-3">
 			<RulesCreate />
 		</div>
-		<ul class="list-group overflow-y-auto" style="max-height: 576px">
+		<ul class="list-group">
 			<li
 				v-for="rule in eventRules"
 				:key="rule.id"

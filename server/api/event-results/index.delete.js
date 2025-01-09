@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const query = getQuery(event);
 
-	console.log(query.id);
 	try {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")

@@ -35,7 +35,6 @@
          <p class="fs-7 text-danger text-center m-0">
 				{{ errorMessage }} 
 			</p>
-         {{ score_data }}
 		</template>
 
 		<template #Submit>
@@ -61,8 +60,9 @@
 
    const score_data = toRef(() => props.scoreData)
 
-   const evaluationEdit = reactive({
-      score: toRef(() => props.scoreData.score)
+   const evaluationEdit = ref({
+      // score: toRef(() => props.scoreData.score)
+      score: props.scoreData.score
    });
 
 

@@ -14,8 +14,6 @@
 				<br />
 				Are you sure you want to delete this?
 			</p>
-			{{ registration_id }}
-			{{ registrationId }}
 		</template>
 
 		<template #Submit>
@@ -59,9 +57,7 @@
 
    const OnDeleteEvaluation = async () => {
       try {
-         console.log("before", registration_id.value)
          await DeleteEvaluation();
-         console.log("after", registration_id.value)
 
          if (_scoreData.value?.error) {
             throw new Error(_scoreData.value?.error);

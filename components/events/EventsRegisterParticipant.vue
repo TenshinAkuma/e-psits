@@ -1,6 +1,5 @@
 <template>
-	<div>
-		<Dialog
+	<Dialog
 			id="registerParticipant"
 			dialogTitle="Register Participant"
 			openButtonStyle="btn-outline-dark fw-bold"
@@ -87,7 +86,6 @@
 				</button>
 			</template>
 		</Dialog>
-	</div>
 </template>
 
 <script setup>

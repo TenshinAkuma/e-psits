@@ -3,7 +3,7 @@
 		<div class="mb-3">
 			<EventsRegisterParticipant />
 		</div>
-		<div class="table-responsive overflow-y-auto" style="height: 576px">
+		<div class="table-responsive">
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
@@ -20,24 +20,19 @@
 						style="height: 114px">
 						<td>
 							<Avatar
-								:name="
-									registration.participants
-										.first_name
-								"
+								:name="registration.participants
+									.first_name
+									"
 								:gender="registration.participants.sex"
 								size="56">
 								<template #name>
 									<div class="flex-grow-1">
 										<p
 											class="avatar-link text-dark fw-bold m-0"
-											style="
-												width: max-content;
-											"
+											style="width: max-content;"
 											@click="
 												navigateTo(
-													`/admin/participants/${registration.participants.id}`
-												)
-											">
+													`/admin/participants/${registration.participants.id}`)">
 											{{
 												`${registration.participants.first_name} ${registration.participants.last_name}`
 											}}
@@ -46,13 +41,12 @@
 											class="avatar-link text-secondary m-0"
 											style="
 												cursor: pointer;
-												font-size: 0.8rem;
-											"
+												font-size: 0.8rem;"
 											@click="
 												navigateTo(
 													`/admin/institutions/${registration.participants.institutions.id}`
 												)
-											">
+	">
 											{{
 												registration
 													.participants
@@ -61,18 +55,16 @@
 											}}
 										</p>
 									</div>
-								</template></Avatar
-							>
+								</template>
+							</Avatar>
 						</td>
 
 						<td class="text-end">
 							<RegistrationsStatusUpdate
-								:RegistrationStatus="
-									registration.registration_status
-								"
-								:ParticipantRegistrationID="
-									registration.id
-								" />
+								:RegistrationStatus="registration.registration_status
+									"
+								:ParticipantRegistrationID="registration.id
+									" />
 						</td>
 					</tr>
 				</tbody>
