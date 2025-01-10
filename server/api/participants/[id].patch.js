@@ -2,15 +2,34 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { participantID } = event.context.params;
+	const { id } = event.context.params;
 	const body = await readBody(event);
 
-	console.log(body);
-	return (
-		await client
-			.from("participants")
-			.update(body)
-			.eq("id", participantID)
-			.select()
-	).data;
+	try {
+		const { data: participantData, error: participantError } =
+			await client
+				.from("participants")
+				.update(body)
+				.eq("id", id)
+				.select("*");
+
+		if (participantError) {
+			throw new Error(participantError.message);
+		}
+
+		return {
+			success: true,
+			data: participantData,
+		};
+	} catch (error) {
+		console.error(
+			"Error occurred while updating participant",
+			error.message
+		);
+
+		return {
+			success: false,
+			error: error.message,
+		};
+	}
 });
