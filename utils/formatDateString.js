@@ -21,7 +21,7 @@
  * @returns {string} The formatted date string.
  */
 export function formatDateString(date) {
-	if (!date) return "";
+	if (!date) return "No available date";
 	const _date = new Date(date);
 
 	const options = {

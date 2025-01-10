@@ -7,7 +7,7 @@
 
 		<hr />
 		<div
-			v-if="status === 'success'"
+			v-if="_eventsStatus == 'success'"
 			class="table-responsive rounded-3"
 			style="height: 576px">
 			<table class="table table-hover table-borderless">
@@ -53,7 +53,13 @@
 	definePageMeta({
 		layout: "main",
 	});
-	const { data: events, status } = await useFetch("/api/events");
+
+	const events = useEvents();
+
+	const errorMessage = ref("");
+	const { data: _eventsData, status: _eventsStatus } = await useFetch("/api/events");
+
+	events.value = _eventsData.value?.data;
 
 	const ToEventDetailsPage = async (id) => {
 		await navigateTo(`/admin/events/	${id}`);

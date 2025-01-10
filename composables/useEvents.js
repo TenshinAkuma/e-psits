@@ -1,3 +1,1 @@
-export const useEvents = () => {
-	const events = useState("Events", () => []);
-};
+export const useEvents = () => useState("Events", () => []);
