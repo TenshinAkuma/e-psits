@@ -1,37 +1,10 @@
 <template>
-	<div>
-		<button
-			class="btn btn-primary"
-			data-bs-toggle="modal"
-			data-bs-target="#createEventModal">
-			New event
-		</button>
-		<div
-			class="modal"
-			id="createEventModal"
-			data-bs-backdrop="static"
-			data-bs-keyboard="false"
-			tabindex="-1"
-			aria-labelledby="createEventModal"
-			aria-hidden="true"
-			ref="createEventModalRef">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5
-							class="modal-title fw-bold"
-							id="staticBackdropLabel">
-							ADD NEW EVENT
-						</h5>
-						<button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-
-					<div class="modal-body">
-						<form
+	<Dialog dialogId="createEvent" dialogTitle="Add New Event" openButtonStyle="btn-primary">
+			<template #ButtonLabel>
+				New Event
+			</template>
+			<template #Body>
+				<form
 							@submit.prevent="OnAddNewEvent"
 							id="createEvent">
 							<input
@@ -139,16 +112,10 @@
 								"
 								v-model="eventDetails.description" />
 						</form>
-					</div>
+			</template>
 
-					<div class="modal-footer">
-						<button
-							type="button"
-							data-bs-dismiss="modal"
-							class="btn btn-outline-secondary border-0">
-							Cancel
-						</button>
-						<button
+			<template #Submit>
+				<button
 							type="submit"
 							form="createEvent"
 							class="d-flex align-items-center btn btn-primary gap-2"
@@ -159,11 +126,8 @@
 								aria-hidden="true" />
 							<span role="status">Create event</span>
 						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+			</template>
+		</Dialog>
 </template>
 
 <script setup>
