@@ -1,5 +1,14 @@
 <template>
-	<div>
+	<div v-if="participantRegistrations.length <= 0">
+		<div
+		v-if="eventScores == null || eventScores.length == 0"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 576px">
+		<p class="fs-7">There are no participants as of now.</p>
+		<EventsRegisterParticipant />
+	</div>
+	</div>
+	<div v-else>
 		<div class="mb-3">
 			<EventsRegisterParticipant />
 		</div>
