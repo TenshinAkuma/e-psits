@@ -1,4 +1,2 @@
-export const useRegistrationStatus = () => {
-	const registrationStatuses = ref(["Registered", "Pending", "Cancelled"]);
-	return { registrationStatuses };
-};
+export const useRegistrationStatus = () =>
+	ref(["Registered", "Pending", "Cancelled"]);

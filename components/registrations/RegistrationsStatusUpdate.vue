@@ -19,7 +19,7 @@
 			</div>
 			<hr class="dropdown-divider" />
 			<form
-				@submit.prevent="OnUpdateRegistrationStatus"
+				@submit.prevent="OnSaveStatusUpdate"
 				class="px-3 py-1">
 				<select
 					class="form-select border-secondary mb-3"
@@ -39,6 +39,12 @@
 					</option>
 				</select>
 
+				<div
+					v-if="errorMessage"
+					class="fs-7 text-danger">
+					{{ errorMessage }}
+				</div>
+
 				<div class="d-flex justify-content-end gap-2">
 					<button
 						type="button"
@@ -50,9 +56,9 @@
 						type="submit"
 						class="d-flex align-items-center btn btn-success fw-bold gap-2"
 						style="height: min-content"
-						:disabled="status === 'pending'">
+						:disabled="_registrationStatus === 'pending'">
 						<span
-							v-if="status === 'pending'"
+							v-if="_registrationStatus === 'pending'"
 							class="spinner-border spinner-border-sm"
 							aria-hidden="true" />
 						<span role="status">Update</span>
@@ -69,7 +75,10 @@
 
 	const RegistrationStatus = defineModel("RegistrationStatus");
 	const ParticipantRegistrationID = defineModel("ParticipantRegistrationID");
-	const { registrationStatuses } = useRegistrationStatus();
+	const registrationStatuses = useRegistrationStatus();
+	const participantRegistrations = useParticipantRegistrations();
+
+	const errorMessage = ref();
 
 	const registration = ref({
 		registration_status: RegistrationStatus.value,
@@ -85,10 +94,13 @@
 		StatusDropdown.hide();
 	};
 
-	const { data, status, error, execute } = await useFetch(
-		`/api/registrations/participants/${ParticipantRegistrationID.value}`,
+	const {
+		data: _registrationData,
+		status: _registrationStatus,
+		execute: SaveStatusUpdate,
+	} = await useFetch(
+		`/api/event-registrations/${ParticipantRegistrationID.value}`,
 		{
-			headers: useRequestHeaders(["cookie"]),
 			method: "PATCH",
 			body: registration,
 			immediate: false,
@@ -96,16 +108,33 @@
 		}
 	);
 
-	const OnUpdateRegistrationStatus = async () => {
+	const OnSaveStatusUpdate = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				closeDropdown();
-				RegistrationStatus.value =
-					registration.value.registration_status;
+			await SaveStatusUpdate();
+
+			if (_registrationData.value?.error) {
+				throw new Error(_registrationData.value?.error);
 			}
-		} catch {
+
+			const registrationIndex =
+				participantRegistrations.value?.findIndex(
+					(r) => r.id == ParticipantRegistrationID.value
+				);
+
+			if (registrationIndex < 0) {
+				throw new Error("Invalid registration ID");
+			}
+
+			participantRegistrations.value[registrationIndex] =
+				_registrationData.value?.data;
+			closeDropdown();
+		} catch (err) {
 			console.log("Failed to update participant registration status");
+
+			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	};
 

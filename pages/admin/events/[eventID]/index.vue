@@ -93,7 +93,7 @@
 	);
 
 	const { data: _registrations } =
-		await useFetch(`/api/event-registration/${eventID}`);
+		await useFetch(`/api/event-registrations/${eventID}`);
 
 
 	const { data: _scoresData } = await useFetch(

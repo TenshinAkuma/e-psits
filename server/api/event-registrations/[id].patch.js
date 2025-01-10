@@ -1,7 +1,7 @@
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
-	const client = serverSupabaseClient(event);
+	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 	const body = await readBody(event);
 
@@ -11,7 +11,9 @@ export default defineEventHandler(async (event) => {
 				.from("event_registrations")
 				.update(body)
 				.eq("id", id)
-				.select()
+				.select(
+					"id, registration_status, participants(id, first_name, last_name, sex, institutions(id, name))"
+				)
 				.single();
 
 		if (registrationError) {

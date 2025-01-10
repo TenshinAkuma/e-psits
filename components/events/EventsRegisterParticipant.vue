@@ -109,7 +109,7 @@
 		status: _registrationStatus,
 		error: _registrationError,
 		execute: RegisterParticipant,
-	} = await useFetch("/api/registrations/participants/ByParticipantId", {
+	} = await useFetch("/api/event-registrations", {
 		method: "POST",
 		body: newRegistration,
 		immediate: false,
