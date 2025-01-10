@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while loading participant details",
+			"Error occurred while saving participant",
 			error.message
 		);
 
