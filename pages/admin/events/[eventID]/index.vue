@@ -34,33 +34,36 @@
 					<TabsNavButtons id="participants" :active="true">
 						Registration Status
 					</TabsNavButtons>
-					<div v-if="eventDetails.category === 'competition'">
-						<TabsNavButtons id="rules">
+					<TabsNavButtons
+						v-if="eventDetails.category == 'Competition'"
+						id="rules">
 						Rules and Guidelines
 					</TabsNavButtons>
-					<TabsNavButtons id="criteria">
+					<TabsNavButtons v-if="eventDetails.category == 'Competition'" id="criteria">
 						Criteria for Judging
 					</TabsNavButtons>
-					<TabsNavButtons id="results">
+					<TabsNavButtons v-if="eventDetails.category == 'Competition'" id="results">
 						Results and Evaluation
 					</TabsNavButtons>
-					</div>
 				</TabsHeader>
 				<TabsContent class="py-5">
 					<TabsPane id="participants" :active="true">
 						<EventsTabsParticipants />
 					</TabsPane>
-					<div v-if="eventDetails.category === 'competition'">
-						<TabsPane id="rules">
+					<TabsPane
+						id="rules"
+						v-if="
+							eventDetails.category ==
+							'Competition'
+						">
 						<EventsTabsRules />
 					</TabsPane>
-					<TabsPane id="criteria">
+					<TabsPane v-if="eventDetails.category == 'Competition'" id="criteria">
 						<EventsTabsCriteria />
 					</TabsPane>
-					<TabsPane id="results">
+					<TabsPane v-if="eventDetails.category == 'Competition'" id="results">
 						<EventsTabsResults />
 					</TabsPane>
-					</div>
 				</TabsContent>
 			</div>
 		</div>
@@ -78,12 +81,9 @@
 	const participantRegistrations = useParticipantRegistrations();
 	const eventScores = useEventScores();
 
-	const { data: _eventDetails } = await useFetch(
-		`/api/events/${eventID}`,
-		{
-			method: "GET",
-		}
-	);
+	const { data: _eventDetails } = await useFetch(`/api/events/${eventID}`, {
+		method: "GET",
+	});
 
 	const { data: _criteriaData } = await useFetch(
 		`/api/event-criteria/${eventID}`,
@@ -92,9 +92,9 @@
 		}
 	);
 
-	const { data: _registrations } =
-		await useFetch(`/api/event-registrations/${eventID}`);
-
+	const { data: _registrations } = await useFetch(
+		`/api/event-registrations/${eventID}`
+	);
 
 	const { data: _scoresData } = await useFetch(
 		`/api/event-results/${eventID}`,
@@ -108,5 +108,3 @@
 	eventCriteria.value = _criteriaData.value?.data;
 	participantRegistrations.value = _registrations.value.data;
 </script>
-
-<style scoped></style>
