@@ -34,7 +34,8 @@
 					<TabsNavButtons id="participants" :active="true">
 						Registration Status
 					</TabsNavButtons>
-					<TabsNavButtons id="rules">
+					<div v-if="eventDetails.category === 'competition'">
+						<TabsNavButtons id="rules">
 						Rules and Guidelines
 					</TabsNavButtons>
 					<TabsNavButtons id="criteria">
@@ -43,12 +44,14 @@
 					<TabsNavButtons id="results">
 						Results and Evaluation
 					</TabsNavButtons>
+					</div>
 				</TabsHeader>
 				<TabsContent class="py-5">
 					<TabsPane id="participants" :active="true">
 						<EventsTabsParticipants />
 					</TabsPane>
-					<TabsPane id="rules">
+					<div v-if="eventDetails.category === 'competition'">
+						<TabsPane id="rules">
 						<EventsTabsRules />
 					</TabsPane>
 					<TabsPane id="criteria">
@@ -57,6 +60,7 @@
 					<TabsPane id="results">
 						<EventsTabsResults />
 					</TabsPane>
+					</div>
 				</TabsContent>
 			</div>
 		</div>
@@ -89,7 +93,7 @@
 	);
 
 	const { data: _registrations } =
-		await useFetch(`/api/events/${eventID}/getParticipants`);
+		await useFetch(`/api/event-registration/${eventID}`);
 
 
 	const { data: _scoresData } = await useFetch(

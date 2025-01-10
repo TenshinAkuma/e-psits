@@ -19,7 +19,7 @@
 			</button>
 			<button
 				class="btn btn-primary p-3 fw-bold"
-				@click="NavigateToRegister('	')">
+				@click="NavigateToRegister('participant')">
 				Register as a participant
 			</button>
 		</div>
