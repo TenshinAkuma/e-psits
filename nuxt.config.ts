@@ -64,6 +64,6 @@ export default defineNuxtConfig({
 	},
 
 	imports: {
-		dirs: ["./types"],
+		dirs: ["./types", "composables/**"],
 	},
 });
