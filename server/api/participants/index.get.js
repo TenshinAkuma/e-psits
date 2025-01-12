@@ -5,7 +5,11 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const { data: participantsData, error: participantsError } =
-			await client.from("participants").select("*");
+			await client
+				.from("participants")
+				.select(
+					"*, institutions(id, name), event_registrations(registration_status, events(id, title))"
+				);
 
 		if (participantsError) {
 			throw new Error(participantsError.message);

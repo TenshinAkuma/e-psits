@@ -1,8 +1,8 @@
 <template>
-	<div class="d-flex align-items-center gap-3">
+	<div :id="`avatar-${name}-${id}`" class="d-flex align-items-center gap-3">
 		<div
-			class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
-			:style="{ width: size + 'px' }">
+			class="ratio ratio-1x1 border rounded-circle border border-dark overflow-hidden"
+			:style="{ width: size }">
 			<img
 				:src="generateAvatarSrc()"
 				alt="profile_image"
@@ -19,6 +19,7 @@
 
 <script setup>
 	const props = defineProps({
+		id: Number,
 		name: String,
 		gender: String,
 		size: String,
@@ -30,7 +31,7 @@
 
 		// Construct and return the avatar URL using the avatar gender and name
 		return `https://avatar.iran.liara.run/public/${avatarGender}?username=${props.name}`;
-	};
+	}
 </script>
 
 <style></style>

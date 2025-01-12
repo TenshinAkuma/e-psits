@@ -31,7 +31,7 @@
 									.first_name
 									"
 								:gender="registration.participants.sex"
-								size="56">
+								size="56px">
 								<template #name>
 									<div class="flex-grow-1">
 										<p
