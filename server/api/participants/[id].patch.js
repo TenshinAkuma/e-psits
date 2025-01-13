@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 				.from("participants")
 				.update(body)
 				.eq("id", id)
-				.select("*")
+				.select("*, institutions(name)")
 				.single();
 
 		if (participantError) {

@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fs-7">
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">School</div>
+			<div class="text-secondary">School</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
