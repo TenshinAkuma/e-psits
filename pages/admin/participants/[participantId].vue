@@ -12,8 +12,7 @@
 
 				<ParticipantsEditsDob :ParticipantDob="participant.dob" />
 
-				<ParticipantsEditsAddress
-					:ParticipantAddress="participant.address" />
+				<ParticipantsEditsAddress/>
 
 				<hr />
 				<p class="fw-bold">Contact Information</p>

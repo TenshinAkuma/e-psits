@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fs-7">
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Address</div>
+			<div class="text-secondary">Address</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -10,32 +10,34 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="text-dark">
-			{{ ParticipantAddress }}
+		<p v-if="!isEditing" class="fw-bold lh-sm">
+			{{ participant.address || "No address available." }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewAddress" class="mt-1">
+		<form v-else id="editParticipantAddress" @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">
 			<input
 				type="text"
-				v-model="participant.address"
-				class="form-control border-secondary p-2 mb-3 w-100" />
+				class="form-control border-secondary p-2 mb-3 w-100"
+				v-model="participantEdit.address"/>
+
 			<div class="d-flex justify-content-end gap-2">
 				<button
+					type="button"
+					class="btn btn-outline-secondary"
+					@click="ToggleEdit">
+					Cancel
+				</button>
+				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					form="editParticipantAddress"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_participantStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_participantStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
 				</button>
 			</div>
 		</form>
@@ -43,34 +45,41 @@
 </template>
 
 <script setup>
-	const participantID = useRoute().params.participantID;
-	const ParticipantAddress = defineModel("ParticipantAddress");
-
+	const participant = useParticipantDetails();
+	const participantId = useRoute().params.participantId
+	const errorMessage = ref("")
 	const isEditing = ref();
 
-	const participant = ref({
-		address: ParticipantAddress.value,
+	const participantEdit = ref({
+		address: participant.value?.address,
 	});
 
-	const { status, error, execute } = await useFetch(
-		`/api/participants/${participantID}`,
+	const { data: _participantData, status: _participantStatus, execute: SaveParticipantEdit } = await useFetch(
+		`/api/participants/${participantId}`,
 		{
 			method: "PATCH",
-			body: participant,
+			body: participantEdit,
 			immediate: false,
 			watch: false,
 		}
 	);
 
-	const OnSaveNewAddress = async () => {
+	const OnSaveParticipantEdit = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				ToggleEdit();
-				ParticipantAddress.value = participant.value.address;
+			await SaveParticipantEdit();
+			if (_participantData.value?.error) {
+				throw new Error("Error while updating participant address.")
 			}
-		} catch {
-			console.log(error);
+
+			participant.value = _participantData.value?.data
+			ToggleEdit();
+		} catch (err) {
+			console.error(err.message);
+
+			errorMessage.value = err.message
+			setTimeout(() => {
+				errorMessage.value = ""
+			}, 3000)
 		}
 	};
 

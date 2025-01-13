@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fs-7">
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Year level & Course</div>
+			<div class="text-secondary">Year level & Course</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -10,11 +10,11 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="text-dark">
+		<p v-if="!isEditing" class="lh-sm">
 			{{ `${participant.year_level}, ${participant.course}` }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1">
+		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">
 			<div class="input-group mb-2">
 				<span class="input-group-text text-secondary w-25"
 					>Year</span
@@ -35,7 +35,18 @@
 					class="form-control border-secondary"
 					v-model="newParticipant.course" />
 			</div>
+
+			<p class="fs-7 text-danger">
+				{{ errorMessage }}
+			</p>
+			
 			<div class="d-flex justify-content-end gap-2">
+				<button
+					type="button"
+					class="btn btn-sm btn-outline-secondary"
+					@click="ToggleEdit">
+					Cancel
+				</button>
 				<button
 					type="submit"
 					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
@@ -46,12 +57,6 @@
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
 				</button>
 			</div>
 		</form>
