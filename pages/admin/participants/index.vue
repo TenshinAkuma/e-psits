@@ -19,43 +19,43 @@
 			Loading participants
 		</div>
 
-		<div v-else class="row overflow-y-auto" style="height: 720px">
+		<div v-else class="row g-2 overflow-y-auto" style="height: 720px">
 			<div
 				v-for="participant in participants"
 				:key="participant.id"
 				class="col-6 participant-card d-flex justify-content-between align-items-center rounded-3 p-3">
 				<Avatar
-						:gender="participant.sex"
-						:id="participant.id"
-						:name="`${participant.first_name} ${participant.last_name}`"
-						size="72px">
-						<template #name>
-							<p class="fw-bold m-0">
-								{{
-	`${participant.first_name} ${participant.last_name}`
-}}
-							</p>
-							<p class="fs-7 m-0">
-								{{ participant.institutions.name }}
-							</p>
-							<p class="fs-7 text-secondary m-0">
-								{{ participant.email }}
-							</p>
-						</template>
-					</Avatar>
+					:gender="participant.sex"
+					:id="participant.id"
+					:name="`${participant.first_name} ${participant.last_name}`"
+					size="72px">
+					<template #Name>
+						<p class="fw-bold m-0">
+							{{
+								`${participant.first_name} ${participant.last_name}`
+							}}
+						</p>
+						<p class="fs-7 m-0">
+							{{ participant.institutions.name }}
+						</p>
+						<p class="fs-7 text-secondary m-0">
+							{{ participant.email }}
+						</p>
+					</template>
+				</Avatar>
 
-					<div class="btn-group gap-2">
-						<button type="button"
-						@click="toParticipantProfile(participant.id)"
+				<div class="btn-group gap-2">
+					<button
+						type="button"
+						@click="ToParticipantDetails(participant.id)"
 						class="btn btn-sm btn-outline-dark rounded-pill px-3"
-						style="height: min-content;">
+						style="height: min-content">
 						Visit profile
 					</button>
-					<button type="button"
-					class="btn btn-sm">
-					<i class="bi bi-three-dots-vertical"/>
-				</button>
-					</div>
+					<button type="button" class="btn btn-sm">
+						<i class="bi bi-three-dots-vertical" />
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -99,8 +99,7 @@
 		await navigateTo(`/admin/participants/${participantID}`);
 	};
 
-	onMounted(async () => {
-		try {
+	try {
 			isLoading.value = true;
 			await LoadParticipants();
 
@@ -127,14 +126,13 @@
 			}, 3000);
 		} finally {
 			isLoading.value = false;
-		}
-	});
+	}
 </script>
 
 <style scoped>
 	.participant-card:hover {
 		cursor: pointer;
-		/* background-color: #f5f5f5; */
-		border: 1px solid;
+		background-color: #f5f5f5;
+		/* border: 1px solid; */
 	}
 </style>

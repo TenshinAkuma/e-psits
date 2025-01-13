@@ -11,7 +11,8 @@ export default defineEventHandler(async (event) => {
 				.from("participants")
 				.update(body)
 				.eq("id", id)
-				.select("*");
+				.select("*")
+				.single();
 
 		if (participantError) {
 			throw new Error(participantError.message);
