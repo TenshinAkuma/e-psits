@@ -11,7 +11,7 @@
 		</div>
 
 		<p v-if="!isEditing" class="fw-bold lh-sm">
-			{{ participant.phone_number }}
+			{{ participant.phone_number || "No available data." }}
 		</p>
 
 		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">
