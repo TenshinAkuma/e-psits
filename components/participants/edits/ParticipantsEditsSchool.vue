@@ -28,11 +28,10 @@
 					{{ institution.name }}
 				</option>
 			</select>
-			{{ participantEdit }}
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="button"
-					class="btn "
+					class="btn"
 					@click="ToggleEdit">
 					Cancel
 				</button>

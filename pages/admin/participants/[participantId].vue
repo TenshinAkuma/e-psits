@@ -9,29 +9,20 @@
 
 				<hr />
 				<p class="fw-bold">Personal Information</p>
-
 				<ParticipantsEditsDob/>
-
 				<ParticipantsEditsAddress/>
 
 				<hr />
 				<p class="fw-bold">Contact Information</p>
-
 				<ParticipantsEditsEmail/>
-
-				<ParticipantsEditsPhoneNumber
-					:ParticipantPhoneNumber="participant.phone_number" />
+				<ParticipantsEditsPhoneNumber />
 
 				<hr />
 
 				<p class="fw-bold">Academic Information</p>
-
-				<ParticipantsEditsSchool
-					:ParticipantSchool="participant.school" />
-
+				<ParticipantsEditsSchool />
 				<ParticipantsEditsYearCourse/>
 			</div>
-			{{ participant }}
 		</div>
 
 		<div v-else>
