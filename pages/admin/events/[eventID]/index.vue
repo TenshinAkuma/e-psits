@@ -93,15 +93,15 @@
 	);
 
 	const { data: _registrations } = await useFetch(
-		`/api/event-registrations/${eventID}`
-	);
+		`/api/event-registrations/${eventID}`, {
+		method: "GET"
+	});
 
 	const { data: _scoresData } = await useFetch(
 		`/api/event-results/${eventID}`,
 		{
 			method: "GET",
-		}
-	);
+		});
 
 	eventScores.value = _scoresData.value?.data;
 	eventDetails.value = _eventDetails.value?.data;

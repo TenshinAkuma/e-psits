@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fs-7">
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Phone number</div>
+			<div class="text-secondary">Phone number</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -10,32 +10,34 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="text-dark">
-			{{ ParticipantPhoneNumber }}
+		<p v-if="!isEditing" class="fw-bold lh-sm">
+			{{ participant.phone_number || "No available data." }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewPhoneNumber" class="mt-1">
+		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">
 			<input
 				type="text"
-				v-model="participant.phone_number"
+				v-model="participantEdit.phone_number"
 				class="form-control border-secondary p-2 mb-3 w-100" />
+
 			<div class="d-flex justify-content-end gap-2">
 				<button
+					type="button"
+					class="btn"
+					@click="ToggleEdit">
+					Cancel
+				</button>
+				
+				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_participantStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_participantStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
 				</button>
 			</div>
 		</form>
@@ -43,35 +45,42 @@
 </template>
 
 <script setup>
-	const participantID = useRoute().params.participantID;
-	const ParticipantPhoneNumber = defineModel("ParticipantPhoneNumber");
-
+	const participant = useParticipantDetails()
+	const participantId = useRoute().params.participantId
+	const errorMessage = ref("")
 	const isEditing = ref(false);
 
-	const participant = ref({
-		phone_number: ParticipantPhoneNumber.value,
+	const participantEdit = ref({
+		phone_number: participant.value?.phone_number,
 	});
 
-	const { status, error, execute } = await useFetch(
-		`/api/participants/${participantID}`,
+	const { data: _participantData, status: _participantStatus, execute: SaveParticipantEdit } = await useFetch(
+		`/api/participants/${participantId}`,
 		{
 			method: "PATCH",
-			body: participant,
+			body: participantEdit,
 			immediate: false,
 			watch: false,
 		}
 	);
 
-	const OnSaveNewPhoneNumber = async () => {
+	const OnSaveParticipantEdit = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				ToggleEdit();
-				ParticipantPhoneNumber.value =
-					participant.value.phone_number;
+			await SaveParticipantEdit();
+
+			if (_participantData.value?.error) {
+				throw new Error("Error while updating participant phone number.")
 			}
-		} catch {
-			console.log(error);
+
+			participant.value = _participantData.value?.data
+			ToggleEdit()
+		} catch (err) {
+			console.error(err.message)
+
+			errorMessage.value = err.message
+			setTimeout(() => {
+				errorMessage.value = ""
+			}, 3000)
 		}
 	};
 

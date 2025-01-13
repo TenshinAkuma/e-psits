@@ -2,14 +2,14 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const body = await readBody(event);
+	const { id } = event.context.params;
 
 	try {
 		const { data: participantData, error: participantError } =
 			await client
 				.from("participants")
-				.insert(body)
-				.select("*")
+				.select("*, institutions(name)")
+				.eq("id", id)
 				.single();
 
 		if (participantError) {
@@ -18,11 +18,11 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			success: true,
-			data: participantError,
+			data: participantData,
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while saving participant",
+			"Error occurred while loading participant",
 			error.message
 		);
 

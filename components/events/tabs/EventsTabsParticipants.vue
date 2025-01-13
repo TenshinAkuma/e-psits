@@ -31,8 +31,8 @@
 									.first_name
 									"
 								:gender="registration.participants.sex"
-								size="56">
-								<template #name>
+								size="56px">
+								<template #Name>
 									<div class="flex-grow-1">
 										<p
 											class="avatar-link text-dark fw-bold m-0"

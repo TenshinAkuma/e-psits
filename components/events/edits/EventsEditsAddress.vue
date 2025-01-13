@@ -9,6 +9,7 @@
 				<Icon name="material-symbols:edit-outline-rounded" />
 			</button>
 		</div>
+		
 		<p v-if="!IsEditing" class="fw-bold fs-7 lh-sm">
 			{{ eventDetails.address || `To be announced` }}
 		</p>

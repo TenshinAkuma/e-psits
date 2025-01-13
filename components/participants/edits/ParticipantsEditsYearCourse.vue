@@ -1,7 +1,7 @@
 <template>
-	<div>
+	<div class="fs-7">
 		<div class="d-flex justify-content-between">
-			<div class="fw-bold text-secondary">Year level & Course</div>
+			<div class="text-secondary">Year level & Course</div>
 			<button
 				type="button"
 				class="btn btn-sm d-flex align-items-center text-secondary"
@@ -10,11 +10,11 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="text-dark">
-			{{ `${ParticipantYear}, ${ParticipantCourse}` }}
+		<p v-if="!isEditing" class="fw-bold lh-sm">
+			{{ `${participant.year_level}, ${participant.course}` }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewPhoneNumber" class="mt-1">
+		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">
 			<div class="input-group mb-2">
 				<span class="input-group-text text-secondary w-25"
 					>Year</span
@@ -24,7 +24,7 @@
 					max="5"
 					min="1"
 					class="form-control border-secondary"
-					v-model="participant.year" />
+					v-model="newParticipant.year_level" />
 			</div>
 			<div class="input-group mb-3">
 				<span class="input-group-text text-secondary w-25"
@@ -33,25 +33,30 @@
 				<input
 					type="text"
 					class="form-control border-secondary"
-					v-model="participant.course" />
+					v-model="newParticipant.course" />
 			</div>
+
+			<p class="fs-7 text-danger">
+				{{ errorMessage }}
+			</p>
+			
 			<div class="d-flex justify-content-end gap-2">
 				<button
+					type="button"
+					class="btn"
+					@click="ToggleEdit">
+					Cancel
+				</button>
+				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_participantStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_participantStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
 				</button>
 			</div>
 		</form>
@@ -59,37 +64,44 @@
 </template>
 
 <script setup>
-	const participantID = useRoute().params.participantID;
-	const ParticipantYear = defineModel("ParticipantYear");
-	const ParticipantCourse = defineModel("ParticipantCourse");
+	const participantId = useRoute().params.participantId;
+	const participant = useParticipantDetails();
+	const errorMessage = ref("")
 
 	const isEditing = ref(false);
 
-	const participant = ref({
-		year: ParticipantYear.value,
-		course: ParticipantCourse.value,
+	const newParticipant = ref({
+		year_level: participant.value?.year_level,
+		course: participant.value?.course,
 	});
 
-	const { status, error, execute } = await useFetch(
-		`/api/participants/${participantID}`,
+	const { data: _participantData, status: _participantStatus, execute: SaveParticipantEdit } = await useFetch(
+		`/api/participants/${participantId}`,
 		{
 			method: "PATCH",
-			body: participant,
+			body: newParticipant,
 			immediate: false,
 			watch: false,
 		}
 	);
 
-	const OnSaveNewPhoneNumber = async () => {
+	const OnSaveParticipantEdit = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				ToggleEdit();
-				ParticipantYear.value = participant.value.year;
-				ParticipantCourse.value = participant.value.course;
+			await SaveParticipantEdit();
+
+			if (_participantData.value?.error) {
+				throw new Error("Error while updating participant course and year level.")
 			}
-		} catch {
-			console.log(error);
+
+			participant.value = _participantData.value?.data
+			ToggleEdit()
+		} catch (err) {
+			console.log(err.message);
+
+			errorMessage.value = err.message
+			setTimeout(() => {
+				errorMessage.value = ""
+			}, 3000)
 		}
 	};
 
