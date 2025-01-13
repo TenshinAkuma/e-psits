@@ -10,32 +10,42 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="text-dark">
-			{{ ParticipantSchool }}
+		<p v-if="!isEditing" class="fw-bold lh-sm">
+			{{ participant?.institutions?.name || "No available data." }}
 		</p>
 
-		<form v-else @submit.prevent="OnSaveNewPhoneNumber" class="mt-1">
-			<input
-				type="text"
-				v-model="participant.school"
-				class="form-control border-secondary p-2 mb-3 w-100" />
+		<form
+			v-else
+			@submit.prevent="OnSaveParticipantEdit"
+			class="mt-1 mb-3">
+			<select
+				class="form-select border-secondary mb-3"
+				v-model="participantEdit.institution_id">
+				<option
+					v-for="institution in institutionOptions"
+					:key="institution.id"
+					:value="institution.id">
+					{{ institution.name }}
+				</option>
+			</select>
+			{{ participantEdit }}
 			<div class="d-flex justify-content-end gap-2">
 				<button
+					type="button"
+					class="btn "
+					@click="ToggleEdit">
+					Cancel
+				</button>
+				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
-					:disabled="status === 'pending'">
+					:disabled="_participantStatus === 'pending'">
 					<span
-						v-if="status === 'pending'"
+						v-if="_participantStatus === 'pending'"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
 					<span role="status">Save</span>
-				</button>
-				<button
-					type="button"
-					class="btn btn-sm btn-outline-secondary"
-					@click="ToggleEdit">
-					Cancel
 				</button>
 			</div>
 		</form>
@@ -43,34 +53,53 @@
 </template>
 
 <script setup>
-	const participantID = useRoute().params.participantID;
-	const ParticipantSchool = defineModel("ParticipantSchool");
-
+	const participant = useParticipantDetails();
+	const participantId = useRoute().params.participantId;
+	const errorMessage = ref("");
 	const isEditing = ref(false);
 
-	const participant = ref({
-		school: ParticipantSchool.value,
+	const participantEdit = ref({
+		institution_id: participant.value?.institution_id,
 	});
 
-	const { status, error, execute } = await useFetch(
-		`/api/participants/${participantID}`,
+	const {
+		data: _participantData,
+		status: _participantStatus,
+		execute: SaveParticipantEdit,
+	} = await useFetch(`/api/participants/${participantId}`, {
+		method: "PATCH",
+		body: participantEdit,
+		immediate: false,
+		watch: false,
+	});
+
+	const { data: institutionOptions } = await useFetch(
+		`/api/institutions/options`,
 		{
-			method: "PATCH",
-			body: participant,
-			immediate: false,
-			watch: false,
+			method: "GET",
 		}
 	);
 
-	const OnSaveNewPhoneNumber = async () => {
+	const OnSaveParticipantEdit = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				ToggleEdit();
-				ParticipantSchool.value = participant.value.school;
+			await SaveParticipantEdit();
+
+			if (_participantData.value?.error) {
+				throw new Error(
+					"Error while updating participant institution."
+				);
 			}
-		} catch {
-			console.log(error);
+
+			console.log(_participantData.value?.data);
+			participant.value = _participantData.value?.data;
+			ToggleEdit();
+		} catch (err) {
+			console.error(err.message);
+
+			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	};
 

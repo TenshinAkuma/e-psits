@@ -17,8 +17,7 @@
 				<hr />
 				<p class="fw-bold">Contact Information</p>
 
-				<ParticipantsEditsEmail
-					:ParticipantEmail="participant.email" />
+				<ParticipantsEditsEmail/>
 
 				<ParticipantsEditsPhoneNumber
 					:ParticipantPhoneNumber="participant.phone_number" />

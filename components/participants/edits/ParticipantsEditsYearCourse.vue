@@ -10,7 +10,7 @@
 			</button>
 		</div>
 
-		<p v-if="!isEditing" class="lh-sm">
+		<p v-if="!isEditing" class="fw-bold lh-sm">
 			{{ `${participant.year_level}, ${participant.course}` }}
 		</p>
 
@@ -43,13 +43,13 @@
 			<div class="d-flex justify-content-end gap-2">
 				<button
 					type="button"
-					class="btn btn-sm btn-outline-secondary"
+					class="btn"
 					@click="ToggleEdit">
 					Cancel
 				</button>
 				<button
 					type="submit"
-					class="d-flex align-items-center btn btn-sm btn-success fw-bold gap-2"
+					class="d-flex align-items-center btn btn-success fw-bold gap-2"
 					style="height: min-content"
 					:disabled="_participantStatus === 'pending'">
 					<span
