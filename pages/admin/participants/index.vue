@@ -10,7 +10,7 @@
 		<hr />
 
 		<div
-			v-if="isLoading"
+			v-if="_participantsStatus === 'pending'"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
 			style="height: 576px">
 			<div class="spinner-border text-secondary" role="status">
@@ -79,7 +79,7 @@
 	const errorMessage = ref("");
 	const isLoading = ref(false);
 
-	const { data: _participantsData, execute: LoadParticipants } = useFetch(
+	const { data: _participantsData, status: _participantsStatus, execute: LoadParticipants } = await useFetch(
 		"/api/participants",
 		{
 			method: "GET",
@@ -100,7 +100,6 @@
 	};
 
 	try {
-			isLoading.value = true;
 			await LoadParticipants();
 
 			if (_participantsData.value?.error) {
@@ -124,8 +123,6 @@
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-		} finally {
-			isLoading.value = false;
 	}
 </script>
 
