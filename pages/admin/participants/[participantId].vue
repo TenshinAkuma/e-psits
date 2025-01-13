@@ -10,7 +10,7 @@
 				<hr />
 				<p class="fw-bold">Personal Information</p>
 
-				<ParticipantsEditsDob :ParticipantDob="participant.dob" />
+				<ParticipantsEditsDob/>
 
 				<ParticipantsEditsAddress/>
 
