@@ -6,7 +6,9 @@
 			class="ratio ratio-1x1 border rounded-circle border border-dark overflow-hidden"
 			:style="{ width: size, height: size }" />
 
-		<slot name="Name"></slot>
+		<div>
+			<slot name="Name"/>
+		</div>
 	</div>
 </template>
 
