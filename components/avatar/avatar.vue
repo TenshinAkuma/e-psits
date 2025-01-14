@@ -1,17 +1,12 @@
 <template>
-	<div :id="`avatar-${name}-${id}`" class="d-flex justify-content-center align-items-center gap-3">
-		<div
+	<div :id="`avatar-${name}-${id}`" class="d-flex align-items-center gap-3">
+		<img
+			:src="generateAvatarSrc()"
+			alt="profile_image"
 			class="ratio ratio-1x1 border rounded-circle border border-dark overflow-hidden"
-			:style="{ width: size }">
-			<img
-				:src="generateAvatarSrc()"
-				alt="profile_image"
-				class="h-100 w-100" />
-		</div>
+			:style="{ width: size, height: size }" />
 
-		<div class="">
-			<slot name="Name"></slot>
-		</div>
+		<slot name="Name"></slot>
 	</div>
 </template>
 
@@ -31,9 +26,9 @@
 		const avatarGender = gender === "male" ? "boy" : "girl";
 
 		// Construct and return the avatar URL using the avatar gender and name
-		return `https://avatar.iran.liara.run/public/${avatarGender}?username=${props.name || "guest"}`;
+		return `https://avatar.iran.liara.run/public/${avatarGender}?username=${props.name || "guest"
+			}`;
 	};
-
 </script>
 
 <style></style>

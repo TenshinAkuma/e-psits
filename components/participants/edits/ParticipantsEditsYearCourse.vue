@@ -11,7 +11,7 @@
 		</div>
 
 		<p v-if="!isEditing" class="fw-bold lh-sm">
-			{{ `${participant.year_level}, ${participant.course}` }}
+			{{ participant.year_level || "No data available." }}, {{ participant.course || "No course provided." }}
 		</p>
 
 		<form v-else @submit.prevent="OnSaveParticipantEdit" class="mt-1 mb-3">

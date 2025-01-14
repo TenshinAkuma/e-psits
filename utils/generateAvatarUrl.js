@@ -11,10 +11,14 @@
  * console.log(avatarSrc);
  * // Output: https://avatar.iran.liara.run/public/boy?username=JohnDoe
  */
-export const generateAvatarUrl = (gender, name) => {
+export const generateAvatarUrl = (gender, firstname, lastname) => {
 	// Determine the avatar gender based on the input
 	const avatarGender = gender.toLowerCase() === "male" ? "boy" : "girl";
+	const fullname = `${firstname} ${lastname}`;
 
 	// Construct and return the avatar URL
-	return `https://avatar.iran.liara.run/public/${avatarGender}?username=${name}`;
+	return `https://avatar.iran.liara.run/public/${avatarGender}?username=${fullname.replace(
+		/ /g,
+		"+"
+	)}`;
 };

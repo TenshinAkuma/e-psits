@@ -1,201 +1,188 @@
 <template>
-	<div>
-		<button
-			class="btn btn-primary"
-			data-bs-toggle="modal"
-			data-bs-target="#createParticipantModal">
-			Add Participant
-		</button>
-		<div
-			class="modal"
-			id="createParticipantModal"
-			data-bs-backdrop="static"
-			data-bs-keyboard="false"
-			tabindex="-1"
-			aria-labelledby="createParticipantModal"
-			aria-hidden="true"
-			ref="createParticipantModalRef">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5
-							class="modal-title fw-bold"
-							id="staticBackdropLabel">
-							New Participant
-						</h5>
-						<button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
+	<Dialog
+		dialogId="createParticipant"
+		dialogTitle="Add New Participant"
+		openButtonStyle="btn-primary"
+		ref="createParticipantModalRef">
+		<template #ButtonLabel>
+			<i class="bi bi-plus-lg" /> Add new participant
+		</template>
 
-					<div class="modal-body">
-						<form
-							@submit.prevent="OnAddNewParticipant"
-							id="createEvent">
-							<p class="fw-bold text-secondary">
-								Personal Information
-							</p>
-							<div class="hstack gap-2">
-								<input
-									type="text"
-									placeholder="First name"
-									class="form-control border-secondary text-dark mb-3"
-									v-model="participant.first_name"
-									required />
-								<input
-									type="text"
-									placeholder="Last name"
-									class="form-control border-secondary text-dark mb-3"
-									v-model="participant.last_name"
-									required />
-							</div>
+		<template #Body>
+			<form @submit.prevent="OnSaveNewParticipant" id="createEvent" ref="createForm">
 
-							<div class="input-group mb-3">
-								<span
-									class="input-group-text text-secondary text-dark"
-									for="eventDate"
-									>Birthdate:</span
-								>
-								<input
-									type="date"
-									class="form-control border-secondary text-dark"
-									id="eventDate"
-									v-model="participant.dob" />
-							</div>
-
-							<input
-								type="text"
-								placeholder="Address"
-								class="form-control border-secondary text-dark mb-4"
-								v-model="participant.address" />
-
-							<hr />
-
-							<p class="fw-bold text-secondary">
-								Contact Information
-							</p>
-							<input
-								type="email"
-								placeholder="Email"
-								class="form-control border-secondary text-dark mb-3"
-								v-model="participant.email" />
-
-							<input
-								type="tel"
-								pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-								placeholder="Phone number"
-								class="form-control border-secondary text-dark mb-4"
-								v-model="participant.phone_number" />
-
-							<hr />
-							<p class="fw-bold text-secondary">
-								Academic Background
-							</p>
-							<input
-								type="text"
-								placeholder="School"
-								class="form-control border-secondary text-dark mb-3"
-								v-model="participant.school" />
-
-							<div class="hstack gap-2 mb-4">
-								<input
-									type="text"
-									placeholder="Course"
-									class="form-control border-secondary text-dark w-75"
-									v-model="participant.course" />
-
-								<input
-									type="number"
-									max="5"
-									min="1"
-									placeholder="Year"
-									class="form-control border-secondary text-dark w-25"
-									v-model="participant.year" />
-							</div>
-						</form>
-					</div>
-
-					<div class="modal-footer">
-						<button
-							type="button"
-							data-bs-dismiss="modal"
-							class="btn btn-outline-secondary border-0">
-							Cancel
-						</button>
-						<button
-							type="submit"
-							form="createEvent"
-							class="d-flex align-items-center btn btn-primary gap-2"
-							:disabled="status === 'pending'">
-							<span
-								v-if="status === 'pending'"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true" />
-							<span role="status">Add participant</span>
-						</button>
-					</div>
+				<p class="fw-bold mb-2">Personal Information</p>
+				<div class="hstack gap-2 mb-3">
+					<input
+						type="text"
+						placeholder="First name"
+						class="form-control border-secondary text-dark"
+						v-model="newParticipant.first_name"
+						required />
+					<input
+						type="text"
+						placeholder="Last name"
+						class="form-control border-secondary text-dark"
+						v-model="newParticipant.last_name"
+						required />
 				</div>
-			</div>
-		</div>
-	</div>
+
+				<div class="d-flex gap-2 mb-3">
+					<div class="input-group">
+						<span
+							class="input-group-text bg-secondary bg-opacity-25 border-secondary text-dark"
+							for="eventDate"
+							>Birthdate:</span
+						>
+						<input
+							type="date"
+							class="form-control border-secondary text-dark"
+							id="eventDate"
+							v-model="newParticipant.dob" />
+					</div>
+
+					<select
+						class="form-select border-secondary w-25"
+						v-model="newParticipant.sex">
+						<option value="" selected hidden>Sex</option>
+						<option value="male">Male</option>
+						<option value="female">Female</option>
+					</select>
+				</div>
+
+				<input
+					type="text"
+					placeholder="Address"
+					class="form-control border-secondary text-dark mb-3"
+					v-model="newParticipant.address" />
+
+				<hr />
+
+				<p class="fw-bold mb-2">Contact Information</p>
+				<input
+					type="email"
+					placeholder="Email"
+					class="form-control border-secondary text-dark mb-3"
+					v-model="newParticipant.email" />
+
+				<input
+					type="tel"
+					placeholder="Phone number"
+					class="form-control border-secondary text-dark mb-3"
+					v-model="newParticipant.phone_number" />
+
+				<hr />
+
+				<p class="fw-bold mb-2">Academic Background</p>
+				<select
+					class="select form-select border-secondary mb-3"
+					v-model="newParticipant.institution_id" required>
+					<option :value="0" selected hidden>
+						Choose institution
+					</option>
+					<option
+						v-for="institution in institutionsOptions"
+						:key="institution.id"
+						:value="institution.id">
+						{{ institution.name }}
+					</option>
+				</select>
+
+				<div class="hstack gap-2 mb-4">
+					<input
+						type="text"
+						placeholder="Course"
+						class="form-control border-secondary text-dark w-75"
+						v-model="newParticipant.course" />
+
+					<input
+						type="number"
+						max="5"
+						min="1"
+						placeholder="Year"
+						class="form-control border-secondary text-dark w-25"
+						v-model="newParticipant.year" />
+				</div>
+				<p class="fs-7 text-danger text-center m-0">
+					{{ errorMessage }}
+				</p>
+			</form>
+		</template>
+
+		<template #Submit>
+			<button
+				type="submit"
+				form="createEvent"
+				class="d-flex align-items-center btn btn-primary gap-2"
+				:disabled="_participantStatus === 'pending'">
+				<span
+					v-if="_participantStatus === 'pending'"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+				<span role="status">Add participant</span>
+			</button>
+		</template>
+	</Dialog>
 </template>
 
 <script setup>
 	const createParticipantModalRef = ref(null);
-	let createParticipantModal;
+	const createForm = ref(null)
+	const participants = useParticipants();
+	const errorMessage = ref("");
 
-	const participant = reactive({
+	const newParticipant = ref({
 		first_name: "",
 		last_name: "",
 		dob: new Date().toISOString().split("T")[0],
+		sex: "",
 		address: "",
 		email: "",
 		phone_number: "",
-		course: null,
-		year: null,
+		institution_id: Number(0),
+		course: "",
+		year_level: Number,
 	});
 
+	const { data: institutionsOptions } = await useFetch(
+		`/api/institutions/options`,
+		{
+			method: "GET",
+		}
+	);
+
 	const {
-		data: newParticipant,
-		status,
-		error,
-		execute,
+		data: _participantData,
+		status: _participantStatus,
+		execute: SaveNewParticipant,
 	} = await useFetch(`/api/participants`, {
-		headers: useRequestHeaders(["cookie"]),
 		method: "POST",
-		body: participant,
+		body: newParticipant,
 		immediate: false,
 		watch: false,
 	});
 
-	const OnAddNewParticipant = async () => {
+	const OnSaveNewParticipant = async () => {
 		try {
-			await execute();
-			if (status.value == "success") {
-				closeModal();
-				navigateTo(
-					`/admin/participants/${newParticipant.value.id}`
-				);
+			if (newParticipant.value?.institution_id == 0) {
+				throw new Error("Please specify institution.")
 			}
+			await SaveNewParticipant();
+
+			if (_participantData.value?.error) {
+				throw new Error("Error while saving new participant.");
+			}
+
+			participants.value?.push(_participantData.value?.data);
+			createForm.value?.reset()
+			createParticipantModalRef.value?.closeDialog();
 		} catch (err) {
-			console.log("Failed adding new participant", error.value);
+			console.error(err.message);
+
+			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	};
-
-	const closeModal = () => {
-		if (createParticipantModal) {
-			createParticipantModal.hide();
-		}
-	};
-
-	onMounted(() => {
-		// Access the global `bootstrap` object to initialize the Modal
-		if (createParticipantModalRef.value) {
-			createParticipantModal = new bootstrap.Modal(
-				createParticipantModalRef.value
-			);
-		}
-	});
 </script>

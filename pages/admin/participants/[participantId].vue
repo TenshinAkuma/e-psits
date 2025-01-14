@@ -4,7 +4,7 @@
 				<Avatar :id="participant.id"
 				:name="`${participant.first_name} ${participant.last_name}`"
 				:gender="`${participant.sex}`"
-				size="144px" class="mb-2 mx-auto"/>
+				size="144px" class="mb-2 justify-content-center"/>
 				<ParticipantsEditsNameStatus/>
 
 				<hr />

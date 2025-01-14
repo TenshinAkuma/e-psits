@@ -4,12 +4,13 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
+	console.log(body);
 	try {
 		const { data: participantData, error: participantError } =
 			await client
 				.from("participants")
 				.insert(body)
-				.select("*")
+				.select("*, institutions(name)")
 				.single();
 
 		if (participantError) {

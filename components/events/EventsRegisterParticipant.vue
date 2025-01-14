@@ -52,10 +52,11 @@
 							)
 						">
 						<Avatar
-							:name="participant.first_name"
+							:id="participant.id"
+							:name="`${participant.first_name} ${participant.last_name}`"
 							:gender="participant.sex"
-							size="48">
-							<template #name>
+							size="48px">
+							<template #Name>
 								<p class="fw-bold m-0">
 									{{
 										`${participant.first_name} ${participant.last_name}`
