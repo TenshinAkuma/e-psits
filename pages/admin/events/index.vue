@@ -8,34 +8,65 @@
 		<hr />
 		<div
 			v-if="_eventsStatus == 'success'"
-			class="table-responsive rounded-3"
-			style="height: 576px">
-			<table class="table table-hover table-borderless">
-				<thead class="table-secondary">
-					<tr>
-						<th scope="col">Title</th>
-						<th scope="col">Category</th>
-						<th scope="col">Type</th>
-						<th scope="col">Date</th>
-						<th scope="col">Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="event in events"
-						:key="event.id"
-						class="table-row"
-						@click="ToEventDetailsPage(event.id)">
-						<td>{{ event.title }}</td>
-						<td>{{ event.category }}</td>
-						<td>{{ event.type }}</td>
-						<td>
-							{{ new Date(event.date).toLocaleString() }}
-						</td>
-						<td>{{ event.status }}</td>
-					</tr>
-				</tbody>
-			</table>
+			class="row g-3 overflow-y-auto"
+			style="height: 720px">
+			<div
+				v-for="event in events"
+				:key="event.id"
+				class="event-card col-6 rounded-3 p-3"
+				@click="ToEventDetailsPage(event.id)">
+				<div class="row" style="height: 252px">
+					<div class="col-2 text-center">
+						<div class="fw-bold text-secondary">
+							{{
+								daysOfWeek[
+								new Date(event.date).getDay()
+								]
+							}}
+						</div>
+						<div class="fs-4 fw-bold">
+							{{ new Date(event.date).getDate() }}
+						</div>
+					</div>
+
+					<div class="col-10 d-flex flex-column justify-content-between">
+						<div>
+							<div
+							class="d-flex justify-content-between align-items-end">
+							<p class="fs-7 text-secondary">
+								{{ formatDateString(event.date) }}
+							</p>
+
+							<p class="fw-bold" style="font-size: 0.8rem">
+								{{ event.type }}
+							</p>
+						</div>
+						
+						<h4 class="fw-bold mb-1">
+								{{ event.title }}
+							</h4>
+						<p
+							v-if="
+								event.venue != '' || event.address != ''
+							">
+							<span class="fw-bold"
+								>{{ `${event.venue},` || " e" }}
+							</span>
+							{{ event.address }}
+						</p>
+						<p class="fs-7 text-secondary mb-0">
+							{{ event.description }}
+						</p>
+						</div>
+
+						<button class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
+						style="width: max-content;">
+							<span>View event</span>
+							<i class="bi bi-arrow-right" />
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div
 			v-else
@@ -57,23 +88,38 @@
 	const events = useEvents();
 
 	const errorMessage = ref("");
-	const { data: _eventsData, status: _eventsStatus } = await useFetch("/api/events");
+	const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-	events.value = _eventsData.value?.data;
+	const {
+		data: _eventsData,
+		status: _eventsStatus,
+		execute: LoadEvents,
+	} = await useFetch("/api/events", {
+		method: "GET",
+		immediate: false,
+		watch: false,
+	});
 
 	const ToEventDetailsPage = async (id) => {
 		await navigateTo(`/admin/events/	${id}`);
 	};
+
+	try {
+		await LoadEvents();
+
+		if (_eventsData.value?.errorMessage) {
+			throw new Error("Error while loading events.");
+		}
+
+		events.value = _eventsData.value?.data;
+	} catch (err) {
+		console.error(err.message);
+	}
 </script>
 
 <style scoped>
-	.table-row:hover {
+	.event-card:hover {
 		cursor: pointer;
-	}
-
-	table thead tr th {
-		position: sticky;
-		top: 0;
-		z-index: 1;
+		background-color: #f5f5f5;
 	}
 </style>

@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: eventsData, error: eventsError } = await client
 			.from("events")
-			.select("*");
+			.select()
+			.order("date");
 
 		if (eventsError) {
 			throw new Error(eventsError.message);
