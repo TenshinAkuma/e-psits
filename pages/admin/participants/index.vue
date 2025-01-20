@@ -75,7 +75,6 @@
 	});
 
 	const participants = useParticipants();
-	const registrations = useParticipantRegistrations();
 	const errorMessage = ref("");
 	const isLoading = ref(false);
 
@@ -112,8 +111,7 @@
 				throw new Error(_registrationsData.value?.error);
 			}
 
-			participants.value = _participantsData.value?.data;
-			registrations.value = _registrationsData.value?.data;
+		participants.value = _participantsData.value?.data;
 		} catch (err) {
 			console.error("Error while loading participants", err.message);
 

@@ -76,7 +76,7 @@
 	const RegistrationStatus = defineModel("RegistrationStatus");
 	const ParticipantRegistrationID = defineModel("ParticipantRegistrationID");
 	const registrationStatuses = useRegistrationStatus();
-	const participantRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 
 	const errorMessage = ref();
 
@@ -117,7 +117,7 @@
 			}
 
 			const registrationIndex =
-				participantRegistrations.value?.findIndex(
+				eventRegistrations.value?.findIndex(
 					(r) => r.id == ParticipantRegistrationID.value
 				);
 
@@ -125,7 +125,7 @@
 				throw new Error("Invalid registration ID");
 			}
 
-			participantRegistrations.value[registrationIndex] =
+			eventRegistrations.value[registrationIndex] =
 				_registrationData.value?.data;
 			closeDropdown();
 		} catch (err) {

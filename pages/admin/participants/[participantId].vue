@@ -26,7 +26,9 @@
 			<ParticipantsEditsYearCourse />
 		</div>
 
-		<div class="col-9">Hello</div>
+		<div class="col-9">
+			<ParticipantsEventsSection/>
+		</div>
 	</div>
 
 	<div v-else>

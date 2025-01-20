@@ -68,7 +68,7 @@
 
    const editScoresRef = ref(null)
    const eventScores = useEventScores();
-   const participantsRegistrations = useParticipantRegistrations();
+   const eventRegistrations = useEventRegistrations();
    const errorMessage = ref("")
 
    const eventScore = computed(() => {
@@ -78,7 +78,7 @@
    const getParticipantName = computed(() => {
       const registration_id = eventScore.value?.registration_id;
 
-      const participant = participantsRegistrations.value?.find(
+      const participant = eventRegistrations.value?.find(
          (p) => p.id == registration_id
       );
 

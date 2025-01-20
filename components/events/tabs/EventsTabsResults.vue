@@ -77,11 +77,11 @@
 <script setup>
 	const eventScores = useEventScores();
 	const eventCriteria = useEventCriteria();
-	const participantsRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 
 	const getParticipant = (registrationId) =>
 		computed(() => {
-			const participant = participantsRegistrations.value?.find(
+			const participant = eventRegistrations.value?.find(
 				(participant) => participant.id == registrationId
 			);
 
