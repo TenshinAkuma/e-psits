@@ -87,15 +87,8 @@
 		}
 	);
 
-	const { data: _registrationsData, execute: LoadRegistrations } =
-		await useFetch(`/api/event-registrations`, {
-			method: "GET",
-			immediate: false,
-			watch: false,
-		});
-
-	const ToParticipantDetails = async (participantID) => {
-		await navigateTo(`/admin/participants/${participantID}`);
+	const ToParticipantDetails = (participantID) => {
+		navigateTo(`/admin/participants/${participantID}`);
 	};
 
 	try {
@@ -103,12 +96,6 @@
 
 			if (_participantsData.value?.error) {
 				throw new Error(_participantsData.value?.error);
-			}
-
-			await LoadParticipants();
-
-			if (_registrationsData.value?.err) {
-				throw new Error(_registrationsData.value?.error);
 			}
 
 		participants.value = _participantsData.value?.data;

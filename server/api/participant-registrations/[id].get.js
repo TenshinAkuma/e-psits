@@ -7,11 +7,9 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: registrationData, error: registrationError } =
 			await client
-				.from("event_scores")
-				.select(
-					`score_id:id, score, ...event_registrations!inner(event_id, ...events!inner(title ))`
-				)
-				.eq("event_registrations.participant_id", id);
+				.from("event_registrations")
+				.select("id, events(title)")
+				.eq("participant_id", id);
 
 		if (registrationError) {
 			throw new Error(registrationError.message);

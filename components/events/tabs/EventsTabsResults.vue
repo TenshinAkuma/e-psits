@@ -10,7 +10,7 @@
 		<div class="mb-3">
 			<ResultsCreate />
 		</div>
-		<div class="table-responsive fs-7">
+		<div class="fs-7">
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>

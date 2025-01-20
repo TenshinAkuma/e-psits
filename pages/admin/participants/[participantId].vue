@@ -51,7 +51,7 @@
 		data: _participantData,
 		status: _participantStatus,
 		execute: LoadParticipant,
-	} = useFetch(`/api/participants/${participantId}`, {
+	} = await useFetch(`/api/participants/${participantId}`, {
 		method: "GET",
 		immediate: false,
 		watch: false,
@@ -65,6 +65,7 @@
 		}
 
 		participant.value = _participantData.value?.data;
+
 	} catch (err) {
 		console.error("Error while loading participant details.");
 

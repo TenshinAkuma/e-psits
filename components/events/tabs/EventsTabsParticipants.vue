@@ -10,8 +10,7 @@
 		<div class="mb-3">
 			<EventsRegisterParticipant />
 		</div>
-		<div class="table-responsive">
-			<table class="table table-borderless align-middle">
+		<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
 						<th scope="col">Participants</th>
@@ -76,7 +75,6 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
 	</div>
 </template>
 

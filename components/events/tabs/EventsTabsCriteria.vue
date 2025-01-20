@@ -11,8 +11,7 @@
 		<div class="d-flex justify-content-between align-items-center mb-3">
 			<CriteriaCreate />
 		</div>
-		<div class="table-responsive">
-			<table class="table table-borderless align-middle">
+		<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
 						<th scope="col">Criteria</th>
@@ -50,7 +49,6 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
 	</div>
 </template>
 
