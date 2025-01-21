@@ -1,5 +1,14 @@
 <template>
-	<div v-if="_participantStatus === 'success'" class="row">
+	
+
+	<div v-if="_participantStatus === 'pending'">
+		<div class="spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+
+
+	<div v-else class="row">
 		<div class="col-3 border rounded-3 p-3">
 			<Avatar
 				:id="participant.id"
@@ -28,12 +37,6 @@
 
 		<div class="col-9">
 			<ParticipantsEventsSection/>
-		</div>
-	</div>
-
-	<div v-else>
-		<div class="spinner-border" role="status">
-			<span class="visually-hidden">Loading...</span>
 		</div>
 	</div>
 </template>

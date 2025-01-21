@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while registering participant ",
+			"Error occurred while loading participant ",
 			error.message
 		);
 		return {

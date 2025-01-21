@@ -31,7 +31,6 @@
 					</div>
 				</div>
 			</form>
-         {{ evaluationEdit.score }}
          <p class="fs-7 text-danger text-center m-0">
 				{{ errorMessage }} 
 			</p>
