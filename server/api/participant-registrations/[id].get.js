@@ -8,7 +8,9 @@ export default defineEventHandler(async (event) => {
 		const { data: registrationData, error: registrationError } =
 			await client
 				.from("event_registrations")
-				.select("id, events(title)")
+				.select(
+					"id, registration_status, events(id, title, date, description, category)"
+				)
 				.eq("participant_id", id);
 
 		if (registrationError) {

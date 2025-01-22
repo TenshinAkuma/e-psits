@@ -13,8 +13,7 @@
 			<div
 				v-for="event in events"
 				:key="event.id"
-				class="event-card col-6 rounded-3 p-3"
-				@click="ToEventDetailsPage(event.id)">
+				class="event-card col-6 rounded-3 p-3">
 				<div class="row" style="height: 252px">
 					<div class="col-2 text-center">
 						<div class="fw-bold text-secondary">
@@ -59,11 +58,11 @@
 						</p>
 						</div>
 
-						<button class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
+						<NuxtLink :to="`/admin/events/${event.id}`" class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
 						style="width: max-content;">
 							<span>View event</span>
 							<i class="bi bi-arrow-right" />
-						</button>
+						</NuxtLink>
 					</div>
 				</div>
 			</div>

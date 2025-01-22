@@ -26,9 +26,7 @@
 						style="height: 114px">
 						<td>
 							<Avatar
-								:name="registration.participants
-									.first_name
-									"
+								:name="`${registration.participants.first_name} ${registration.participants.last_name}`"
 								:gender="registration.participants.sex"
 								size="56px">
 								<template #Name>

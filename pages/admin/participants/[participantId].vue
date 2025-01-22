@@ -1,42 +1,47 @@
 <template>
-	
-
 	<div v-if="_participantStatus === 'pending'">
 		<div class="spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
 		</div>
 	</div>
 
-
 	<div v-else class="row">
-		<div class="col-3 border rounded-3 p-3">
-			<Avatar
-				:id="participant.id"
-				:name="`${participant.first_name} ${participant.last_name}`"
-				:gender="`${participant.sex}`"
-				size="144px"
-				class="mb-2 justify-content-center" />
-			<ParticipantsEditsNameStatus />
+		<div class="col-3 p-2">
+			<div class="border border-secondary rounded-3 p-3">
+				<Avatar
+					:id="participant.id"
+					:name="`${participant.first_name} ${participant.last_name}`"
+					:gender="`${participant.sex}`"
+					size="144px"
+					class="mb-2 justify-content-center" />
+				<ParticipantsEditsNameStatus />
 
-			<hr />
-			<p class="fw-bold">Personal Information</p>
-			<ParticipantsEditsDob />
-			<ParticipantsEditsAddress />
+				<hr />
+				<p class="fw-bold">Personal Information</p>
+				<ParticipantsEditsDob />
+				<ParticipantsEditsAddress />
 
-			<hr />
-			<p class="fw-bold">Contact Information</p>
-			<ParticipantsEditsEmail />
-			<ParticipantsEditsPhoneNumber />
+				<hr />
+				<p class="fw-bold">Contact Information</p>
+				<ParticipantsEditsEmail />
+				<ParticipantsEditsPhoneNumber />
 
-			<hr />
+				<hr />
 
-			<p class="fw-bold">Academic Information</p>
-			<ParticipantsEditsSchool />
-			<ParticipantsEditsYearCourse />
+				<p class="fw-bold">Academic Information</p>
+				<ParticipantsEditsSchool />
+				<ParticipantsEditsYearCourse />
+			</div>
 		</div>
 
 		<div class="col-9">
-			<ParticipantsEventsSection/>
+			<div class="p-2">
+				<div class="d-flex justify-content-between align-items-center mb-5">
+					<h4 class="m-0">Events</h4>
+					<button class="btn btn-sm btn-outline-dark">Register to event</button>
+				</div>
+				<ParticipantsEventsSection />
+			</div>
 		</div>
 	</div>
 </template>
@@ -68,7 +73,6 @@
 		}
 
 		participant.value = _participantData.value?.data;
-
 	} catch (err) {
 		console.error("Error while loading participant details.");
 

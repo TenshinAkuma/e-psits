@@ -1,13 +1,16 @@
 <template>
-	<div class="row g-2">
-		<ScoreCard v-for="registration in _registrationData.data"
-		:key="registration.id"
-		:registration="registration"/>
+	<div class="row">
+		<div
+			v-for="registration in _registrationData.data"
+			:key="registration.id"
+			class="col-6 p-2">
+			<ScoreCard :registration="registration" />
+		</div>
 	</div>
 </template>
 
 <script setup>
-	import ScoreCard from './ScoreCard.vue';
+	import ScoreCard from "./ScoreCard.vue";
 
 	const participantId = Number(useRoute().params.participantId);
 
