@@ -10,7 +10,7 @@
 		<div class="mb-3">
 			<ResultsCreate />
 		</div>
-		<div class="table-responsive fs-7">
+		<div class="fs-7">
 			<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
@@ -77,11 +77,11 @@
 <script setup>
 	const eventScores = useEventScores();
 	const eventCriteria = useEventCriteria();
-	const participantsRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 
 	const getParticipant = (registrationId) =>
 		computed(() => {
-			const participant = participantsRegistrations.value?.find(
+			const participant = eventRegistrations.value?.find(
 				(participant) => participant.id == registrationId
 			);
 

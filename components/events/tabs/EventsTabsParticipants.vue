@@ -1,6 +1,6 @@
 <template>
 	<div
-		v-if="participantRegistrations == null || participantRegistrations.length == 0"
+		v-if="eventRegistrations == null || eventRegistrations.length == 0"
 		class="d-flex flex-column justify-content-center align-items-center"
 		style="height: 576px">
 		<p class="fs-7">No participants as of now.</p>
@@ -10,8 +10,7 @@
 		<div class="mb-3">
 			<EventsRegisterParticipant />
 		</div>
-		<div class="table-responsive">
-			<table class="table table-borderless align-middle">
+		<table class="table table-borderless align-middle">
 				<thead>
 					<tr>
 						<th scope="col">Participants</th>
@@ -22,14 +21,12 @@
 				</thead>
 				<tbody>
 					<tr
-						v-for="registration in participantRegistrations"
+						v-for="registration in eventRegistrations"
 						:key="registration.id"
 						style="height: 114px">
 						<td>
 							<Avatar
-								:name="registration.participants
-									.first_name
-									"
+								:name="`${registration.participants.first_name} ${registration.participants.last_name}`"
 								:gender="registration.participants.sex"
 								size="56px">
 								<template #Name>
@@ -76,12 +73,11 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
 	</div>
 </template>
 
 <script setup>
-	const participantRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 </script>
 
 <style scoped>

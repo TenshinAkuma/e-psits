@@ -78,7 +78,7 @@
 	const eventID = useRoute().params.eventID;
 	const eventDetails = useEventDetails();
 	const eventCriteria = useEventCriteria();
-	const participantRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 	const eventScores = useEventScores();
 
 	const { data: _eventDetails } = await useFetch(`/api/events/${eventID}`, {
@@ -106,5 +106,5 @@
 	eventScores.value = _scoresData.value?.data;
 	eventDetails.value = _eventDetails.value?.data;
 	eventCriteria.value = _criteriaData.value?.data;
-	participantRegistrations.value = _registrations.value.data;
+	eventRegistrations.value = _registrations.value.data;
 </script>

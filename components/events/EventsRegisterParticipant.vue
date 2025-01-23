@@ -91,7 +91,7 @@
 
 <script setup>
 	const registerParticipantDialogRef = ref(null);
-	const participantRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 	const searchQuery = ref("");
 	const errorMessage = ref("");
 
@@ -124,7 +124,7 @@
 			return;
 		}
 
-		participantRegistrations.value.push(_registration.value?.data);
+		eventRegistrations.value.push(_registration.value?.data);
 		registerParticipantDialogRef.value?.closeDialog();
 	};
 

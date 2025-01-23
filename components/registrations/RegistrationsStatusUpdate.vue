@@ -4,8 +4,7 @@
 			type="button"
 			:class="`btn btn-sm ${registrationStatusButton(
 				RegistrationStatus
-			)} rounded-pill dropdown-toggle p-1`"
-			style="width: 114px"
+)} rounded-pill dropdown-toggle px-3`"
 			data-bs-toggle="dropdown"
 			aria-expanded="false"
 			data-bs-auto-close="outside"
@@ -76,7 +75,7 @@
 	const RegistrationStatus = defineModel("RegistrationStatus");
 	const ParticipantRegistrationID = defineModel("ParticipantRegistrationID");
 	const registrationStatuses = useRegistrationStatus();
-	const participantRegistrations = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 
 	const errorMessage = ref();
 
@@ -117,7 +116,7 @@
 			}
 
 			const registrationIndex =
-				participantRegistrations.value?.findIndex(
+				eventRegistrations.value?.findIndex(
 					(r) => r.id == ParticipantRegistrationID.value
 				);
 
@@ -125,7 +124,7 @@
 				throw new Error("Invalid registration ID");
 			}
 
-			participantRegistrations.value[registrationIndex] =
+			eventRegistrations.value[registrationIndex] =
 				_registrationData.value?.data;
 			closeDropdown();
 		} catch (err) {
@@ -149,5 +148,3 @@
 		}
 	};
 </script>
-
-<style></style>

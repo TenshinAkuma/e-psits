@@ -75,7 +75,6 @@
 	});
 
 	const participants = useParticipants();
-	const registrations = useParticipantRegistrations();
 	const errorMessage = ref("");
 	const isLoading = ref(false);
 
@@ -88,15 +87,8 @@
 		}
 	);
 
-	const { data: _registrationsData, execute: LoadRegistrations } =
-		await useFetch(`/api/event-registrations`, {
-			method: "GET",
-			immediate: false,
-			watch: false,
-		});
-
-	const ToParticipantDetails = async (participantID) => {
-		await navigateTo(`/admin/participants/${participantID}`);
+	const ToParticipantDetails = (participantID) => {
+		navigateTo(`/admin/participants/${participantID}`);
 	};
 
 	try {
@@ -106,14 +98,7 @@
 				throw new Error(_participantsData.value?.error);
 			}
 
-			await LoadParticipants();
-
-			if (_registrationsData.value?.err) {
-				throw new Error(_registrationsData.value?.error);
-			}
-
-			participants.value = _participantsData.value?.data;
-			registrations.value = _registrationsData.value?.data;
+		participants.value = _participantsData.value?.data;
 		} catch (err) {
 			console.error("Error while loading participants", err.message);
 

@@ -92,7 +92,7 @@
 
 <script setup>
 	const evaluateParticipantRef = ref(null);
-	const registeredParticipants = useParticipantRegistrations();
+	const eventRegistrations = useEventRegistrations();
 	const eventCriteria = useEventCriteria();
 	const eventScores = useEventScores();
 	const errorMessage = ref("");
@@ -103,7 +103,7 @@
 	});
 
 	const participants = computed(() => {
-		return registeredParticipants.value?.filter(
+		return eventRegistrations.value?.filter(
 			(participant) =>
 				participant.registration_status.toLowerCase() ===
 				"registered"

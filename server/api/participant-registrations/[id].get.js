@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 			await client
 				.from("event_registrations")
 				.select("*, participants(*, institutions(*)), events(*))")
-				.eq("event_id", id);
+				.eq("participant_id", id);
 
 		if (registrationError) {
 			throw new Error(registrationError.message);
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while registering participant ",
+			"Error occurred while loading participant ",
 			error.message
 		);
 		return {

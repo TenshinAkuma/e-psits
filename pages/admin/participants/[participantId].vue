@@ -1,37 +1,44 @@
 <template>
-	<div v-if="_participantStatus === 'success'" class="row">
-		<div class="col-3 border rounded-3 p-3">
-			<Avatar
-				:id="participant.id"
-				:name="`${participant.first_name} ${participant.last_name}`"
-				:gender="`${participant.sex}`"
-				size="144px"
-				class="mb-2 justify-content-center" />
-			<ParticipantsEditsNameStatus />
-
-			<hr />
-			<p class="fw-bold">Personal Information</p>
-			<ParticipantsEditsDob />
-			<ParticipantsEditsAddress />
-
-			<hr />
-			<p class="fw-bold">Contact Information</p>
-			<ParticipantsEditsEmail />
-			<ParticipantsEditsPhoneNumber />
-
-			<hr />
-
-			<p class="fw-bold">Academic Information</p>
-			<ParticipantsEditsSchool />
-			<ParticipantsEditsYearCourse />
-		</div>
-
-		<div class="col-9">Hello</div>
-	</div>
-
-	<div v-else>
+	<div v-if="_participantStatus === 'pending'">
 		<div class="spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
+
+	<div v-else class="row">
+		<div class="col-3 p-2">
+			<div class="border border-secondary rounded-3 p-3">
+				<Avatar
+					:id="participant.id"
+					:name="`${participant.first_name} ${participant.last_name}`"
+					:gender="`${participant.sex}`"
+					size="144px"
+					class="mb-2 justify-content-center" />
+				<ParticipantsEditsNameStatus />
+
+				<hr />
+				<p class="fw-bold">Personal Information</p>
+				<ParticipantsEditsSex/>
+				<ParticipantsEditsDob />
+				<ParticipantsEditsAddress />
+
+				<hr />
+				<p class="fw-bold">Contact Information</p>
+				<ParticipantsEditsEmail />
+				<ParticipantsEditsPhoneNumber />
+
+				<hr />
+
+				<p class="fw-bold">Academic Information</p>
+				<ParticipantsEditsSchool />
+				<ParticipantsEditsYearCourse />
+			</div>
+		</div>
+
+		<div class="col-9">
+			<div class="p-2">
+				<ParticipantsEventsSection />
+			</div>
 		</div>
 	</div>
 </template>
@@ -49,7 +56,7 @@
 		data: _participantData,
 		status: _participantStatus,
 		execute: LoadParticipant,
-	} = useFetch(`/api/participants/${participantId}`, {
+	} = await useFetch(`/api/participants/${participantId}`, {
 		method: "GET",
 		immediate: false,
 		watch: false,
