@@ -33,13 +33,28 @@
 									.last_name
 							" />
 					</div>
-					<input
-						type="email"
-						class="form-control border-secondary mb-3"
-						placeholder="Email"
-						v-model="
-							participantRegistration.participantData.email
-						" />
+
+					<div class="hstack gap-3 mb-3">
+						<input
+							type="email"
+							class="form-control border-secondary"
+							placeholder="Email"
+							v-model="
+	participantRegistration.participantData
+		.email
+	" />
+
+						<select
+							class="form-select border-secondary w-25"
+							v-model="participantRegistration.participantData.sex">
+							<option value="" selected hidden>Sex</option>
+							<option value="male">Male</option>
+							<option value="female">
+								Female
+							</option>
+						</select>
+					</div>
+
 					<input
 						type="text"
 						class="form-control border-secondary mb-4"
@@ -56,7 +71,7 @@
 							participantRegistration.participantData
 								.institution_id
 						">
-						<option value="" select hidden>
+						<option value="" selected hidden>
 							Choose your institution
 						</option>
 						<option
@@ -92,7 +107,7 @@
 					<select
 						class="form-select border-secondary mb-5"
 						v-model="participantRegistration.event_id">
-						<option value="" select hidden>
+						<option value="" selected hidden>
 							Choose your event
 						</option>
 						<option
@@ -141,13 +156,14 @@
 		participantData: {
 			first_name: "",
 			last_name: "",
+			sex: "",
 			email: "",
 			institution_id: "",
 			course: "",
 			year_level: "",
 			address: "",
 		},
-		event_id: Number,
+		event_id: "",
 	});
 
 	const { data: institutionOptions } = await useFetch(

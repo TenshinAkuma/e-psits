@@ -4,8 +4,7 @@
 			type="button"
 			:class="`btn btn-sm ${registrationStatusButton(
 				RegistrationStatus
-			)} rounded-pill dropdown-toggle p-1`"
-			style="width: 114px"
+)} rounded-pill dropdown-toggle px-3`"
 			data-bs-toggle="dropdown"
 			aria-expanded="false"
 			data-bs-auto-close="outside"
@@ -149,5 +148,3 @@
 		}
 	};
 </script>
-
-<style></style>

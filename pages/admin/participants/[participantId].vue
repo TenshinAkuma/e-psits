@@ -18,6 +18,7 @@
 
 				<hr />
 				<p class="fw-bold">Personal Information</p>
+				<ParticipantsEditsSex/>
 				<ParticipantsEditsDob />
 				<ParticipantsEditsAddress />
 
@@ -36,10 +37,6 @@
 
 		<div class="col-9">
 			<div class="p-2">
-				<div class="d-flex justify-content-between align-items-center mb-5">
-					<h4 class="m-0">Events</h4>
-					<button class="btn btn-sm btn-outline-dark">Register to event</button>
-				</div>
 				<ParticipantsEventsSection />
 			</div>
 		</div>
