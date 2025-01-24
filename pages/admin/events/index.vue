@@ -6,20 +6,17 @@
 		</div>
 
 		<hr />
-		<div
-			v-if="_eventsStatus == 'success'"
-			class="row g-3 overflow-y-auto"
-			style="height: 720px">
+		<div v-if="_eventsStatus == 'success'" class="row gx-5 gy-4">
 			<div
 				v-for="event in events"
 				:key="event.id"
-				class="event-card col-6 rounded-3 p-3">
-				<div class="row" style="height: 252px">
+				class="col-6">
+				<div class="row event-card border border-secondary rounded-3 p-3" style="height: 252px">
 					<div class="col-2 text-center">
 						<div class="fw-bold text-secondary">
 							{{
-								daysOfWeek[
-								new Date(event.date).getDay()
+								monthOfYEar[
+									new Date(event.date).getMonth()
 								]
 							}}
 						</div>
@@ -28,38 +25,43 @@
 						</div>
 					</div>
 
-					<div class="col-10 d-flex flex-column justify-content-between">
+					<div
+						class="col-10 d-flex flex-column justify-content-between">
 						<div>
 							<div
-							class="d-flex justify-content-between align-items-end">
-							<p class="fs-7 text-secondary">
-								{{ formatDateString(event.date) }}
-							</p>
+								class="d-flex justify-content-between align-items-end">
+								<p class="fs-7 text-secondary">
+									{{ formatDateString(event.date) }}
+								</p>
+								<p
+									class="fw-bold"
+									style="font-size: 0.8rem">
+									{{ event.type }}
+								</p>
+							</div>
 
-							<p class="fw-bold" style="font-size: 0.8rem">
-								{{ event.type }}
-							</p>
-						</div>
-						
-						<h4 class="fw-bold mb-1">
+							<h4 class="fw-bold mb-1">
 								{{ event.title }}
 							</h4>
-						<p
-							v-if="
-								event.venue != '' || event.address != ''
-							">
-							<span class="fw-bold"
-								>{{ `${event.venue},` || " e" }}
-							</span>
-							{{ event.address }}
-						</p>
-						<p class="fs-7 text-secondary mb-0">
-							{{ event.description }}
-						</p>
+							<p
+								v-if="
+									event.venue != '' ||
+									event.address != ''
+								">
+								<span class="fw-bold"
+									>{{ `${event.venue},` || " e" }}
+								</span>
+								{{ event.address }}
+							</p>
+							<p class="fs-7 text-secondary mb-0">
+								{{ event.description }}
+							</p>
 						</div>
 
-						<NuxtLink :to="`/admin/events/${event.id}`" class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
-						style="width: max-content;">
+						<NuxtLink
+							:to="`/admin/events/${event.id}`"
+							class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
+							style="width: max-content">
 							<span>View event</span>
 							<i class="bi bi-arrow-right" />
 						</NuxtLink>
@@ -87,7 +89,20 @@
 	const events = useEvents();
 
 	const errorMessage = ref("");
-	const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+	const monthOfYEar = [
+		"JAN",
+		"FEB",
+		"MAR",
+		"APR",
+		"MAY",
+		"JUN",
+		"JUL",
+		"AUG",
+		"SEP",
+		"OCT",
+		"NOV",
+		"DEC",
+	];
 
 	const {
 		data: _eventsData,
@@ -100,7 +115,7 @@
 	});
 
 	const ToEventDetailsPage = async (id) => {
-		await navigateTo(`/admin/events/	${id}`);
+		await navigateTo(`/admin/events/${id}`);
 	};
 
 	try {
@@ -120,5 +135,6 @@
 	.event-card:hover {
 		cursor: pointer;
 		background-color: #f5f5f5;
+		/* border: 1px solid #454545; */
 	}
 </style>
