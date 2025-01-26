@@ -7,72 +7,32 @@
 		<EventsRegisterParticipant />
 	</div>
 	<div v-else>
-		<div class="mb-3">
-			<EventsRegisterParticipant />
+		<EventsRegisterParticipant class="mb-3"/>
+		<div class="row">
+			<div v-for="registration in eventRegistrations"
+				:key="registration.id"
+				class="col-3 border border-secondary rounded-3 p-3">
+				<Avatar
+					:name="`${registration.participants.first_name} ${registration.participants.last_name}`"
+					:gender="registration.participants.sex"
+					size="72px"
+					class="mb-2" />
+				<p class="avatar-link text-dark fw-bold m-0"
+					style="width: max-content"
+					@click="navigateTo(`/admin/participants/${registration.participants.id}`)">
+					{{ `${registration.participants.first_name} ${registration.participants.last_name}` }}
+				</p>
+				<p class="avatar-link text-secondary m-0"
+					style="cursor: pointer; font-size: 0.8rem"
+					@click="navigateTo(`/admin/institutions/${registration.participants.institutions.id}`)">
+					{{ registration.participants.institutions.name }}
+				</p>
+				<br />
+				<RegistrationsStatusUpdate
+					:RegistrationStatus="registration.registration_status"
+					:ParticipantRegistrationID="registration.id" />
+			</div>
 		</div>
-		<table class="table table-borderless align-middle">
-				<thead>
-					<tr>
-						<th scope="col">Participants</th>
-						<th scope="col" class="text-end">
-							Registration status
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr
-						v-for="registration in eventRegistrations"
-						:key="registration.id"
-						style="height: 114px">
-						<td>
-							<Avatar
-								:name="`${registration.participants.first_name} ${registration.participants.last_name}`"
-								:gender="registration.participants.sex"
-								size="56px">
-								<template #Name>
-									<div class="flex-grow-1">
-										<p
-											class="avatar-link text-dark fw-bold m-0"
-											style="width: max-content;"
-											@click="
-												navigateTo(
-													`/admin/participants/${registration.participants.id}`)">
-											{{
-												`${registration.participants.first_name} ${registration.participants.last_name}`
-											}}
-										</p>
-										<p
-											class="avatar-link text-secondary m-0"
-											style="
-												cursor: pointer;
-												font-size: 0.8rem;"
-											@click="
-												navigateTo(
-													`/admin/institutions/${registration.participants.institutions.id}`
-												)
-	">
-											{{
-												registration
-													.participants
-													.institutions
-													.name
-											}}
-										</p>
-									</div>
-								</template>
-							</Avatar>
-						</td>
-
-						<td class="text-end">
-							<RegistrationsStatusUpdate
-								:RegistrationStatus="registration.registration_status
-									"
-								:ParticipantRegistrationID="registration.id
-									" />
-						</td>
-					</tr>
-				</tbody>
-			</table>
 	</div>
 </template>
 

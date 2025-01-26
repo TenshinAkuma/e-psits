@@ -3,7 +3,7 @@
 		<div
 			class="d-flex justify-content-between align-items-center gap-5 mb-5">
 			<EventsEditsTitle class="flex-grow-1" />
-			<div class="hstack gap-2">
+			<div class="d-flex gap-2">
 				<EventsCreateModal />
 				<EventsDelete />
 			</div>
