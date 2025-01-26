@@ -5,7 +5,7 @@
 		openButtonStyle="btn-sm"
 		ref="editRegistrationRef">
 		<template #ButtonLabel>
-			<i class="bi-pencil-fill fs-7 text-secondary" />
+			<i class="bi bi-pencil-fill fs-7 text-secondary" />
 		</template>
 
 		<template #Body>

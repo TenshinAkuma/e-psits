@@ -66,9 +66,10 @@
 								class="d-flex justify-content-center gap-2">
 								<RegistrationsEdit
 									:registration="registration"
-									@onSaveEdit="HandleOnSaveEdit()" />
-								<i
-									class="btn btn-sm bi bi-trash-fill fs-7 text-secondary" />
+									@onSaveEdit="HandleReload()" />
+								<RegistrationsDelete
+                           :registration="registration"
+                           @onDelete="HandleReload()" />
 							</div>
 						</td>
 					</tr>
@@ -132,10 +133,10 @@
 
    await InitializeData();
 
-	const HandleOnSaveEdit = async () => {
+	const HandleReload = async () => {
 		console.log("Registration edit saved.");
 		await InitializeData();
-	};
+   };
 </script>
 
 <style scoped>
