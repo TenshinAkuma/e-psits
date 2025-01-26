@@ -17,7 +17,12 @@
 			>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" href="#">Guidelines</a>
+			<NuxtLink
+				class="nav-link"
+				:class="{ active: isActive('guidelines') }"
+				:to="`/admin/events/${eventId}v2/guidelines`"
+				>Guidelines</NuxtLink
+			>
 		</li>
 	</ul>
 </template>

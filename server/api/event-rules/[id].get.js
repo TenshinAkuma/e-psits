@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
-			.select("id, name, description")
+			.select("*")
 			.eq("event_id", id);
 
 		if (rulesError) {
