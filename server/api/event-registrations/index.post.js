@@ -4,6 +4,7 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
+	console.log("Event Registration Body:", body);
 	try {
 		// Check if the participant is already registered for the event
 		const { data: participantExists, error: participantError } =
@@ -16,9 +17,7 @@ export default defineEventHandler(async (event) => {
 
 		if (participantError) {
 			// Handle unexpected errors (e.g., database issues)
-			throw new Error(
-				`Error checking participant registration: ${participantError.message}`
-			);
+			throw new Error(participantError.message);
 		}
 
 		if (participantExists) {

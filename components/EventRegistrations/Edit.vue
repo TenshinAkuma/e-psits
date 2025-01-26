@@ -1,7 +1,7 @@
 <template>
 	<Dialog
 		:dialogId="`edit-registration-${registrationData.id}`"
-		dialogTitle="Edit Registration"
+		:dialogTitle="`Edit ${registration.participants.first_name}'s registration data.`"
 		openButtonStyle="btn-sm"
 		ref="editRegistrationRef">
 		<template #ButtonLabel>
@@ -13,7 +13,6 @@
 				class="text-start"
 				:id="`edit-registration-${registrationData.id}`"
 				@submit.prevent="OnSaveRegistrationEdit">
-				<p>{{ registration.participants.first_name }}</p>
 				<label>Amount</label>
 				<div class="input-group mb-3">
 					<span class="input-group-text">₱</span>
@@ -64,8 +63,8 @@
 	});
 	const emit = defineEmits(["onSaveEdit"]);
 
-   const { RegistrationStatuses } = useInputOptions();
-   
+	const { RegistrationStatuses } = useInputOptions();
+
 	const registrationData = toRef(props, "registration");
 	const errorMessage = ref("");
 	const isLoading = ref(false);
