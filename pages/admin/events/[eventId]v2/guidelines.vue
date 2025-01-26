@@ -60,7 +60,7 @@
 							<td>
 								<div
 									class="d-flex justify-content-center">
-									<EventRulesEdit />
+									<EventRulesEdit :rule="rule" @onEdit="HandleReload"/>
 									<EventRulesDelete />
 								</div>
 							</td>
