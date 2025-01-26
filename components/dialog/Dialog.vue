@@ -7,11 +7,13 @@
 			data-bs-toggle="modal"
 			:data-bs-target="`#dialog-${dialogId}`">
 			<slot name="ButtonLabel">
-				<span>{{ openButtonLabel }}</span></slot
-			>
+				<span>{{ openButtonLabel }}</span>
+			</slot>
 		</button>
 		<div
-			class="modal"
+			class="modal fade"
+			data-bs-backdrop="static"
+			data-bs-keyboard="false"
 			:id="`dialog-${dialogId}`"
 			tabindex="-1"
 			:aria-labelledby="`dialog-btn-${dialogId}`"

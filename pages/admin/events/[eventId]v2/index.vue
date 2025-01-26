@@ -2,30 +2,14 @@
 	<div>
 		<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
 		<br />
-		<ul class="nav nav-tabs">
-			<li class="nav-item">
-				<NuxtLink
-					class="nav-link active"
-					aria-current="page"
-					href="#"
-					>Details</NuxtLink
-				>
-			</li>
-			<li class="nav-item">
-				<NuxtLink class="nav-link" to="/admin/events"
-					>Participants</NuxtLink
-				>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
-			</li>
-		</ul>
-
-		<div class="container" style="max-width: 768px">
+		<EventsTabs activeTab="details" />
+		<div>
 			<br />
-			<h4 class="fw-bold">Edit Event Details</h4>
+			<h4 class="fw-bold">Event Details</h4>
 			<br />
-			<dl class="row">
+			<div class="row">
+				<div class="col-8">
+					<dl class="row">
 				<dt class="col-sm-3">Schedule</dt>
 				<dd class="col-sm-9">
 					<p>
@@ -84,12 +68,11 @@
 						{{ formatDate(EventDetails.registration_end) }}
 					</p>
 				</dd>
-				
+
 				<dt class="col-sm-3">Description</dt>
 				<dd class="col-sm-9">
 					{{ EventDetails.description }}
 				</dd>
-
 			</dl>
 			<br />
 			<br />
@@ -99,6 +82,8 @@
 				<i class="bi bi-pencil fs-7 me-3" />
 				Edit details
 			</NuxtLink>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -114,6 +99,15 @@
 
 	const { data: _eventData, execute: LoadEvent } = await useFetch(
 		`/api/events/${eventId}`,
+		{
+			method: "GET",
+			immediate: false,
+			watch: false,
+		}
+	);
+
+	const {data: _participantData, execute: LoadParticipants} = await useFetch(
+		`/api/events/${eventId}/participants`,
 		{
 			method: "GET",
 			immediate: false,
@@ -138,13 +132,3 @@
 		}, 3000);
 	}
 </script>
-
-<style scoped>
-	.nav-link {
-		color: #424242;
-	}
-	.nav-link.active {
-		color: #242424 !important;
-		font-weight: bold;
-	}
-</style>

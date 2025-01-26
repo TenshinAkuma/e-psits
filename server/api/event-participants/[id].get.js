@@ -3,6 +3,7 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
+	const query = await getQuery(event);
 
 	try {
 		const { data: registrationData, error: registrationError } =
