@@ -15,6 +15,21 @@
       </div>
     </div>
 
+    <div
+			v-else-if="EventRegistrations.length <= 0 || EventRegistrations == null"
+			class="d-flex flex-column justify-content-center align-items-center"
+			style="height: 432px">
+			<h4 class="fw-bold m-0">Event Registrations</h4>
+			<br />
+			<br />
+			<br />
+			<p class="text-secondary text-center fs-7 lh-sm">
+				No data available. <br />
+				Please register some participants.
+			</p>
+			<EventRegistrationsCreate :event="EventDetails" @onRegister="HandleReload"/>
+		</div>
+
     <div v-else>
       <br />
       <div class="d-flex justify-content-between align-items-center gap-3">

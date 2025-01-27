@@ -5,23 +5,21 @@ export default defineEventHandler(async (event) => {
 	const { id } = event.context.params;
 	const body = await readBody(event);
 
-	console.log("body", body);
 	try {
 		const { data: criteriaData, error: criteriaError } = await client
 			.from("event_criteria")
 			.update(body)
 			.eq("id", id)
-			.select("id, name, description, rating")
+			.select("*")
 			.single();
 
-		if (error) {
+		if (criteriaError) {
 			throw new Error(criteriaError.message);
 		}
 
-		console.log("response", criteria);
 		return {
 			success: true,
-			data: criteria,
+			data: criteriaData,
 		};
 	} catch (error) {
 		console.error(

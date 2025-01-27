@@ -67,7 +67,7 @@
 			<button
 				type="submit"
 				:form="`create-criteria-form-${eventId}`"
-				class="d-flex align-items-center btn btn-primary gap-2"
+				class="btn btn-primary hstack gap-3"
 				:disabled="isLoading">
 				<span
 					v-if="isLoading"

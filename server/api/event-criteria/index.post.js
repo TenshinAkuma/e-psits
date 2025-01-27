@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 		const { data: _criteriaData, error: _criteriaError } = await client
 			.from("event_criteria")
 			.insert(body)
-			.select("id, name, description, rating")
+			.select("*")
 			.single();
 
 		if (_criteriaError) {
@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 		console.error("Error while  creating criteria", error.message);
 		return {
 			success: false,
-			error: err.message,
+			error: error.message,
 		};
 	}
 });

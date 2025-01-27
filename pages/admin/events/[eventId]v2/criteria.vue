@@ -2,12 +2,12 @@
 	<div>
 		<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
 		<br />
-		<EventsTabs activeTab="guidelines" />
+		<EventsTabs activeTab="criteria" />
 
 		<div
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center"
-			style="height: 432px">
+			style="height: 360px">
 			<p>Loading data...</p>
 			<div class="spinner-border" role="status">
 				<span class="visually-hidden">Loading...</span>
@@ -15,18 +15,18 @@
 		</div>
 
 		<div
-			v-else-if="EventRules.length <= 0 || EventRules == null"
+			v-else-if="EventCriteria.length <= 0 || EventCriteria == null"
 			class="d-flex flex-column justify-content-center align-items-center"
 			style="height: 432px">
-			<h4 class="fw-bold m-0">Event Guidelines</h4>
+			<h4 class="fw-bold m-0">Event Criteria</h4>
 			<br />
 			<br />
 			<br />
 			<p class="text-secondary text-center fs-7 lh-sm">
 				No data available. <br />
-				Please add event guidelines.
+				Please add event criteria.
 			</p>
-			<EventRulesCreate
+			<EventCriteriaCreate
 				:event="EventDetails"
 				@onCreate="HandleReload" />
 		</div>
@@ -35,53 +35,52 @@
 			<br />
 			<div
 				class="d-flex justify-content-between align-items-center gap-3">
-				<h4 class="fw-bold m-0">Event Guidelines</h4>
-				<EventRulesCreate
-					:event="EventDetails"
-					@onCreate="HandleReload" />
+				<h4 class="fw-bold m-0">Event Criteria for Judging</h4>
+			<EventCriteriaCreate
+				:event="EventDetails"
+				@onCreate="HandleReload" />
 			</div>
 			<br />
-			<div class="table-responsive">
-				<table class="table table-bordered">
+         <div class="table-responsive">
+            <table class="table table-bordered">
 					<thead>
 						<tr>
 							<th scope="col">Code</th>
 							<th scope="col">Name</th>
 							<th scope="col">Description</th>
+							<th scope="col" class="text-center">Rating %</th>
 							<th scope="col" class="text-center">
 								Actions
 							</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody>  
 						<tr
-							v-for="(rule, index) in EventRules"
-							:key="rule.id"
+							v-for="(criteria, index) in EventCriteria"
+							:key="criteria.id"
 							style="height: 56px">
 							<td>
 								{{ index + 1 }}
 							</td>
 							<td>
-								{{ rule.name }}
+								{{ criteria.name }}
 							</td>
-							<td style="max-width: 360px">
-								{{ rule.description }}
+							<td style="width: 360px">
+								{{ criteria.description }}
 							</td>
-							<td>
-								<div
-									class="d-flex justify-content-center">
-									<EventRulesEdit
-										:rule="rule"
-										@onEdit="HandleReload" />
-									<EventRulesDelete
-										:rule="rule"
-										@onDelete="HandleReload" />
-								</div>
+                     <td class="text-center">
+								{{ `${criteria.rating}%` }}
 							</td>
+                     <td>
+                        <div class="d-flex justify-content-center align-items-center">
+                           <EventCriteriaEdit :criteria="criteria" @onEdit="HandleReload"/>
+                           <EventCriteriaDelete :criteria="criteria" @onDelete="HandleReload"/>
+                        </div>
+                     </td>
 						</tr>
 					</tbody>
 				</table>
-			</div>
+         </div>
 		</div>
 	</div>
 </template>
@@ -92,7 +91,7 @@
 	});
 
 	const eventId = useRoute().params.eventId;
-	const EventRules = ref([]);
+	const EventCriteria = ref([]);
 	const EventDetails = ref({});
 	const isLoading = ref(false);
 	const errorMessage = ref("");
@@ -111,19 +110,19 @@
 				throw new Error(_eventError);
 			}
 
-			const { data: _rulesData, error: _rulesError } = await $fetch(
-				`/api/event-rules/${eventId}/`,
+			const { data: _criteriaData, error: _criteriaError } = await $fetch(
+				`/api/event-criteria/${eventId}/`,
 				{
 					method: "GET",
 				}
 			);
 
-			if (_rulesError) {
-				throw new Error(_rulesError);
+			if (_criteriaError) {
+				throw new Error(_criteriaError);
 			}
 
 			EventDetails.value = _eventData;
-			EventRules.value = _rulesData;
+			EventCriteria.value = _criteriaData;
 		} catch (err) {
 			console.error(err.message);
 			errorMessage.value =
@@ -139,7 +138,7 @@
 	await InitializeData();
 
 	const HandleReload = async () => {
-		console.log("Event guideline saved.");
+		console.log("Event data reloaded.");
 		await InitializeData();
 	};
 </script>

@@ -15,16 +15,16 @@
 				@submit.prevent="OnSaveRegistrationEdit">
 				<label>Amount</label>
 				<div class="input-group mb-3">
-					<span class="input-group-text">₱</span>
+					<span class="input-group-text border-secondary bg-secondary bg-opacity-25 fw-bold">₱</span>
 					<input
 						type="number"
-						class="form-control bg-secondary bg-opacity-10"
+						class="form-control border-secondary"
 						min="0"
                   v-model="registrationEdit.amount"/>
 				</div>
 
 				<label>Status</label>
-				<select class="form-select bg-secondary bg-opacity-10" v-model="registrationEdit.registration_status">
+				<select class="form-select border-secondary" v-model="registrationEdit.registration_status">
 					<option
 						v-for="(status, index) in RegistrationStatuses"
 						:key="index"
@@ -39,7 +39,7 @@
 			<button
 				type="submit"
 				:form="`edit-registration-${registrationData.id}`"
-				class="d-flex align-items-center btn btn-success gap-3 px-3"
+				class="btn btn-success hstack gap-3"
 				:disabled="isLoading">
 				<span
 					v-if="isLoading"

@@ -57,7 +57,7 @@
 				<button
 					type="submit"
 					:form="`create-rules-form-${event.id}`"
-					class="btn btn-primary hstack gap-2 px-5"
+					class="btn btn-primary hstack gap-3"
 					:disabled="isSaving">
 					<span
 						v-if="isSaving"

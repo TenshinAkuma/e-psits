@@ -13,7 +13,7 @@
       </template>
 		<template #Submit>
 			<button
-				class="d-flex align-items-center btn btn-danger gap-3 px-3"
+				class="btn btn-danger htsack gap-3"
 				:disabled="isLoading"
             @click="OnDeleteRegistration()">
 				<span

@@ -51,7 +51,7 @@
 			<button
 				type="submit"
 				:form="`edit-rule-form-${ruleData?.id}`"
-				class="btn btn-success d-flex gap-2"
+				class="btn btn-success hstack gap-3"
 				:disabled="isSaving">
 				<span
 					v-if="isSaving"

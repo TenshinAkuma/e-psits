@@ -2,10 +2,10 @@
 	<Dialog
 		:id="`event-registration-${eventData.id}`"
 		:dialogTitle="`Register Participant to ${eventData.title}`"
-		openButtonStyle="btn-primary"
+		openButtonStyle="btn-outline-dark fw-bold"
 		ref="eventRegistrationRef">
 		<template #ButtonLabel>
-			<i class="bi bi-plus" /> Register Participant
+			<i class="bi bi-plus" /> Register participant
 		</template>
 
 		<template #Body>
@@ -62,7 +62,7 @@
 			<button
 				type="submit"
 				:form="`event-registration-form-${eventData.id}`"
-				class="d-flex align-items-center btn btn-primary gap-2"
+				class="btn btn-primary hstack gap-3"
 				:disabled="isSaving || isLoading || participantOptions.length <= 0">
 				<span
 					v-if="isSaving"

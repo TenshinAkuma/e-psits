@@ -22,13 +22,12 @@
 
 		<template #Submit>
 			<button
-				:id="`deleteRule-${ruleData}`"
 				@click="OnDeleteRule"
 				type="button"
-				class="btn btn-danger d-flex gap-2"
-				:disabled="isSaving">
+				class="btn btn-danger hstack gap-3"
+				:disabled="isLoading">
 				<span
-					v-if="isSaving"
+					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
 					<i v-else class="bi bi-trash-fill"></i>
@@ -51,7 +50,7 @@
 	const emit = defineEmits(["onDelete"]);
 
 	const ruleData = toRef(props, "rule");
-	const isSaving = ref(false);
+	const isLoading = ref(false);
 	const errorMessage = ref("");
 
 	const { data: _rulesData, execute: DeleteRule } = await useFetch(
@@ -64,7 +63,7 @@
 	);
 
 	const OnDeleteRule = async () => {
-		isSaving.value = true;
+		isLoading.value = true;
 		try {
 			await DeleteRule();
 
@@ -82,7 +81,7 @@
 				errorMessage.value = "";
 			}, 3000);
 		} finally {
-			isSaving.value = false;
+			isLoading.value = false;
 		}
 	};
 </script>
