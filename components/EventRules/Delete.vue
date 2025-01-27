@@ -1,11 +1,11 @@
 <template>
 	<Dialog
-		:dialogId="`deleteRule-${rule_id}`"
-		dialogTitle="Delete Guideline"
+		:dialogId="`delete-rule-${ruleData.id}`"
+		:dialogTitle="`Delete ${ruleData.name}`"
 		openButtonStyle="btn-sm text-secondary"
 		ref="deleteRuleRef">
 		<template #ButtonLabel>
-			<i class="bi bi-trash-fill" style="font-size: 0.5rem" />
+			<i class="bi bi-trash-fill fs-7" />
 		</template>
 
 		<template #Body>
@@ -22,63 +22,57 @@
 
 		<template #Submit>
 			<button
-			:id="`deleteRule-${rule_id}`"
+				:id="`deleteRule-${ruleData}`"
 				@click="OnDeleteRule"
 				type="button"
-				class="btn btn-danger hstack gap-2 px-5"
-				:disabled="_rulesStatus === 'pending'">
+				class="btn btn-danger d-flex gap-2"
+				:disabled="isSaving">
 				<span
-					v-if="_rulesStatus === 'pending'"
+					v-if="isSaving"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
-				<span role="status">Delete</span>
+					<i v-else class="bi bi-trash-fill"></i>
+					<span role="status">Confirm delete</span>
 			</button>
 		</template>
 	</Dialog>
 </template>
 
 <script setup>
+	let deleteRuleRef = ref(null);
+
 	const props = defineProps({
-		ruleId: Number,
+		rule: {
+			type: Object,
+			required: true,
+		},
 	});
 
-	const rule_id = toRef(props, "ruleId")
+	const emit = defineEmits(["onDelete"]);
 
-	const deleteRuleRef = ref(null);
-	const eventRules = useEventRules();
+	const ruleData = toRef(props, "rule");
+	const isSaving = ref(false);
 	const errorMessage = ref("");
 
-	const {
-		data: _rulesData,
-		status: _rulesStatus,
-		execute: DeleteRule,
-	} = await useFetch(`/api/event-rules`, {
-		method: "DELETE",
-		query: { id: rule_id.value },
-		immediate: false,
-		watch: false,
-	});
+	const { data: _rulesData, execute: DeleteRule } = await useFetch(
+		`/api/event-rules/${ruleData.value?.id}`,
+		{
+			method: "DELETE",
+			immediate: false,
+			watch: false,
+		}
+	);
 
 	const OnDeleteRule = async () => {
+		isSaving.value = true;
 		try {
-			console.log("click");
 			await DeleteRule();
 
 			if (_rulesData.value?.error) {
 				throw new Error(_rulesData.value?.error);
 			}
 
-			const ruleIndex = eventRules.value?.findIndex(
-				(r) => r.id === props.ruleId
-			);
-
-			if (ruleIndex < 0) {
-				throw new Error(
-					"Invalid event rule id. Rule does not exists"
-				);
-			}
-
-			eventRules.value?.splice(ruleIndex, 1);
+			emit("onDelete");
 			deleteRuleRef.value?.closeDialog();
 		} catch (err) {
 			console.error(err.message);
@@ -87,6 +81,8 @@
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
+		} finally {
+			isSaving.value = false;
 		}
 	};
 </script>

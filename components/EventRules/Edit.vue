@@ -5,7 +5,7 @@
 		openButtonStyle="btn-sm text-secondary"
 		ref="editRulesRef">
 		<template #ButtonLabel>
-			<i class="bi bi-pencil-fill text-secondary fs-7" />
+			<i class="bi bi-pencil-fill fs-7" />
 		</template>
 
 		<template #Body>
@@ -51,13 +51,14 @@
 			<button
 				type="submit"
 				:form="`edit-rule-form-${ruleData?.id}`"
-				class="btn btn-success hstack gap-2 px-5"
+				class="btn btn-success d-flex gap-2"
 				:disabled="isSaving">
 				<span
 					v-if="isSaving"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
-				<span role="status">Save update</span>
+					<i v-else class="bi bi-floppy2-fill"/>
+					<span role="status">Save edit</span>
 			</button>
 		</template>
 	</Dialog>
