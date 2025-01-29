@@ -7,10 +7,9 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: scoreData, error: scoreError } = await client
 			.from("event_scores")
-			.select(
-				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations!inner (event_id)"
-			)
-			.eq("event_registrations.event_id", id);
+			.select("*, participants(first_name, last_name), event_criteria(rating)")
+			.eq("event_id", id)
+			.order('participant_id', {ascending: true,});
 
 		if (scoreError) {
 			throw new Error(scoreError.message);
@@ -22,7 +21,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (err) {
 		console.error(
-			"Error occurred while saving event result",
+			"Error occurred while loading event results",
 			err.message
 		);
 

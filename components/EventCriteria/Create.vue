@@ -2,10 +2,10 @@
 	<Dialog
 		:dialogId="`create-criteria-${eventId}`"
 		dialogTitle="Add New Criteria"
-		openButtonStyle="btn-outline-dark fw-bold"
+		openButtonStyle="btn-outline-dark fw-bold hstack gap-2"
 		ref="createCriteriaRef">
 		<template #ButtonLabel>
-			<i class="bi bi-plus" /> Add new criteria
+			<i class="bi bi-plus-lg" /> Add new criteria
 		</template>
 
 		<template #Body>

@@ -3,7 +3,7 @@
 		<Dialog
 			:dialogId="`create-rules-${event.id}`"
 			dialogTitle="Add New Event Guideline"
-			openButtonStyle="btn-outline-dark fw-bold"
+			openButtonStyle="btn-outline-dark fw-bold hstack gap-2"
 			ref="createRulesRef">
 			<template #ButtonLabel>
 				<i class="bi bi-plus-lg" /> Add new guideline

@@ -2,7 +2,7 @@
 	<Dialog
 		:id="`event-registration-${eventData.id}`"
 		:dialogTitle="`Register Participant to ${eventData.title}`"
-		openButtonStyle="btn-outline-dark fw-bold"
+		openButtonStyle="btn-outline-dark fw-bold hstack gap-2"
 		ref="eventRegistrationRef">
 		<template #ButtonLabel>
 			<i class="bi bi-plus" /> Register participant
@@ -68,6 +68,7 @@
 					v-if="isSaving"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
+				<i v-else class="bi bi-floppy2-fill"/>
 				<span>Register participant</span>
 			</button>
 		</template>

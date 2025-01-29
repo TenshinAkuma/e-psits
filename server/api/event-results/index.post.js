@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 			await client
 				.from("event_scores")
 				.select("id")
-				.eq("registration_id", body[0].registration_id);
+				.eq("participant_id", body[0].participant_id);
 
 		if (scoreExistsData.length > 0) {
 			throw new Error("Participant has already been evaluated.");
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 			.from("event_scores")
 			.insert(body)
 			.select(
-				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))"
+				"*, participants(first_name, last_name, institutions(name)), events(title), event_criteria(name, rating)"
 			);
 
 		if (scoreError) {

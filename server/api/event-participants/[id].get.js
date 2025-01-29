@@ -3,7 +3,6 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
-	const query = await getQuery(event);
 
 	try {
 		const { data: registrationData, error: registrationError } =
@@ -22,7 +21,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while loading paticipants.",
+			"Error occurred while loading participants.",
 			error.message
 		);
 		return {

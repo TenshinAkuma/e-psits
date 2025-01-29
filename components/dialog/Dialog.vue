@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div :id="`modal-dialog-instance-${dialogId}`">
 		<button
 			type="button"
 			:id="`dialog-btn-${dialogId}`"

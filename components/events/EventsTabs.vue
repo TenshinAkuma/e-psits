@@ -32,6 +32,14 @@
 				>Criteria</NuxtLink
 			>
 		</li>
+		<li class="nav-item">
+			<NuxtLink
+				class="nav-link"
+				:class="{ active: isActive('results') }"
+				:to="`/admin/events/${eventId}v2/results`"
+				>Results</NuxtLink
+			>
+		</li>
 	</ul>
 </template>
 

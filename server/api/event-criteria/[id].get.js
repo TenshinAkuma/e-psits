@@ -8,7 +8,8 @@ export default defineEventHandler(async (event) => {
 		const { data: criteriaData, error: criteriaError } = await client
 			.from("event_criteria")
 			.select("*")
-			.eq("event_id", id);
+			.eq("event_id", id)
+			.order("id", { ascending: true });
 
 		if (criteriaError) {
 			throw new Error(criteriaError.message);

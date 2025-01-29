@@ -45,7 +45,7 @@
 					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true"></span>
-				<i v-else class="bi bi-floppy2-fill"></i>
+				<i v-else class="bi bi-floppy2-fill"/>
 				<span role="status">Save edit</span>
 			</button>
 		</template>
