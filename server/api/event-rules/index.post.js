@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
 			.insert(body)
-			.select("id, name, description")
+			.select("*")
 			.single();
 
 		if (rulesError) {
@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
 			data: rulesData,
 		};
 	} catch (err) {
-		console.err("Error occurred while creating event rule", err.message);
+		console.error("Error occurred while creating event rule", err.message);
 
 		return {
 			success: false,

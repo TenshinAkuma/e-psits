@@ -42,7 +42,7 @@
 					class="vstack gap-3 overflow-y-auto"
 					style="max-height: 360px; cursor: pointer">
 					<div
-						v-for="participant in searchResult"
+						v-for="participant in searchResult.data"
 						:key="participant.id"
 						class="participant-link"
 						@click="
@@ -96,7 +96,7 @@
 	const errorMessage = ref("");
 
 	const newRegistration = ref({
-		event_id: Number(useRoute().params.eventID), // Ensures eventID is converted to a number
+		event_id: Number(useRoute().params.eventID),
 		participant_id: null,
 	});
 
@@ -140,15 +140,17 @@
 	// Debounced input search function
 	const OnInputSearch = debounce(async () => {
 		try {
-			if (searchQuery.value == "") {
-				newRegistration.value.participant_id = null;
-				return;
-			}
-
 			await SearchParticipants();
-			errorMessage.value = "";
+
+			if (searchResult.value?.error) {
+				throw new Error(searchResult.value.error);
+			}
 		} catch (err) {
-			console.error("Error during search:");
+			console.error("Error during search: ", err.message);
+			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
 		}
 	}, 300);
 </script>

@@ -2,14 +2,13 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const query = getQuery(event);
+	const { id } = event.context.params;
 
-	console.log(query);
 	try {
 		const { data: rulesData, error: rulesError } = await client
 			.from("event_rules")
 			.delete()
-			.eq("id", query.id);
+			.eq("id", id);
 
 		if (rulesError) {
 			throw new Error(rulesError.message);

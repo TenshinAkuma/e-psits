@@ -1,16 +1,18 @@
 <template>
 	<div>
 		<Dialog
-			dialogId="createRules"
+			:dialogId="`create-rules-${event.id}`"
 			dialogTitle="Add New Event Guideline"
-			openButtonStyle="btn-outline-dark fw-bold"
+			openButtonStyle="btn-outline-dark fw-bold hstack gap-2"
 			ref="createRulesRef">
 			<template #ButtonLabel>
 				<i class="bi bi-plus-lg" /> Add new guideline
 			</template>
 
 			<template #Body>
-				<form id="createRuleForm" @submit.prevent="OnCreateRule">
+				<form :id="`create-rules-form-${event.id}`"
+				@submit.prevent="OnAddRule"
+				class="text-start">
 					<p class="text-secondary lh-sm">
 						Define clear and concise guidelines to ensure a
 						smooth and successful event experience for
@@ -54,14 +56,14 @@
 			<template #Submit>
 				<button
 					type="submit"
-					form="createRuleForm"
-					class="btn btn-primary hstack gap-2 px-5"
-					:disabled="_rulesStatus === 'pending'">
+					:form="`create-rules-form-${event.id}`"
+					class="btn btn-primary hstack gap-3"
+					:disabled="isSaving">
 					<span
-						v-if="_rulesStatus === 'pending'"
+						v-if="isSaving"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true" />
-					<span role="status">Add criteria</span>
+					<span role="status">Add guideline</span>
 				</button>
 			</template>
 		</Dialog>
@@ -69,51 +71,57 @@
 </template>
 
 <script setup>
-	const createRulesRef = ref(null);
-	const eventID = useRoute().params.eventID;
-	const eventRules = useEventRules();
+	let createRulesRef = ref(null);
+	const props = defineProps({
+		event: {
+			type: Object,
+			required: true,
+		},
+	});
+	const emit = defineEmits(["onCreate"]);
+
+	const eventData = toRef(props, "event");
+	const isSaving = ref(false);
 	const errorMessage = ref("");
 
 	const newRule = ref({
-		event_id: eventID,
+		event_id: eventData.value?.id,
 		name: "",
 		description: "",
 	});
 
-	const {
-		data: _rulesData,
-		status: _rulesStatus,
-		execute: CreateRule,
-	} = await useFetch("/api/event-rules", {
-		method: "POST",
-		body: newRule,
-		immediate: false,
-		watch: false,
-	});
+	const { data: _rulesData, execute: AddRule } = await useFetch("/api/event-rules",
+		{
+			method: "POST",
+			body: newRule,
+			immediate: false,
+			watch: false,
+		});
 
-	const OnCreateRule = async () => {
+	const OnAddRule = async () => {
+		isSaving.value = true;
 		try {
 			if (newRule.name == "" || newRule.description == "") {
 				throw new Error("Invalid inputs.")
 			}
 
-			await CreateRule();
+			await AddRule();
 
-			if (_rulesData.value.error) {
-				throw new Error(_rulesData.value.error);
+			if (_rulesData.value?.error) {
+				throw new Error(_rulesData.value?.error);
 			}
 
-			eventRules.value?.push(_rulesData.value?.data);
 			resetInput();
+			emit("onCreate");
 			createRulesRef.value?.closeDialog();
 		} catch (err) {
 			console.error("Error while adding event guideline", err.message);
-
 			errorMessage.value = err.message;
-
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
+		} finally {
+			isSaving.value = false;
 		}
 	};
 

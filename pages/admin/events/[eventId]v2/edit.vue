@@ -1,164 +1,183 @@
 <template>
 	<div>
-		<h1 class="fw-bold">{{ EventDetails.title }}</h1>
+		<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
 		<br />
-		<ul class="nav nav-tabs">
-			<li class="nav-item">
-				<NuxtLink
-					class="nav-link active"
-					aria-current="page"
-					href="#"
-					>Details</NuxtLink
-				>
-			</li>
-			<li class="nav-item">
-				<NuxtLink class="nav-link" to="/admin/events"
-					>Events</NuxtLink
-				>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#">Link</a>
-			</li>
-		</ul>
+		<EventsTabs activeTab="details" />
+		<div class="row">
+			<div class="col-8">
+				<form @submit.prevent="OnSaveEventEdit">
+					<br />
 
-		<form @submit.prevent="OnSaveEventEdit" style="max-width: 768px" class="mx-auto">
-			<br />
+					<h4 class="fw-bold">Edit Event Details</h4>
+					<br />
+					<dl class="row g-2">
+						<dt class="col-sm-3">Title</dt>
+						<dd class="col-sm-9">
+							<input
+								type="text"
+								class="form-control bg-secondary bg-opacity-10"
+								placeholder="Enter event title"
+								v-model="EventEdit.title"
+								:disabled="isLoading"
+								required />
+						</dd>
 
-			<h4 class="fw-bold">Edit Event Details</h4>
-			<br />
-			<dl class="row g-2">
-				<dt class="col-sm-3">Title</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control bg-secondary bg-opacity-10"
-						placeholder="Enter event title"
-						v-model="EventEdit.title"
-						required />
-				</dd>
+						<dt class="col-sm-3">Schedule</dt>
+						<dd class="col-sm-9">
+							<div class="d-flex gap-2">
+								<input
+									type="date"
+									class="form-control bg-secondary bg-opacity-10"
+									v-model="dateInput"
+									:disabled="isLoading"
+									required />
+								<input
+									type="time"
+									class="form-control bg-secondary bg-opacity-10"
+									v-model="timeInput"
+									:disabled="isLoading"
+									required />
+							</div>
+						</dd>
 
-				<dt class="col-sm-3">Schedule</dt>
-				<dd class="col-sm-9">
+						<dt class="col-sm-3">Registration period</dt>
+						<dd class="col-sm-9">
+							<div class="d-flex gap-3 align-items-center">
+								<input
+									type="date"
+									class="form-control bg-secondary bg-opacity-10"
+									:disabled="isLoading"
+									v-model="
+										EventEdit.registration_start
+									"
+									required />
+								<i class="bi bi-arrow-right border-0" />
+								<input
+									type="date"
+									:disabled="isLoading"
+									class="form-control bg-secondary bg-opacity-10"
+									v-model="
+										EventEdit.registration_end
+									"
+									required />
+							</div>
+						</dd>
+
+						<dt class="col-sm-3">Category</dt>
+						<dd class="col-sm-9">
+							<select
+								class="form-select bg-secondary bg-opacity-10"
+								:disabled="isLoading"
+								v-model="EventEdit.category"
+								required>
+								<option
+									v-for="(
+										category, index
+									) in EventCategories"
+									:key="index"
+									:value="category">
+									{{ category }}
+								</option>
+							</select>
+						</dd>
+
+						<dt class="col-sm-3">Attendance</dt>
+						<dd class="col-sm-9">
+							<select
+								class="form-select bg-secondary bg-opacity-10"
+								:disabled="isLoading"
+								v-model="EventEdit.type">
+								<option
+									v-for="(type, index) in EventTypes"
+									:key="index"
+									:value="type">
+									{{ type }}
+								</option>
+							</select>
+						</dd>
+
+						<dt
+							v-if="
+								EventEdit.type.toLowerCase() ==
+								'in-person'
+							"
+							class="col-sm-3">
+							Location
+						</dt>
+						<dd
+							v-if="
+								EventEdit.type.toLowerCase() ==
+								'in-person'
+							"
+							class="col-sm-9">
+							<input
+								type="text"
+								class="form-control bg-secondary bg-opacity-10 mb-2"
+								:disabled="isLoading"
+								v-model="EventEdit.venue" />
+							<input
+								type="text"
+								class="form-control bg-secondary bg-opacity-10"
+								v-model="EventEdit.address" />
+						</dd>
+
+						<dt
+							v-if="
+								EventEdit.type.toLowerCase() ==
+								'virtual'
+							"
+							class="col-sm-3">
+							Virtual address
+						</dt>
+						<dd
+							v-if="
+								EventEdit.type.toLowerCase() ==
+								'virtual'
+							"
+							class="col-sm-9">
+							<input
+								type="text"
+								class="form-control bg-secondary bg-opacity-10 mb-2"
+								:disabled="isLoading"
+								v-model="EventEdit.link" />
+						</dd>
+
+						<dt class="col-sm-3">Description</dt>
+						<dd class="col-sm-9">
+							<textarea
+								rows="7"
+								class="form-control bg-secondary bg-opacity-10 lh-sm"
+								style="
+									max-height: 214px;
+									resize: vertical;
+								"
+								:disabled="isLoading"
+								v-model="EventEdit.description" />
+						</dd>
+					</dl>
+					<br />
+					<br />
 					<div class="d-flex gap-2">
-						<input
-							type="date"
-							class="form-control bg-secondary bg-opacity-10"
-							v-model="dateInput"
-							required />
-						<input
-							type="time"
-							class="form-control bg-secondary bg-opacity-10"
-							v-model="timeInput"
-							required />
+						<NuxtLink
+							:to="`/admin/events/${eventId}v2`"
+							class="btn"
+							>Cancel</NuxtLink
+						>
+						<button
+							type="submit"
+							class="d-flex align-items-center btn btn-success gap-3 px-3"
+							:disabled="_eventEditStatus === 'pending'">
+							<span
+								v-if="isLoading"
+								class="spinner-border spinner-border-sm"
+								aria-hidden="true"></span>
+							<i v-else class="bi bi-floppy2-fill"></i>
+							<span role="status">Save edit</span>
+						</button>
 					</div>
-				</dd>
-
-				<dt class="col-sm-3">Registration period</dt>
-				<dd class="col-sm-9">
-					<div class="d-flex gap-3 align-items-center">
-						<input
-							type="date"
-							class="form-control bg-secondary bg-opacity-10"
-							v-model="EventEdit.registration_start"
-							required />
-						<i class="bi bi-arrow-right border-0" />
-						<input
-							type="date"
-							class="form-control bg-secondary bg-opacity-10"
-							v-model="EventEdit.registration_end"
-							required />
-					</div>
-				</dd>
-
-				<dt class="col-sm-3">Category</dt>
-				<dd class="col-sm-9">
-					<select
-						class="form-select bg-secondary bg-opacity-10"
-						v-model="EventEdit.category"
-						required>
-						<option
-							v-for="(category, index) in EventCategories"
-							:key="index"
-							:value="category">
-							{{ category }}
-						</option>
-					</select>
-				</dd>
-
-				<dt class="col-sm-3">Attendance</dt>
-				<dd class="col-sm-9">
-					<select
-						class="form-select bg-secondary bg-opacity-10"
-						v-model="EventEdit.type">
-						<option
-							v-for="(type, index) in EventTypes"
-							:key="index"
-							:value="type">
-							{{ type }}
-						</option>
-					</select>
-				</dd>
-
-				<dt
-					v-if="EventEdit.type.toLowerCase() == 'in-person'"
-					class="col-sm-3">
-					Location
-				</dt>
-				<dd
-					v-if="EventEdit.type.toLowerCase() == 'in-person'"
-					class="col-sm-9">
-					<input
-						type="text"
-						class="form-control bg-secondary bg-opacity-10 mb-2"
-						v-model="EventEdit.venue" />
-					<input
-						type="text"
-						class="form-control bg-secondary bg-opacity-10"
-						v-model="EventEdit.address" />
-				</dd>
-
-				<dt
-					v-if="EventEdit.type.toLowerCase() == 'virtual'"
-					class="col-sm-3">
-					Virtual address
-				</dt>
-				<dd
-					v-if="EventEdit.type.toLowerCase() == 'virtual'"
-					class="col-sm-9">
-					<input
-						type="text"
-						class="form-control bg-secondary bg-opacity-10 mb-2"
-						v-model="EventEdit.link" />
-				</dd>
-
-				<dt class="col-sm-3">Description</dt>
-				<dd class="col-sm-9">
-					<textarea
-						rows="7"
-						class="form-control bg-secondary bg-opacity-10 lh-sm"
-						style="max-height: 214px; resize: vertical"
-						v-model="EventEdit.description" />
-				</dd>
-			</dl>
-			<br />
-			<br />
-			<div class="d-flex gap-2">
-				<NuxtLink :to="`/admin/events/${eventId}v2`" class="btn"
-					>Cancel</NuxtLink
-				>
-				<button
-					type="submit"
-					class="d-flex align-items-center btn btn-success gap-3 px-3"
-					:disabled="_eventEditStatus === 'pending'">
-					<span
-						v-if="isLoading"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true"></span>
-					<i v-else class="bi bi-floppy2-fill"></i>
-					<span role="status">Save edit</span>
-				</button>
+				</form>
 			</div>
-		</form>
+		</div>
 	</div>
 </template>
 

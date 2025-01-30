@@ -4,15 +4,9 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 
-	console.log("Get event registration data.");
 	try {
 		const { data: registrationData, error: registrationError } =
-			await client
-				.from("event_registrations")
-				.select(
-					"*, participants(first_name, last_name, email, institutions(name)), events(title))"
-				)
-				.eq("event_id", id);
+			await client.from("event_registrations").delete().eq("id", id);
 
 		if (registrationError) {
 			throw new Error(registrationError.message);
@@ -20,16 +14,16 @@ export default defineEventHandler(async (event) => {
 
 		return {
 			success: true,
-			data: registrationData,
 		};
-	} catch (error) {
+	} catch (err) {
 		console.error(
-			"Error occurred while loading participants.",
-			error.message
+			"Error occurred while deleting event rule",
+			err.message
 		);
+
 		return {
 			success: false,
-			error: error.message,
+			error: "Error occurred while deleting event rule",
 		};
 	}
 });

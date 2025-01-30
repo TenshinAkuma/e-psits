@@ -1,17 +1,17 @@
 <template>
 	<Dialog
-		:dialogId="`edit-rules-${rule_data?.id}`"
+		:dialogId="`edit-rules-${ruleData?.id}`"
 		dialogTitle="Update Guideline"
 		openButtonStyle="btn-sm text-secondary"
 		ref="editRulesRef">
 		<template #ButtonLabel>
-			<i class="bi bi-pencil-fill" style="font-size: 0.5rem" />
+			<i class="bi bi-pencil-fill fs-7" />
 		</template>
 
 		<template #Body>
 			<form
-				:id="`editRuleForm-${rule_data?.id}`"
-				@submit.prevent="OnSaveRulesEdit">
+				:id="`edit-rule-form-${ruleData?.id}`"
+				@submit.prevent="OnSaveEdit">
 				<p class="text-secondary lh-sm">
 					Define clear and concise guidelines to ensure a smooth
 					and successful event experience for everyone involved.
@@ -50,68 +50,65 @@
 		<template #Submit>
 			<button
 				type="submit"
-				:form="`editRuleForm-${rule_data?.id}`"
-				class="btn btn-success hstack gap-2 px-5"
-				:disabled="_rulesStatus === 'pending'">
+				:form="`edit-rule-form-${ruleData?.id}`"
+				class="btn btn-success hstack gap-3"
+				:disabled="isSaving">
 				<span
-					v-if="_rulesStatus === 'pending'"
+					v-if="isSaving"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
-				<span role="status">Save update</span>
+					<i v-else class="bi bi-floppy2-fill"/>
+					<span role="status">Save edit</span>
 			</button>
 		</template>
 	</Dialog>
 </template>
 
 <script setup>
+	let editRulesRef = ref(null);
 	const props = defineProps({
-		ruleData: Object,
+		rule: {
+			type: Object,
+			required: true,
+		},
 	});
 
-	const editRulesRef = ref(null);
-	const eventRules = useEventRules();
+	const emit = defineEmits(["onEdit"])
+
+	const isSaving = ref(false);
 	const errorMessage = ref("");
 
-	const rule_data = toRef(() => props.ruleData)
+	const ruleData = toRef(props, "rule")
 
 	const ruleEdit = ref({
-		name: rule_data.value?.name,
-		description: rule_data.value?.description,
+		name: ruleData.value?.name,
+		description: ruleData.value?.description,
 	});
 
 	const {
 		data: _rulesData,
-		status: _rulesStatus,
-		execute: SaveRulesEdit,
-	} = await useFetch(`/api/event-rules/${rule_data.value?.id}`, {
+		execute: SaveEdit,
+	} = await useFetch(`/api/event-rules/${ruleData.value?.id}`, {
 		method: "PATCH",
 		body: ruleEdit,
 		immediate: false,
 		watch: false,
 	});
 
-	const OnSaveRulesEdit = async () => {
+	const OnSaveEdit = async () => {
+		isSaving.value = true;
 		try {
-
 			if (ruleEdit.value?.name == "" || ruleEdit.value?.description == "") {
 				throw new Error("Invalid inputs.")
 			}
 
-			await SaveRulesEdit();
+			await SaveEdit();
 
 			if (_rulesData.value?.error) {
 				throw new Error(_rulesData.value?.error);
 			}
 
-			const ruleIndex = eventRules.value?.findIndex(
-				(r) => r.id === rule_data.value?.id
-			);
-
-			if (ruleIndex < 0) {
-				throw new Error("Invalid rule index. Rule does not exists");
-			}
-
-			eventRules.value[ruleIndex] = _rulesData.value?.data || null;
+			emit("onEdit");
 			editRulesRef.value?.closeDialog();
 		} catch (err) {
 			console.error(err.message);
@@ -120,6 +117,8 @@
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
+		} finally {
+			isSaving.value = false;
 		}
 	};
 </script>

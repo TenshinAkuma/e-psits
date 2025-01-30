@@ -4,10 +4,8 @@
 		class="d-flex flex-column justify-content-center align-items-center"
 		style="height: 576px">
 		<p class="fs-7">No participants as of now.</p>
-		<EventsRegisterParticipant />
 	</div>
 	<div v-else>
-		<EventsRegisterParticipant class="mb-3"/>
 		<div class="row">
 			<div v-for="registration in eventRegistrations"
 				:key="registration.id"
@@ -28,9 +26,6 @@
 					{{ registration.participants.institutions.name }}
 				</p>
 				<br />
-				<RegistrationsStatusUpdate
-					:RegistrationStatus="registration.registration_status"
-					:ParticipantRegistrationID="registration.id" />
 			</div>
 		</div>
 	</div>

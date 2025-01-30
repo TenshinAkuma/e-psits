@@ -3,27 +3,25 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
-	const body = await readBody(event);
 
 	try {
-		const { data: criteriaData, error: criteriaError } = await client
-			.from("event_criteria")
-			.update(body)
-			.eq("id", id)
-			.select("*")
-			.single();
+		const { data: registrationData, error: registrationError } =
+			await client
+				.from("event_registrations")
+				.select("*, participants(*, institutions(*)), events(*))")
+				.eq("event_id", id);
 
-		if (criteriaError) {
-			throw new Error(criteriaError.message);
+		if (registrationError) {
+			throw new Error(registrationError.message);
 		}
 
 		return {
 			success: true,
-			data: criteriaData,
+			data: registrationData,
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while updating criteria",
+			"Error occurred while loading participants.",
 			error.message
 		);
 		return {

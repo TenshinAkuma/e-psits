@@ -1,13 +1,13 @@
 <template>
 	<header class="border-bottom bg-white border-bottom sticky-top">
 		<div
-			class="px-3 d-flex justify-content-between align-items-center"
-			style="height: 56px">
+			class="container-md d-flex justify-content-between align-items-center"
+			style="height: 72px">
 			<div class="d-flex align-items-center gap-2">
 				<AdminSideBar />
 				<div class="fs-4 fw-bold">E-PSITS</div>
 			</div>
-			<div class="text-dark">Administrator Panel</div>
+			<div class="d-none d-md-block text-dark">Administrator Panel</div>
 			<button
 				class="d-flex align-items-center btn btn-link text-decoration-none text-dark px-3"
 				@click="handleLogout()">

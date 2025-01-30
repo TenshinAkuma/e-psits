@@ -1,20 +1,21 @@
 <template>
 	<Dialog
-		dialogId="createCriteria"
+		:dialogId="`create-criteria-${eventId}`"
 		dialogTitle="Add New Criteria"
-		openButtonStyle="btn-outline-dark fw-bold"
+		openButtonStyle="btn-outline-dark fw-bold hstack gap-2"
 		ref="createCriteriaRef">
 		<template #ButtonLabel>
-			<i class="bi bi-plus" /> Add new criteria
+			<i class="bi bi-plus-lg" /> Add new criteria
 		</template>
 
 		<template #Body>
-			<p class="text-secondary lh-sm">
-				Define the criteria that will be used to evaluate
-				participants during the event. Please provide clear details
-				to ensure accurate assessments.
-			</p>
-			<form @submit.prevent="OnAddCriteria" id="AddNewCriteria">
+			<form :id="`create-criteria-form-${eventId}`"
+			@submit.prevent="OnAddCriteria">
+				<p class="text-secondary lh-sm">
+					Define the criteria that will be used to evaluate
+					participants during the event. Please provide clear
+					details to ensure accurate assessments.
+				</p>
 				<input
 					type="text"
 					class="form-control border-secondary mb-3"
@@ -56,17 +57,20 @@
 						100% for accurate scoring.
 					</b>
 				</p>
+				<div v-if="errorMessage" class="text-danger fs-7 text-center">
+					Internal server error. Please try again later.
+				</div>
 			</form>
 		</template>
 
 		<template #Submit>
 			<button
 				type="submit"
-				form="AddNewCriteria"
-				class="d-flex align-items-center btn btn-primary gap-2"
-				:disabled="status === 'pending'">
+				:form="`create-criteria-form-${eventId}`"
+				class="btn btn-primary hstack gap-3"
+				:disabled="isLoading">
 				<span
-					v-if="status === 'pending'"
+					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
 				<span role="status">Add criteria</span>
@@ -76,40 +80,72 @@
 </template>
 
 <script setup>
-	const createCriteriaRef = ref(null);
+	let createCriteriaRef = ref(null);
 
-	const eventCriteria = useEventCriteria();
-	const eventID = useRoute().params.eventID;
+	const emit = defineEmits(["onCreate"]);
+
+	const eventId = useRoute().params.eventId;
+	const maxRating = ref();
+	const isLoading = ref(false);
 	const errorMessage = ref("");
 
 	const newCriteria = ref({
 		name: "",
 		description: "",
 		rating: 0,
-		event_id: eventID,
+		event_id: eventId,
 	});
 
-	const {
-		data: _criteria,
-		status,
-		execute: AddCriteria,
-	} = await useFetch(`/api/event-criteria`, {
-		method: "POST",
-		body: newCriteria,
-		immediate: false,
-		watch: false,
-	});
+	const { data: _criteria, execute: AddCriteria } = await useFetch(
+		`/api/event-criteria`,
+		{
+			method: "POST",
+			body: newCriteria,
+			immediate: false,
+			watch: false,
+		}
+	);
 
 	const OnAddCriteria = async () => {
+		isLoading.value = true;
 		try {
 			await AddCriteria();
+
 			if (_criteria.value?.error) {
-				throw new Error(_criteria.value?.error)
+				throw new Error(_criteria.value?.error);
 			}
 
-			eventCriteria.value?.push(_criteria.value.data);
+			emit("onCreate");
 			resetInput();
 			createCriteriaRef.value.closeDialog();
+		} catch (err) {
+			errorMessage.value = err.message;
+
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+		} finally {
+			isLoading.value = false;
+		}
+	};
+
+	const GetMaxRating = async () => {
+		try {
+			const { data: _maxRating, error } = await $fetch(
+				`/api/event-criteria/max-rating`,
+				{
+					method: "GET",
+					query: {
+						eventId: eventId
+					}
+				}
+			);
+
+			if (error) {
+				throw new Error(error);
+			}
+
+			maxRating.value = _maxRating;
 		} catch (err) {
 			errorMessage.value = err.message;
 
@@ -119,19 +155,7 @@
 		}
 	};
 
-	const maxRating = computed(() => {
-		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
-			return 100;
-		}
-
-		return (
-			100 -
-			eventCriteria.value?.reduce(
-				(total, criteria) => total + criteria.rating,
-				0
-			)
-		);
-	});
+	await GetMaxRating();
 
 	const resetInput = () => {
 		newCriteria.value.name = "";

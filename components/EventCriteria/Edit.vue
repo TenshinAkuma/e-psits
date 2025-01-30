@@ -1,19 +1,19 @@
 <template>
-	<div>
-		<Dialog
-			:dialogId="`editCriteria-${criteria.id}`"
+	<Dialog
+			:dialogId="`edit-criteria-${criteria.id}`"
 			dialogTitle="Edit Criteria"
-			ref="editCriteriaDialog">
+			ref="editCriteriaRef">
 			<template #ButtonLabel>
 				<i
-					class="bi bi-pencil-fill text-secondary"
-					style="font-size: 0.8rem" />
+					class="bi bi-pencil-fill text-secondary fs-7" />
 			</template>
 
 			<template #Body>
 				<form
-					:id="`editCriteriaForm-${criteria.id}`"
-					@submit.prevent="OnSaveCriteriaUpdate">
+					:id="`edit-criteria-form-${criteria.id}`"
+					@submit.prevent="OnSaveCriteriaEdit">
+
+					<label class="mb-1">Name</label>
 					<input
 						type="text"
 						class="form-control border-secondary mb-3"
@@ -21,6 +21,7 @@
 						required
 						v-model="newCriteria.name" />
 
+					<label class="mb-1">Description</label>
 					<textarea
 						class="form-control border-secondary mb-3"
 						placeholder="Description"
@@ -62,52 +63,59 @@
 					</p>
 
 					<div
-						v-if="errorMessage != ''"
+						v-if="errorMessage"
 						class="fs-7 text-center text-danger">
-						{{ errorMessage }}
+						Internal server error. Please try again later.
 					</div>
-					{{ criteria }}
 				</form>
 			</template>
 
 			<template #Submit>
 				<button
 					type="submit"
-					:form="`editCriteriaForm-${criteria.id}`"
-					class="btn btn-success px-5 hstack gap-2"
-					:disabled="_criteriaStatus === 'pending'">
+					:form="`edit-criteria-form-${criteria.id}`"
+					class="btn btn-success hstack gap-3"
+					:disabled="isLoading">
 					<span
-						v-if="_criteriaStatus === 'pending'"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true" />
-					<span>Save</span>
+					v-if="isLoading"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true"></span>
+				<i v-else class="bi bi-floppy2-fill"></i>
+				<span role="status">Save edit</span>
 				</button>
 			</template>
 		</Dialog>
-	</div>
 </template>
 
 <script setup>
+	let editCriteriaRef = ref(null);
+
 	const props = defineProps({
-		criteria: Object,
+		criteria: {
+			type: Object,
+			required: true,
+		},
 	});
 
-	const eventCriteria = useEventCriteria();
-	const editCriteriaDialog = ref(null);
+	const emit = defineEmits(["onEdit"])
+
+	const eventId = useRoute().params.eventId;
+	const criteriaData = toRef(props, "criteria");
+	const maxRating = ref();
+	const isLoading = ref(false);
 	const errorMessage = ref("");
 
 	const newCriteria = ref({
-		name: props.criteria?.name,
-		description: props.criteria?.description,
-		rating: props.criteria?.rating,
+		name: criteriaData.value?.name,
+		description: criteriaData.value?.description,
+		rating: criteriaData.value?.rating,
 	});
 
 	const {
 		data: _criteria,
-		status: _criteriaStatus,
-		execute: SaveCriteria,
+		execute: SaveCriteriaEdit,
 	} = await useFetch(
-		`/api/event-criteria/${props.criteria?.id}`,
+		`/api/event-criteria/${criteriaData.value?.id}`,
 		{
 			method: "PATCH",
 			body: newCriteria,
@@ -116,44 +124,51 @@
 		}
 	);
 
-	const OnSaveCriteriaUpdate = async () => {
-
-
+	const OnSaveCriteriaEdit = async () => {
+		isLoading.value = true
 		try {
-			await SaveCriteria();
+			await SaveCriteriaEdit();
 			if (_criteria.value.error) {
-				throw new Error(_criteriaData.value?.error)
+				throw new Error(_criteria.value?.error)
 			}
 
-			const criteriaIndex = eventCriteria.value?.findIndex(
-				(c) => c.id === props.criteria?.id
-			);
-
-			if (criteriaIndex < 0) {
-				throw new Error("Error while updating criteria.")
-			}
-
-			eventCriteria.value[criteriaIndex] = _criteria.value?.data;
-			editCriteriaDialog.value.closeDialog();
+			emit("onEdit");
+			editCriteriaRef.value.closeDialog();
 		} catch (err) {
 			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+		} finally {
+			isLoading.value = false
+		}
+	};
+
+	const GetMaxRating = async () => {
+		try {
+			const { data: _maxRating, error } = await $fetch(
+				`/api/event-criteria/max-rating`,
+				{
+					method: "GET",
+					query: {
+						eventId: eventId
+					}
+				}
+			);
+
+			if (error) {
+				throw new Error(error);
+			}
+
+			maxRating.value = _maxRating + criteriaData.value?.rating;
+		} catch (err) {
+			errorMessage.value = err.message;
+
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
 		}
 	};
 
-	const maxRating = computed(() => {
-		if (eventCriteria.value.length == 0 || eventCriteria.value == null) {
-			return 0;
-		}
-
-		return (
-			100 -
-			eventCriteria.value?.reduce(
-				(total, criteria) => total + criteria.rating,
-				0
-			) + newCriteria.value.rating
-		);
-	});
+	await GetMaxRating();
 </script>
