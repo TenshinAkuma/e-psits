@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
-	console.log("body", body[0].registration_id);
+	console.log("body", body);
 	try {
 		const { data: scoreExistsData, error: scoreExistsError } =
 			await client

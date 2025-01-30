@@ -58,7 +58,8 @@
 								<div class="text-dark fw-bold">
 									{{ participant.scores[criteria.id].rating }} pts
 								</div>
-								<ResultsEdit :scoreData="participant.scores[criteria.id]" class="fs-6"/>
+								<!-- <ResultsEdit :scoreData="participant.scores[criteria.id]" class="fs-6"/> -->
+								 {{ participant.scores[criteria.id] }}
 							</div>
 						</td>
 						<td class="text-end fw-bold">

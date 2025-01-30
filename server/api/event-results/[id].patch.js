@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
 			.update(body)
 			.eq("id", id)
 			.select(
-				"id, score, registration_id, criteria_id, event_criteria(name, rating), event_registrations(participants(first_name, last_name))"
+				"*, participants(first_name, last_name), event_criteria(name, rating)"
 			)
 			.single();
 

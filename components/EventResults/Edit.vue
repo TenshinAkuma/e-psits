@@ -1,128 +1,122 @@
 <template>
-	<Dialog
-		:dialogId="`editResult-${scoreData.score_id}`"
-		dialogTitle="Edit Participant Evaluation"
-		openButtonStyle="btn-sm text-secondary"
-      ref="editScoresRef">
-		<template #ButtonLabel>
-			<i class="bi bi-pencil-fill" style="font-size: 0.5rem" />
-		</template>
+  <Dialog
+    :dialogId="`edit-result-${scoreData.id}`"
+    :dialogTitle="`Edit ${scoreData.participant_name}'s score on ${scoreData.name}`"
+    openButtonStyle="btn-link"
+    ref="editScoresRef"
+  >
+    <template #ButtonLabel>
+      {{ `${scoreData.points}` }}
+    </template>
 
-		<template #Body>
-			<p class="text-start text-dark lh-sm">
-				Update <b>{{ `${getParticipantName}'s` }}</b> score on
-				<b>{{ `${eventScore.event_criteria.name}.` }}</b>
-			</p>
-			<form :id="`editResultForm-${scoreData.score_id}`" class="mb-3" @submit.prevent="OnSaveEvaluationEdit">
-				<div class="hstack gap-2">
-					<div class="input-group">
-						<span
-							class="input-group-text border-secondary bg-secondary bg-opacity-10">
-							{{ `${eventScore.event_criteria.rating}%` }}
-						</span>
-						<input
-							type="number"
-							class="form-control border-secondary"
-							placeholder="Score"
-							v-model="evaluationEdit.score"
-							min="0"
-							max="100"
-							required />
-					</div>
-				</div>
-			</form>
-         <p class="fs-7 text-danger text-center m-0">
-				{{ errorMessage }} 
-			</p>
-		</template>
+    <template #Body>
+      <form
+        :id="`edit-result-form-${scoreData.id}`"
+        class="text-start fs-6"
+        @submit.prevent="OnSaveEvaluationEdit"
+      >
+        <div class="d-flex align-items-center gap-3">
+          <input
+            type="number"
+            class="form-control border-secondary"
+            placeholder="Score"
+            min="0"
+            max="100"
+            v-model="result.score"
+            required
+          />
+          <span>
+            <i class="bi bi-arrow-right" />
+          </span>
+          <div class="d-flex gap-2">
+            <div class="input-group-text border-secondary fw-bold" style="width: 114px;">
+              {{ `${GetPoints()} pts` }}
+            </div>
+            <div
+              class="input-group-text border-secondary bg-secondary bg-opacity-10"
+            >
+              {{ `${scoreData.rating}%` }}
+            </div>
+          </div>
+        </div>
+      </form>
+      <p class="fs-7 text-danger text-center m-0">
+        {{ errorMessage }}
+      </p>
+    </template>
 
-		<template #Submit>
-			<button
-				type="submit"
-				:form="`editResultForm-${scoreData.score_id}`"
-				class="btn btn-success hstack gap-2 px-5"
-            :disabled="_scoreStatus === 'pending'">
-				<span
-					v-if="_scoreStatus === 'pending'"
-					class="spinner-border spinner-border-sm"
-					aria-hidden="true" />
-				<span role="status">Save evaluation</span>
-			</button>
-		</template>
-	</Dialog>
+    <template #Submit>
+      <button
+        type="submit"
+        :form="`edit-result-form-${scoreData.id}`"
+        class="btn btn-success hstack gap-2"
+        :disabled="isLoading"
+      >
+        <span
+          v-if="isLoading"
+          class="spinner-border spinner-border-sm"
+          aria-hidden="true"
+        />
+        <span role="status">Save edit</span>
+      </button>
+    </template>
+  </Dialog>
 </template>
 
 <script setup>
-   const props = defineProps({
-      scoreData: Object,
-   });
+	let editScoresRef = ref(null);
+	const props = defineProps({
+		score: {
+			type: Object,
+			required: true
+		},
+	});
 
-   const score_data = toRef(() => props.scoreData)
+	const emit = defineEmits(["onEdit"]);
 
-   const evaluationEdit = ref({
-      // score: toRef(() => props.scoreData.score)
-      score: props.scoreData.score
-   });
+	const scoreData = toRef(props, "score");
+	const points = ref();
+	const isLoading = ref(false);
+	const errorMessage = ref("");
 
+	const result = ref({
+		score: scoreData.value?.score,
+	});
 
-   const editScoresRef = ref(null)
-   const eventScores = useEventScores();
-   const eventRegistrations = useEventRegistrations();
-   const errorMessage = ref("")
+	const { data: _scoreData, execute: SaveEvaluationEdit } = await useFetch(
+		`/api/event-results/${scoreData.value?.id}`,
+		{
+			method: "PATCH",
+			body: result,
+			immediate: false,
+			watch: false,
+		}
+	);
 
-   const eventScore = computed(() => {
-      return eventScores.value?.find((e) => e.id == score_data.value?.score_id);
-   });
+	const OnSaveEvaluationEdit = async () => {
+		isLoading.value = true;
+		try {
+			await SaveEvaluationEdit();
 
-   const getParticipantName = computed(() => {
-      const registration_id = eventScore.value?.registration_id;
+			if (_scoreData.value?.error) {
+				throw new Error(_scoreData.value?.error);
+			}
 
-      const participant = eventRegistrations.value?.find(
-         (p) => p.id == registration_id
-      );
+			emit("onEdit");
+			editScoresRef.value?.closeDialog();
+		} catch (err) {
+			console.error(err);
 
-      return `${participant.participants.first_name} ${participant.participants.last_name}`;
-   });
+			errorMessage.value = err.message;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+		} finally {
+			isLoading.value = false;
+		}
+	};
 
-   const {
-      data: _scoreData,
-      status: _scoreStatus,
-      execute: SaveEvaluationEdit,
-   } = await useFetch(`/api/event-results/${score_data.value?.score_id}`, {
-      method: "PATCH",
-      body: evaluationEdit,
-      immediate: false,
-      watch: false,
-   });
-
-   const OnSaveEvaluationEdit = async () => {
-      try {
-         await SaveEvaluationEdit();
-
-         if (_scoreData.value?.error) {
-            throw new Error(_scoreData.value?.error);
-         }
-
-         const scoreIndex = eventScores.value?.findIndex(
-            (s) => s.id == score_data.value?.score_id
-         );
-
-         if (scoreIndex < 0 || scoreIndex == null) {
-            throw new Error("Score data does not exists.")
-         }
-
-         eventScores.value[scoreIndex] = _scoreData.value?.data;
-         console.log(eventScores.value[scoreIndex])
-         editScoresRef.value?.closeDialog();
-      } catch (err) {
-         console.error(err);
-
-         errorMessage.value = err.message;
-         setTimeout(() => {
-            errorMessage.value = "";
-         }, 3000);
-      }
-   };
+	const GetPoints = () => parseFloat((result.value?.score * (scoreData.value?.rating / 100)).toFixed(2));
 </script>
 
 <style></style>
