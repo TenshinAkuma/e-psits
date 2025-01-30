@@ -1,3 +1,4 @@
+// Importing serverSupabaseClient to interact with Supabase from the server-side
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {

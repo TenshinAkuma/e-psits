@@ -1,88 +1,97 @@
 <template>
-	<div>
-		<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
-		<br />
-		<EventsTabs activeTab="criteria" />
+  <div>
+    <h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
+    <br />
+    <EventsTabs activeTab="criteria" />
 
-		<div
-			v-if="isLoading"
-			class="d-flex flex-column justify-content-center align-items-center"
-			style="height: 360px">
-			<p>Loading data...</p>
-			<div class="spinner-border" role="status">
-				<span class="visually-hidden">Loading...</span>
-			</div>
-		</div>
+    <div
+      v-if="isLoading"
+      class="d-flex flex-column justify-content-center align-items-center"
+      style="height: 360px"
+    >
+      <p>Loading data...</p>
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
 
-		<div
-			v-else-if="EventCriteria.length <= 0 || EventCriteria == null"
-			class="d-flex flex-column justify-content-center align-items-center"
-			style="height: 432px">
-			<h4 class="fw-bold m-0">Event Criteria</h4>
-			<br />
-			<br />
-			<br />
-			<p class="text-secondary text-center fs-7 lh-sm">
-				No data available. <br />
-				Please add event criteria.
-			</p>
-			<EventCriteriaCreate
-				:event="EventDetails"
-				@onCreate="HandleReload" />
-		</div>
+    <div
+      v-else-if="EventCriteria.length <= 0 || EventCriteria == null"
+      class="d-flex flex-column justify-content-center align-items-center"
+      style="height: 432px"
+    >
+      <h4 class="fw-bold m-0">Event Criteria</h4>
+      <br />
+      <br />
+      <br />
+      <p class="text-secondary text-center fs-7 lh-sm">
+        No data available. <br />
+        Please add event criteria.
+      </p>
+      <EventCriteriaCreate :event="EventDetails" @onCreate="HandleReload" />
+    </div>
 
-		<div v-else>
-			<br />
-			<div
-				class="d-flex justify-content-between align-items-center gap-3">
-				<h4 class="fw-bold m-0">Event Criteria for Judging</h4>
-			<EventCriteriaCreate
-				:event="EventDetails"
-				@onCreate="HandleReload" />
-			</div>
-			<br />
-         <div class="table-responsive">
-            <table class="table table-bordered">
-					<thead>
-						<tr>
-							<th scope="col">Code</th>
-							<th scope="col">Name</th>
-							<th scope="col">Description</th>
-							<th scope="col" class="text-center">Rating %</th>
-							<th scope="col" class="text-center">
-								Actions
-							</th>
-						</tr>
-					</thead>
-					<tbody>  
-						<tr
-							v-for="(criteria, index) in EventCriteria"
-							:key="criteria.id"
-							style="height: 56px">
-							<td>
-								{{ index + 1 }}
-							</td>
-							<td>
-								{{ criteria.name }}
-							</td>
-							<td style="width: 360px">
-								{{ criteria.description }}
-							</td>
-                     <td class="text-center">
-								{{ `${criteria.rating}%` }}
-							</td>
-                     <td>
-                        <div class="d-flex justify-content-center align-items-center">
-                           <EventCriteriaEdit :criteria="criteria" @onEdit="HandleReload"/>
-                           <EventCriteriaDelete :criteria="criteria" @onDelete="HandleReload"/>
-                        </div>
-                     </td>
-						</tr>
-					</tbody>
-				</table>
-         </div>
-		</div>
-	</div>
+    <div v-else>
+      <br />
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <h4 class="fw-bold m-0">Event Criteria for Judging</h4>
+        <EventCriteriaCreate
+          v-if="_maxRating.data != 0"
+          :event="EventDetails"
+          @onCreate="HandleReload"
+        />
+		  <div v-else class="fs-7 text-success">
+			Event criteria has reached its limit (100%.
+		  </div>
+      </div>
+      <br />
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">Code</th>
+              <th scope="col">Name</th>
+              <th scope="col">Description</th>
+              <th scope="col" class="text-center">Rating %</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(criteria, index) in EventCriteria"
+              :key="criteria.id"
+              style="height: 56px"
+            >
+              <td>
+                {{ index + 1 }}
+              </td>
+              <td>
+                {{ criteria.name }}
+              </td>
+              <td style="width: 360px">
+                {{ criteria.description }}
+              </td>
+              <td class="text-center">
+                {{ `${criteria.rating}%` }}
+              </td>
+              <td>
+                <div class="d-flex justify-content-center align-items-center">
+                  <EventCriteriaEdit
+                    :criteria="criteria"
+                    @onEdit="HandleReload"
+                  />
+                  <EventCriteriaDelete
+                    :criteria="criteria"
+                    @onDelete="HandleReload"
+                  />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -96,9 +105,18 @@
 	const isLoading = ref(false);
 	const errorMessage = ref("");
 
+	const { data: _maxRating, refresh: LoadMaxRating } = await useFetch(
+		`/api/event-criteria/max-rating`,
+		{
+			method: "GET",
+			query: { eventId },
+		}
+	);
+
 	const InitializeData = async () => {
 		isLoading.value = true;
 		try {
+			await LoadMaxRating();
 			const { data: _eventData, error: _eventError } = await $fetch(
 				`/api/events/${eventId}`,
 				{
@@ -125,8 +143,7 @@
 			EventCriteria.value = _criteriaData;
 		} catch (err) {
 			console.error(err.message);
-			errorMessage.value =
-				"Internal server error. Please try again later.";
+			errorMessage.value = "Internal server error. Please try again later.";
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);

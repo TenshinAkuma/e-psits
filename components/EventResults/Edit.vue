@@ -52,11 +52,11 @@
         class="btn btn-success hstack gap-2"
         :disabled="isLoading"
       >
-        <span
-          v-if="isLoading"
-          class="spinner-border spinner-border-sm"
-          aria-hidden="true"
-        />
+      <span
+					v-if="isLoading"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true"></span>
+				<i v-else class="bi bi-floppy2-fill"/>
         <span role="status">Save edit</span>
       </button>
     </template>

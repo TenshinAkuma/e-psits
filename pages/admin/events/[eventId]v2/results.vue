@@ -16,22 +16,7 @@
     </div>
 
     <div
-      v-else-if="EventResults.length <= 0 || EventResults == null"
-      class="d-flex flex-column justify-content-center align-items-center"
-      style="height: 432px"
-    >
-      <h4 class="fw-bold m-0">Event Results</h4>
-      <br />
-      <br />
-      <br />
-      <p class="text-secondary text-center fs-7 lh-sm">
-        No participant evaluation yet.
-      </p>
-      <EventResultsCreate :event="EventDetails" @onCreate="HandleReload" />
-    </div>
-
-    <div
-      v-else-if="maxRating != 100"
+      v-else-if="_maxRating.data != 0"
       class="d-flex flex-column justify-content-center align-items-center"
       style="height: 432px"
     >
@@ -45,6 +30,23 @@
       <button class="btn btn-outline-primary" @click="GoToCriteria">
         Create criteria <i class="bi bi-arrow-right ms-2" />
       </button>
+      
+      
+    </div>
+    
+    <div
+      v-else-if="EventResults.length <= 0 || EventResults == null"
+      class="d-flex flex-column justify-content-center align-items-center"
+      style="height: 432px"
+    >
+      <h4 class="fw-bold m-0">Event Results</h4>
+      <br />
+      <br />
+      <br />
+      <p class="text-secondary text-center fs-7 lh-sm">
+        No participant evaluation yet.
+      </p>
+      <EventResultsCreate :event="EventDetails" @onCreate="HandleReload" />
     </div>
 
     <div v-else>
@@ -101,7 +103,8 @@
               <td class="text-center fw-bold">
                 {{ Number(result.weightedScore.toFixed(2)) }}
               </td>
-              <td>
+              <td class="text-center">
+                <EventResultsDelete :score="result" @onDelete="HandleReload" />
               </td>
             </tr>
           </tbody>
@@ -120,9 +123,14 @@
   const EventDetails = ref({});
   const EventResults = ref([]);
   const EventCriteria = ref([]);
-  const maxRating = ref();
   const isLoading = ref(false);
   const errorMessage = ref("");
+
+  const { data: _maxRating } = await useFetch(`/api/event-criteria/max-rating`,
+    {
+      method: "GET",
+      query: { eventId },
+    });
 
   const TransformEventResults = (results) => {
     const participantAccumulator = [];
@@ -190,27 +198,19 @@
         { data: _eventData },
         { data: _criteriaData },
         { data: _resultData },
-        { data: _maxRatingData },
       ] = await Promise.all([
         $fetch(`/api/events/${eventId}`, { method: "GET" }),
         $fetch(`/api/event-criteria/${eventId}`, { method: "GET" }),
         $fetch(`/api/event-results/${eventId}`, { method: "GET" }),
-        $fetch(`/api/event-criteria/max-rating`, {
-          method: "GET",
-          query: { eventId },
-        }),
       ]);
 
       // Update reactive variables
       EventDetails.value = _eventData;
       EventCriteria.value = _criteriaData;
       EventResults.value = TransformEventResults(_resultData);
-      maxRating.value = 100 - _maxRatingData;
     } catch (err) {
       console.error(err.message);
-      errorMessage.value = err.message.includes("Network Error")
-        ? "Network error. Please check your connection."
-        : "Internal server error. Please try again later.";
+      errorMessage.value = err.message;
 
       setTimeout(() => {
         errorMessage.value = "";

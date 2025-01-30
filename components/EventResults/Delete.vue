@@ -1,15 +1,15 @@
 <template>
 	<Dialog
-		:dialogId="`deleteResult-${registration_id}`"
-		dialogTitle="Remove Participant Evaluation"
+		:dialogId="`delete-score-${scoreData.participant_id}`"
+		:dialogTitle="`Delete ${scoreData.participant_name}'s Scores`"
 		openButtonStyle="btn-sm text-secondary"
-		ref="deleteEvaluationRef">
+		ref="deleteScoresRef">
 		<template #ButtonLabel>
 			<i class="bi bi-trash-fill" style="font-size: 0.5rem" />
 		</template>
 
 		<template #Body>
-			<p>
+			<p class="text-start">
 				<b>This action will permanently delete the scores.</b>
 				<br />
 				Are you sure you want to delete this?
@@ -18,65 +18,64 @@
 
 		<template #Submit>
 			<button
-				:id="`deleteResult-${registration_id}`"
-				@click="OnDeleteEvaluation"
+				:id="`delete-score-form-${scoreData.participant_id}`"
+				@click="OnDeleteScores"
 				type="button"
-				class="btn btn-danger hstack gap-2 px-5"
-				:disabled="_scoreStatus === 'pending'">
+				class="btn btn-danger hstack gap-3"
+				:disabled="isLoading">
 				<span
-					v-if="_scoreStatus === 'pending'"
+					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
-					aria-hidden="true" />
-				<span role="status">Remove evaluation</span>
+					aria-hidden="true"></span>
+				<i v-else class="bi bi-trash-fill"></i>
+				<span role="status">Delete scores</span>
 			</button>
 		</template>
 	</Dialog>
 </template>
 
 <script setup>
+   let deleteScoresRef = ref(null);
    const props = defineProps({
-      registrationId: Number,
+      score: {
+         type: Object,
+         required: true,
+      },
    });
 
-   const registration_id = toRef(props, "registrationId");
+   const emit = defineEmits(["onDelete"])
 
-   const deleteEvaluationRef = ref(null);
-   const eventScores = useEventScores();
+   const scoreData = toRef(props, "score");
+   const isLoading = ref(false)
    const errorMessage = ref("");
 
    const {
       data: _scoreData,
-      status: _scoreStatus,
-      execute: DeleteEvaluation,
-   } = await useFetch('/api/event-results', {
+      execute: DeleteScores,
+   } = await useFetch(`/api/event-results/${scoreData.value?.participant_id}`, {
       method: "DELETE",
-      query: { id: registration_id },
       immediate: false,
       watch: false,
    });
 
-   const OnDeleteEvaluation = async () => {
+   const OnDeleteScores = async () => {
+      isLoading.value = true;
       try {
-         await DeleteEvaluation();
+         await DeleteScores();
 
          if (_scoreData.value?.error) {
             throw new Error(_scoreData.value?.error);
          }
-
-         const remainingScores = computed(() => {
-            return eventScores.value?.filter(
-               (item) => item.registration_id != registration_id.value
-            );
-         });
-         eventScores.value = remainingScores.value;
-
-         deleteEvaluationRef.value.closeDialog();
+         emit("onDelete")
+         deleteScoresRef.value.closeDialog();
       } catch (error) {
          errorMessage.value = error.message;
 
          setTimeout(() => {
             errorMessage.value = "";
          }, 3000);
+      } finally {
+         isLoading.value = false;
       }
    };
 </script>
