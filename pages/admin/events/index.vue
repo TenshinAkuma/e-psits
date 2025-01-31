@@ -37,11 +37,11 @@
 								<span class="fw-bold">{{ `${event.venue},` || " e" }}</span>
 								{{ event.address }}
 							</p>
-							<p class="fs-7 text-secondary mb-0">
+							<p class="fs-7 text-secondary mb-0 text-truncate">
 								{{ event.description }}
 							</p>
 						</div>
-						<NuxtLink :to="`/admin/events/${event.id}`"
+						<NuxtLink :to="`/admin/events/${event.id}v2`"
 							class="btn btn-sm btn-outline-dark rounded-pill px-5 hstack gap-2"
 							style="width: max-content">
 							<span>View event</span>
@@ -97,7 +97,7 @@
 	});
 
 	const ToEventDetailsPage = async (id) => {
-		await navigateTo(`/admin/events/${id}`);
+		await navigateTo(`/admin/events/${id}v2`);
 	};
 
 	try {

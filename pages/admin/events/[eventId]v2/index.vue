@@ -10,78 +10,96 @@
 			<div class="row">
 				<div class="col-8">
 					<dl class="row">
-				<dt class="col-sm-3">Schedule</dt>
-				<dd class="col-sm-9">
-					<p>
-						{{ formatDate(EventDetails.date) }} <br />
-						{{ formatTime(EventDetails.date) }}
-					</p>
-				</dd>
+						<dt class="col-sm-3">Schedule</dt>
+						<dd class="col-sm-9">
+							<p>
+								{{ formatDate(EventDetails.date) }}
+								<br />
+								{{ formatTime(EventDetails.date) }}
+							</p>
+						</dd>
 
-				<dt class="col-sm-3">Category</dt>
-				<dd class="col-sm-9">
-					<p>
-						{{ EventDetails.category }}
-					</p>
-				</dd>
+						<dt class="col-sm-3">Category</dt>
+						<dd class="col-sm-9">
+							<p>
+								{{ EventDetails.category }}
+							</p>
+						</dd>
 
-				<dt class="col-sm-3">Attendance</dt>
-				<dd class="col-sm-9">
-					<p>
-						{{ EventDetails.type }} <br />
-						<NuxtLink
+						<dt class="col-sm-3">Attendance</dt>
+						<dd class="col-sm-9">
+							<p>
+								{{ EventDetails.type }} <br />
+								<NuxtLink
+									v-if="
+										EventDetails.type.toLowerCase() ==
+										'virtual'
+									"
+									:to="`/admin/events/${eventId}v2/edit`"
+									class="fst-italic"
+									>{{
+										EventDetails.link ||
+										"Provide virtual link."
+									}}</NuxtLink
+								>
+							</p>
+						</dd>
+
+						<dt
 							v-if="
 								EventDetails.type.toLowerCase() ==
-								'virtual'
+								'in-person'
 							"
-							:to="`/admin/events/${eventId}v2/edit`"
-							class="fst-italic"
-							>{{
-								EventDetails.link ||
-								"Provide virtual link."
-							}}</NuxtLink
-						>
-					</p>
-				</dd>
+							class="col-sm-3">
+							Location
+						</dt>
+						<dd
+							v-if="
+								EventDetails.type.toLowerCase() ==
+								'in-person'
+							"
+							class="col-sm-9">
+							<p>
+								{{ EventDetails.venue }} <br />
+								{{ EventDetails.address }}
+							</p>
+						</dd>
 
-				<dt
-					v-if="EventDetails.type.toLowerCase() == 'in-person'"
-					class="col-sm-3">
-					Location
-				</dt>
-				<dd
-					v-if="EventDetails.type.toLowerCase() == 'in-person'"
-					class="col-sm-9">
-					<p>
-						{{ EventDetails.venue }} <br />
-						{{ EventDetails.address }}
-					</p>
-				</dd>
+						<dt class="col-sm-3">Registration period</dt>
+						<dd
+							v-if="
+								EventDetails.type.toLowerCase() ==
+								'in-person'
+							"
+							class="col-sm-9">
+							<p>
+								{{
+									formatDate(
+										EventDetails.registration_start
+									)
+								}}
+								<i class="bi bi-arrow-right mx-2" />
+								{{
+									formatDate(
+										EventDetails.registration_end
+									)
+								}}
+							</p>
+						</dd>
 
-				<dt class="col-sm-3">Registration period</dt>
-				<dd
-					v-if="EventDetails.type.toLowerCase() == 'in-person'"
-					class="col-sm-9">
-					<p>
-						{{ formatDate(EventDetails.registration_start) }}
-						<i class="bi bi-arrow-right mx-2" />
-						{{ formatDate(EventDetails.registration_end) }}
-					</p>
-				</dd>
-
-				<dt class="col-sm-3">Description</dt>
-				<dd class="col-sm-9">
-					{{ EventDetails.description }}
-				</dd>
-			</dl>
-			<br />
-			<br />
-			<NuxtLink
-				:to="`/admin/events/${eventId}v2/edit`"
-				class="btn btn-success px-3">
-				<i class="bi bi-pencil fs-7 me-3" />
-				Edit details
-			</NuxtLink>
+						<dt class="col-sm-3">Description</dt>
+						<dd class="col-sm-9">
+							{{ EventDetails.description }}
+						</dd>
+					</dl>
+					<br />
+					<br />
+					<NuxtLink
+						:to="`/admin/events/${eventId}v2/edit`"
+						class="btn btn-success px-3">
+						<i class="bi bi-pencil fs-7 me-3" />
+						Edit details
+					</NuxtLink>
 				</div>
 			</div>
 		</div>
@@ -106,14 +124,12 @@
 		}
 	);
 
-	const {data: _participantData, execute: LoadParticipants} = await useFetch(
-		`/api/events/${eventId}/participants`,
-		{
+	const { data: _participantData, execute: LoadParticipants } =
+		await useFetch(`/api/events/${eventId}/participants`, {
 			method: "GET",
 			immediate: false,
 			watch: false,
-		}
-	);
+		});
 
 	try {
 		await LoadEvent();

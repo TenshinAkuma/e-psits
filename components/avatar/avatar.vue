@@ -14,7 +14,7 @@
 
 <script setup>
 	const props = defineProps({
-		id: Number,
+		id: String,
 		name: String,
 		gender: String,
 		size: String,

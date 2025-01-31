@@ -5,14 +5,10 @@ export default defineEventHandler(async (event) => {
 	const { id } = event.context.params;
 	const body = await readBody(event);
 
+	console.log(body);
 	try {
 		const { data: participantData, error: participantError } =
-			await client
-				.from("participants")
-				.update(body)
-				.eq("id", id)
-				.select("*, institutions(name)")
-				.single();
+			await client.from("participants").update(body).eq("id", id);
 
 		if (participantError) {
 			throw new Error(participantError.message);

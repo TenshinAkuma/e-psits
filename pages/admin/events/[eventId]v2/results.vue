@@ -30,8 +30,6 @@
       <button class="btn btn-outline-primary" @click="GoToCriteria">
         Create criteria <i class="bi bi-arrow-right ms-2" />
       </button>
-      
-      
     </div>
     
     <div
