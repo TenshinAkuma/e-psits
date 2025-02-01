@@ -1,9 +1,9 @@
 <template>
 	<header class="border-bottom bg-white border-bottom sticky-top">
 		<div
-			class="container-md d-flex justify-content-between align-items-center"
+			class="container d-flex justify-content-between align-items-center"
 			style="height: 72px">
-			<div class="d-flex align-items-center gap-2">
+			<div class="d-flex align-items-center gap-3">
 				<AdminSideBar />
 				<div class="fs-4 fw-bold">E-PSITS</div>
 			</div>
