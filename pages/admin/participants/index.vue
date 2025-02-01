@@ -1,10 +1,8 @@
-<!-- TODO: refac the participant index page to show event and registration status -->
-
 <template>
 	<div class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">PARTICIPANTS</h4>
-			<LazyParticipantsCreateModal />
+			<ParticipantsCreateModal />
 		</div>
 
 		<hr />
@@ -26,7 +24,7 @@
 				class="col-6 participant-card d-flex justify-content-between align-items-center rounded-3 p-3">
 				<Avatar
 					:gender="participant.sex"
-					:id="participant.id"
+					:id="`participant-${participant.id}`"
 					:name="`${participant.first_name} ${participant.last_name}`"
 					size="72px">
 					<template #Name>

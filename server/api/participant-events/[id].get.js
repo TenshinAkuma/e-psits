@@ -7,10 +7,11 @@ export default defineEventHandler(async (event) => {
 	try {
 		const { data: participantData, error: participantError } =
 			await client
-				.from("event_scores")
-				.select("*")
-				.eq("participant_id", id)
-				.single();
+				.from("event_registrations")
+				.select(
+					"*, events!left(title, event_results!left(weighted_points, event_scores!left(score, event_criteria(name))))"
+				)
+				.eq("participant_id", id);
 
 		if (participantError) {
 			throw new Error(participantError.message);

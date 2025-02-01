@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while updating event results update:",
+			"Error occurred while updating event results:",
 			error.message
 		);
 

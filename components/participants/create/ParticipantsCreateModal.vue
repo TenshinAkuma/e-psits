@@ -9,8 +9,10 @@
 		</template>
 
 		<template #Body>
-			<form @submit.prevent="OnSaveNewParticipant" id="createEvent" ref="createForm">
-
+			<form
+				@submit.prevent="OnSaveNewParticipant"
+				id="createEvent"
+				ref="createForm">
 				<p class="fw-bold mb-2">Personal Information</p>
 				<div class="hstack gap-2 mb-3">
 					<input
@@ -76,12 +78,11 @@
 				<p class="fw-bold mb-2">Academic Background</p>
 				<select
 					class="select form-select border-secondary mb-3"
-					v-model="newParticipant.institution_id" required>
-					<option :value="0" selected hidden>
-						Choose institution
-					</option>
+					v-model="newParticipant.institution_id"
+					required>
+					<option value="0" selected hidden>Choose institution</option>
 					<option
-						v-for="institution in institutionsOptions"
+						v-for="institution in institutionsOptions.data"
 						:key="institution.id"
 						:value="institution.id">
 						{{ institution.name }}
@@ -114,11 +115,12 @@
 				type="submit"
 				form="createEvent"
 				class="d-flex align-items-center btn btn-primary gap-2"
-				:disabled="_participantStatus === 'pending'">
+				:disabled="isLoading">
 				<span
-					v-if="_participantStatus === 'pending'"
+					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
+					<i v-else class="bi bi-plus-lg" />
 				<span role="status">Add participant</span>
 			</button>
 		</template>
@@ -126,9 +128,10 @@
 </template>
 
 <script setup>
-	const createParticipantModalRef = ref(null);
-	const createForm = ref(null)
-	const participants = useParticipants();
+	let createParticipantModalRef = ref(null);
+	let createForm = ref(null);
+
+	const isLoading = ref(false);
 	const errorMessage = ref("");
 
 	const newParticipant = ref({
@@ -151,38 +154,30 @@
 		}
 	);
 
-	const {
-		data: _participantData,
-		status: _participantStatus,
-		execute: SaveNewParticipant,
-	} = await useFetch(`/api/participants`, {
-		method: "POST",
-		body: newParticipant,
-		immediate: false,
-		watch: false,
-	});
-
 	const OnSaveNewParticipant = async () => {
-		try {
-			if (newParticipant.value?.institution_id == 0) {
-				throw new Error("Please specify institution.")
-			}
-			await SaveNewParticipant();
+		isLoading.value = true;
+		if (newParticipant.value?.institution_id == 0) {
+			throw new Error("Please specify institution.");
+		}
 
-			if (_participantData.value?.error) {
-				throw new Error("Error while saving new participant.");
-			}
+		const { data, error } = await useFetch(`/api/participants`, {
+			method: "POST",
+			body: newParticipant,
+		});
 
-			participants.value?.push(_participantData.value?.data);
-			createForm.value?.reset()
-			createParticipantModalRef.value?.closeDialog();
-		} catch (err) {
+		if (error) {
 			console.error(err.message);
-
 			errorMessage.value = err.message;
 			setTimeout(() => {
 				errorMessage.value = "";
+				isLoading.value = false;
+				return;
 			}, 3000);
 		}
+
+		createForm.value?.reset();
+		navigateTo(`/admin/participants/${data.id}`)
+		createParticipantModalRef.value?.closeDialog();
+		isLoading.value = false;
 	};
 </script>
