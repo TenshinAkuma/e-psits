@@ -2,13 +2,16 @@ import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
-	const { institutionID } = event.context.params;
+	const { id } = event.context.params;
 
-	return (
-		await client
+	try {
+		const { data, error } = await client
 			.from("institutions")
 			.delete()
 			.eq("id", institutionID)
-			.single()
-	).data;
+			.single();
+	} catch {
+		console.error("Error fetching all institutions: ");
+		return {};
+	}
 });

@@ -18,10 +18,7 @@ export default defineEventHandler(async (event) => {
 			success: true,
 		};
 	} catch (error) {
-		console.error(
-			"Error while updating participant registration status",
-			error.message
-		);
+		console.error("Error deleting registration:", error.message);
 		return {
 			success: false,
 			error: error.message,

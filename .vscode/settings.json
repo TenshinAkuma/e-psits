@@ -14,5 +14,6 @@
    },
    "editor.formatOnSave": true,
    "editor.formatOnPaste": false,
-   "editor.formatOnSaveMode": "modifications"
+   "editor.formatOnSaveMode": "modifications",
+   "postman.settings.dotenv-detection-notification-visibility": false
 }

@@ -8,8 +8,6 @@ export default defineEventHandler(async (event) => {
 		// Get eventTitle from query and ensure it's a string
 		const eventTitle = query.trim() || "a";
 
-		console.log("Processed Query:", eventTitle);
-
 		const { data, error } = await client
 			.from("events")
 			.select("id, title, category") // Ensure these columns exist in your DB
