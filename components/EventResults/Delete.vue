@@ -1,7 +1,7 @@
 <template>
 	<Dialog
-		:dialogId="`delete-score-${scoreData.participant_id}`"
-		:dialogTitle="`Delete ${scoreData.participant_name}'s Scores`"
+		:dialogId="`delete-score-${scoreData.id}`"
+		:dialogTitle="`Delete ${GetFullname()}'s Scores`"
 		openButtonStyle="btn-sm text-secondary"
 		ref="deleteScoresRef">
 		<template #ButtonLabel>
@@ -35,47 +35,41 @@
 </template>
 
 <script setup>
-   let deleteScoresRef = ref(null);
-   const props = defineProps({
-      score: {
-         type: Object,
-         required: true,
-      },
-   });
+	let deleteScoresRef = ref(null);
+	const props = defineProps({
+		score: {
+			type: Object,
+			required: true,
+		},
+	});
 
-   const emit = defineEmits(["onDelete"])
+	const emit = defineEmits(["onDelete"]);
 
-   const scoreData = toRef(props, "score");
-   const isLoading = ref(false)
-   const errorMessage = ref("");
+	const scoreData = toRef(props, "score");
+	const isLoading = ref(false);
+	const errorMessage = ref("");
 
-   const {
-      data: _scoreData,
-      execute: DeleteScores,
-   } = await useFetch(`/api/event-results/${scoreData.value?.participant_id}`, {
-      method: "DELETE",
-      immediate: false,
-      watch: false,
-   });
+   const GetFullname = () =>
+		`${scoreData.value?.participants.first_name} ${scoreData.value?.participants.last_name}`;
 
-   const OnDeleteScores = async () => {
-      isLoading.value = true;
-      try {
-         await DeleteScores();
+	const OnDeleteScores = async () => {
+		isLoading.value = true;
+		const { error } = await $fetch(
+			`/api/event-results/${scoreData.value?.id}`,
+			{
+				method: "DELETE",
+			}
+		);
 
-         if (_scoreData.value?.error) {
-            throw new Error(_scoreData.value?.error);
-         }
-         emit("onDelete")
-         deleteScoresRef.value.closeDialog();
-      } catch (error) {
-         errorMessage.value = error.message;
-
-         setTimeout(() => {
-            errorMessage.value = "";
-         }, 3000);
-      } finally {
-         isLoading.value = false;
-      }
+		if (error) {
+			errorMessage.value = error;
+			setTimeout(() => {
+				errorMessage.value = "";
+				isLoading.value = false;
+			}, 3000);
+		}
+		emit("onDelete");
+		deleteScoresRef.value.closeDialog();
+		isLoading.value = false;
    };
 </script>

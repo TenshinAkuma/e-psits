@@ -6,9 +6,9 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const { error: scoreError } = await client
-			.from("event_scores")
+			.from("event_results")
 			.delete()
-			.eq("participant_id", id);
+			.eq("id", id);
 
 		if (scoreError) {
 			throw new Error(scoreError.message);
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 			success: true,
 		};
 	} catch (error) {
-		console.error("Error occurred while deleting scores", error.message);
+		console.error("Error occurred while deleting scores:", error.message);
 
 		return {
 			success: false,
