@@ -19,7 +19,7 @@
 
 		<article
 			v-else-if="
-				InstitutionsData.length <= 0 || InstitutionsData == null
+				 InstitutionsData == null || InstitutionsData.length <= 0
 			"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
 			style="height: 720px">
@@ -84,10 +84,13 @@
 		});
 
 		if (error) {
+			console.error("Error loading institutions: ", error);
 			errorMsg.value = error;
+
 			setTimeout(() => {
 				errorMsg.value = "";
 			}, 3000);
+
 			InstitutionsData.value = null;
 			isLoading.value = false;
 			return;
