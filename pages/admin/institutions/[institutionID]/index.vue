@@ -1,67 +1,78 @@
 @ -0,0 +1,51 @@
 <template>
-	<div v-if="status === 'success'">
-		<div v-if="institution != null" class="row">
-			<div
-				class="d-flex justify-content-between align-items-center mb-3">
-				<InstitutionsEditsName
-					:InstitutionName="institution.name" />
-				<div class="hstack gap-2">
-					<InstitutionsDelete />
-					<InstitutionsCreateModal />
-				</div>
-			</div>
-			<hr />
-			<div class="col-4">
-				<p class="fw-bold">School Information</p>
-
-				<InstitutionsEditsAddress
-					:InstitutionAddress="institution.address" />
-
-				<InstitutionsEditsEmail
-					:InstitutionEmail="institution.email" />
-
-				<hr />
-
-				<p class="fw-bold">Institution Coordinator</p>
-				<div
-					class="d-flex align-items-center gap-3 mb-3"
-					style="cursor: pointer">
-					<div
-						class="ratio ratio-1x1 border rounded-circle border overflow-hidden"
-						style="width: 72px">
-						<img
-							src="https://avatar.iran.liara.run/public/28"
-							alt="profile_image"
-							class="h-100 w-100" />
-					</div>
-					<div>
-						<div class="fw-bold fs-5 lh-1">
-							{{ institution.coordinators.name }}
-						</div>
-						<div
-							class="text-secondary"
-							style="font-size: 0.9rem">
-							{{ institution.coordinators.position }}
-						</div>
-					</div>
-				</div>
-				<div class="text-secondary hstack gap-2 mb-2">
-					<i class="bi bi-envelope"></i
-					>{{ institution.coordinators.email }}
-				</div>
-				<div class="text-secondary hstack gap-2 mb-2">
-					<i class="bi bi-telephone"></i
-					>{{ institution.coordinators.contact_number }}
-				</div>
-			</div>
-		</div>
-	</div>
-	<div v-else style="height: 100vh; width: 100vw">
+	<article
+		v-if="isLoading"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 720px">
+		<p>Loading institution...</p>
 		<div class="spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
 		</div>
-	</div>
+	</article>
+
+	<section v-else>
+		<article>
+			<h1 class="fw-bold">{{ InstitutionData.name }}</h1>
+		</article>
+
+		<br />
+		<InstitutionsTabs activeTab="details" />
+		<br />
+
+		<h4 class="fw-bold mb-3">Institution Info</h4>
+
+		<dl class="row">
+			<dt class="col-sm-2">Address</dt>
+			<dd class="col-sm-10">
+				{{ InstitutionData.address }}
+			</dd>
+
+			<dt class="col-sm-2">Email</dt>
+			<dd class="col-sm-10">
+				{{ InstitutionData.email }}
+			</dd>
+
+			<dt class="col-sm-2">Telephone num.</dt>
+			<dd class="col-sm-10">
+				{{ InstitutionData.contact_number }}
+			</dd>
+		</dl>
+
+		<br />
+		<h4 class="fw-bold mb-3">Institution Coordinator</h4>
+
+		<div class="d-flex align-items-center gap-2">
+			<Avatar
+			:id="`institution-coordinator-${InstitutionData.coordinator_id}`"
+			:gender="InstitutionData.coordinators.sex"
+			size="72px" />
+			<p class="lh-sm m-0">
+				<span class="fw-bold fs-5">{{ GetFullname() }}</span> <br>
+				<span	span class="">{{ InstitutionData.coordinators.position }}</span>
+			</p>
+		</div>
+
+		<br />
+
+		<dl class="row">
+			<dt class="col-sm-2">Email</dt>
+			<dd class="col-sm-10">
+				{{ InstitutionData.coordinators.email }}
+			</dd>
+			<dt class="col-sm-2">Contact num.</dt>
+			<dd class="col-sm-10">
+				{{ InstitutionData.coordinators.contact_number }}
+			</dd>
+		</dl>
+
+		<br />
+		<br />
+		<br />
+		<NuxtLink class="btn btn-success px-3">
+			<i class="bi bi-pencil fs-7 me-3" />
+			Edit details
+		</NuxtLink>
+	</section>
 </template>
 
 <script setup>
@@ -69,13 +80,33 @@
 		layout: "main",
 	});
 
-	const institutionID = useRoute().params.institutionID;
+	const institutionId = useRoute().params.institutionId;
+	const InstitutionData = ref({});
+	const isLoading = ref(false);
+	const errorMsg = ref("");
 
-	const { data: institution, status } = useFetch(
-		`/api/institutions/${institutionID}`,
-		{
-			headers: useRequestHeaders(["cookie"]),
-			method: "GET",
+	async function LoadData() {
+		isLoading.value = false;
+		const { data, error } = await $fetch(
+			`/api/institutions/${institutionId}`,
+			{ method: "GET" }
+		);
+
+		if (error) {
+			console.error("Error loading institution data: ", error);
+			errorMsg.value = error;
+
+			setTimeout(() => {
+				errorMsg.value = "";
+			}, 3000);
 		}
-	);
+
+		InstitutionData.value = data;
+		isLoading.value = false;
+	}
+
+	await LoadData();
+
+	const GetFullname = () =>
+		`${InstitutionData.value?.coordinators.first_name} ${InstitutionData.value?.coordinators.last_name}`;
 </script>

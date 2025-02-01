@@ -12,14 +12,15 @@
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
 			style="height: 720px">
-			<div class="spinner-border text-secondary" role="status">
-				<span role="status">Loading institutions...</span>
+			<p>Loading institutions...</p>
+			<div class="spinner-border" role="status">
+				<span class="visually-hidden">Loading...</span>
 			</div>
 		</article>
 
 		<article
 			v-else-if="
-				 InstitutionsData == null || InstitutionsData.length <= 0
+				InstitutionsData == null || InstitutionsData.length <= 0
 			"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
 			style="height: 720px">
@@ -29,7 +30,10 @@
 			</p>
 		</article>
 
-		<article v-else class="row g-2 overflow-y-auto pb-3" style="height: 720px">
+		<article
+			v-else
+			class="row g-2 overflow-y-auto pb-3"
+			style="height: 720px">
 			<div
 				v-for="institution in InstitutionsData"
 				:key="institution.id"
@@ -53,8 +57,8 @@
 							<span>{{ institution.address }}</span>
 						</p>
 					</div>
-					<br/>
-					<br/>
+					<br />
+					<br />
 					<NuxtLink
 						:to="`/admin/institutions/${institution.id}`"
 						class="btn btn-sm btn-outline-dark rounded-pill px-5"
@@ -90,10 +94,6 @@
 			setTimeout(() => {
 				errorMsg.value = "";
 			}, 3000);
-
-			InstitutionsData.value = null;
-			isLoading.value = false;
-			return;
 		}
 
 		InstitutionsData.value = data;

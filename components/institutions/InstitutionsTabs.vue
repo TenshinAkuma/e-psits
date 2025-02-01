@@ -22,7 +22,7 @@
    const institutionId = useRoute().params.institutionId;
    
 	const isActive = (tab) => {
-		return tab === props.activeTab;
+		return tab === props.activeTab.toLowerCase();
 	};
 </script>
 

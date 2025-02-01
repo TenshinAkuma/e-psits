@@ -48,44 +48,44 @@
 		<br />
 
 		<dl class="row">
-			<dt class="col-sm-3">Date of birth</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Date of birth</dt>
+			<dd class="col-sm-10">
 				{{ formatDate(ParticipantData.dob) }}
 			</dd>
 
-			<dt class="col-sm-3">Address</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Address</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.address }}
 			</dd>
 
 			<br />
 			<br />
 
-			<dt class="col-sm-3">Email</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Email</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.email }}
 			</dd>
 
-			<dt class="col-sm-3">Contact number</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Contact number</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.phone_number }}
 			</dd>
 
 			<br />
 			<br />
 
-			<dt class="col-sm-3">Institution</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Institution</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.institutions.name }}
 			</dd>
 
-			<dt class="col-sm-3">Year level</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Year level</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.year_level }}
 			</dd>
 
-			<dt class="col-sm-3">Course</dt>
-			<dd class="col-sm-9">
+			<dt class="col-sm-2">Course</dt>
+			<dd class="col-sm-10">
 				{{ ParticipantData.course }}
 			</dd>
 		</dl>
