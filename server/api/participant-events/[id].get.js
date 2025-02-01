@@ -11,7 +11,8 @@ export default defineEventHandler(async (event) => {
 				.select(
 					"*, events(title, category), participants(first_name, last_name)"
 				)
-				.eq("participant_id", id);
+				.eq("participant_id", id)
+				.order('created_at', { ascending: false });;
 
 		if (participantError) {
 			throw new Error(participantError.message);
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
 		};
 	} catch (error) {
 		console.error(
-			"Error occurred while loading participant",
+			"Error occurred while loading registrations:",
 			error.message
 		);
 

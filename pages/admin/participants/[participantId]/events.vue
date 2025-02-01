@@ -47,7 +47,7 @@
 			v-else-if="EventData.length <= 0 || EventData == null"
 			class="d-flex flex-column justify-content-center align-items-center"
 			style="height: 432px">
-			<h4 class="fw-bold m-0">Event Guidelines</h4>
+			<h4 class="fw-bold m-0">Participant Events</h4>
 			<br />
 			<br />
 			<br />
@@ -55,52 +55,67 @@
 				No data available. Register to an event.
 			</p>
 			<!-- <EventRulesCreate
-				:event="EventData"
+				:event="EventDetails"
 				@onCreate="HandleReload" /> -->
 		</article>
 
 		<article v-else>
 			<br />
-			<h4 class="fw-bold">Participant Events</h4>
+			<div class="d-flex justify-content-between align-items-center">
+				<h4 class="fw-bold">Participant Events</h4>
+				<LazyParticipantEventsCreate
+					:participant="ParticipantData"
+					@onCreate="HandleReload" />
+			</div>
 			<br />
 			<div class="table-responsive">
-        <table class="table table-bordered align-middle">
-          <thead>
-            <tr>
-              <th scope="col">Event</th>
-              <th scope="col">Category</th>
-              <th scope="col" class="text-center">Amount paid</th>
-              <th scope="col" class="text-center">Registration</th>
-              <th scope="col" class="text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="event in EventData"
-              :key="event.id"
-              style="height: 56px">
-					<td>
-						<NuxtLink :to="`/admin/events/${event.event_id}v2`">
-							{{ event.events.title }}
-						</NuxtLink>
-					</td>
-					<td>{{event.events.category}}</td>
-					<td class="text-center">{{`₱ ${event.amount}`}}</td>
-					<td class="text-center">{{event.registration_status}}</td>
-					<td>
-						<div class="d-flex justify-content-center align-items-center">
-							<ParticipantEventsEdit
-							:registration="event"
-							@onEdit="HandleReload"/>
-						</div>
-					</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+				<table class="table table-bordered align-middle">
+					<thead>
+						<tr>
+							<th scope="col">Event</th>
+							<th scope="col">Category</th>
+							<th scope="col" class="text-center">
+								Amount paid
+							</th>
+							<th scope="col" class="text-center">
+								Registration
+							</th>
+							<th scope="col" class="text-center">
+								Actions
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr
+							v-for="event in EventData"
+							:key="event.id"
+							style="height: 56px">
+							<td>
+								<NuxtLink
+									:to="`/admin/events/${event.event_id}v2`">
+									{{ event.events.title }}
+								</NuxtLink>
+							</td>
+							<td>{{ event.events.category }}</td>
+							<td class="text-center">
+								{{ event.amount }}
+							</td>
+							<td class="text-center">
+								{{ event.registration_status }}
+							</td>
+							<td>
+								<div
+									class="d-flex justify-content-center align-items-center">
+									<ParticipantEventsEdit
+										:registration="event"
+										@onEdit="HandleReload" />
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</article>
-		
-		{{ EventData }}
 	</section>
 </template>
 
