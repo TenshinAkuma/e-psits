@@ -8,6 +8,14 @@
 				>Details</NuxtLink
 			>
 		</li>
+      <li class="nav-item">
+			<NuxtLink
+				class="nav-link"
+				:class="{ active: isActive('events') }"
+				:to="`/admin/participants/${participantId}/events`"
+				>Events</NuxtLink
+			>
+		</li>
 	</ul>
 </template>
 

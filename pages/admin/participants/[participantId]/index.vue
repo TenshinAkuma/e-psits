@@ -33,18 +33,20 @@
 				</div>
 			</div>
 
-			<button class="btn btn-primary fw-bold">
+			<!-- <button class="btn btn-primary fw-bold">
 				<i class="bi bi-plus-lg me-3" />
 				<span>Register participant</span>
-			</button>
+			</button> -->
 		</article>
 
 		<br />
 
 		<ParticipantsTabs activeTab="details" />
 		<br />
+
 		<h4 class="fw-bold">Participant Info</h4>
 		<br />
+
 		<dl class="row">
 			<dt class="col-sm-3">Date of birth</dt>
 			<dd class="col-sm-9">

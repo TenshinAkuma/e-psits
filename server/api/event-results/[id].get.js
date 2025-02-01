@@ -6,12 +6,10 @@ export default defineEventHandler(async (event) => {
 
 	try {
 		const { data: scoreData, error: scoreError } = await client
-			.from("event_scores")
-			.select(
-				"*, participants(first_name, last_name), event_criteria(name, rating)"
-			)
+			.from("event_results")
+			.select("*, participants(first_name, last_name), event_scores!left (id, score, event_criteria(id, name, rating))")
 			.eq("event_id", id)
-			.order("participant_id", { ascending: true });
+			.order("weighted_points", { ascending: false });
 
 		if (scoreError) {
 			throw new Error(scoreError.message);
@@ -30,6 +28,7 @@ export default defineEventHandler(async (event) => {
 		return {
 			success: true,
 			error: err.message,
+			data: null
 		};
 	}
 });

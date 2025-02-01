@@ -5,11 +5,18 @@
 			:dialogTitle="`Remove ${criteriaData.name}`"
 			ref="deleteCriteriaRef">
 			<template #ButtonLabel>
-				<i
-					class="bi bi-trash-fill text-secondary fs-7"/>
+				<i class="bi bi-trash-fill text-secondary fs-7" />
 			</template>
 
 			<template #Body>
+				<p
+					class="bg-warning bg-opacity-10 fs-7 text-center text-warning border border-warning rounded-3 p-2 m-0">
+					<i
+						class="bi bi-exclamation-circle-fill text-warning me-2" />
+					<b>WARNING!</b>
+					Updating event criteria will reset all event results.
+				</p>
+				<br />
 				<b>This action cannot be undone.</b> <br />
 				Are you sure you want to delete this criteria?
 			</template>
@@ -21,9 +28,9 @@
 					class="btn btn-danger hstack gap-3"
 					:disabled="isLoading">
 					<span
-					v-if="isLoading"
-					class="spinner-border spinner-border-sm"
-					aria-hidden="true" />
+						v-if="isLoading"
+						class="spinner-border spinner-border-sm"
+						aria-hidden="true" />
 					<i v-else class="bi bi-trash-fill"></i>
 					<span role="status">Confirm delete</span>
 				</button>
@@ -38,24 +45,24 @@
 	const props = defineProps({
 		criteria: {
 			type: Object,
-			required: true
+			required: true,
 		},
 	});
 
-	const emit = defineEmits(["onDelete"])
+	const emit = defineEmits(["onDelete"]);
 
 	const criteriaData = toRef(props, "criteria");
 	const isLoading = ref(false);
 	const errorMessage = ref("");
 
-	const {
-		data: _criteriaData,
-		execute: DeleteCriteria,
-	} = await useFetch(`/api/event-criteria/${criteriaData.value?.id}`, {
-		method: "DELETE",
-		immediate: false,
-		watch: false,
-	});
+	const { data: _criteriaData, execute: DeleteCriteria } = await useFetch(
+		`/api/event-criteria/${criteriaData.value?.id}`,
+		{
+			method: "DELETE",
+			immediate: false,
+			watch: false,
+		}
+	);
 
 	const OnDeleteCriteria = async () => {
 		isLoading.value = true;
@@ -66,7 +73,7 @@
 				throw new Error(_criteriaData.value?.error);
 			}
 
-			emit("onDelete")
+			emit("onDelete");
 			deleteCriteriaRef.value?.closeDialog();
 		} catch (err) {
 			errorMessage.value = err.message;
@@ -75,7 +82,7 @@
 				errorMessage.value = "";
 			}, 3000);
 		} finally {
-		isLoading.value = false;
+			isLoading.value = false;
 		}
 	};
 </script>

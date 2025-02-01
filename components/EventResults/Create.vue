@@ -74,12 +74,16 @@
             </div>
           </div>
         </div>
+
         <div v-else class="d-flex justify-content-center fs-7 gap-1">
           <div>No criteria available yet.</div>
           <div @click="GoToCriteria" class="nav-link text-primary">
             Create some criteria.
           </div>
         </div>
+		  <div>
+			{{ payload }}
+		  </div>
       </form>
 
       <div v-else class="d-flex justify-content-center fs-7 gap-1">
@@ -146,104 +150,99 @@
 	const isLoading = ref(false);
 	const errorMessage = ref("");
 
+	const scoresInput = ref({})
 	const result = ref({
 		participant_id: 0,
+		event_id: eventData.value?.id,
 		scores: {},
 	});
 
-	const InitializedData = async () => {
+	const LoadData = async () => {
 		isLoading.value = true;
-		try {
-			const { data: _participantData, error: _participantError } = await $fetch(
-				`/api/event-registrations/${eventData.value?.id}`,
-				{
-					method: "GET",
-				}
-			);
-			const { data: _criteriaData, error: _criteriaError } = await $fetch(
-				`/api/event-criteria/${eventData.value?.id}`,
-				{
-					method: "GET",
-				}
-			);
-
-			if (_participantError || _criteriaError) {
-				throw new Error(_participantError || _criteriaError);
+		const { data: _scoreData, error: _scoreError } = await $fetch(
+			`/api/event-results/${eventData.value?.id}`,
+			{
+				method: "GET",
 			}
+		);
+		const { data: _criteriaData, error: _criteriaError } = await $fetch(
+			`/api/event-criteria/${eventData.value?.id}`,
+			{
+				method: "GET",
+			}
+		);
+		const { data: _participants, error: _participantsError } = await $fetch(`/api/event-registrations/${eventData.value?.id}`)
 
-			participantOptions.value = _participantData.filter(
-				(participant) =>
-					participant.registration_status.toLowerCase() === "registered"
-			);
-
-			criteriaList.value = _criteriaData;
-		} catch (err) {
-			console.error(err.message);
-			errorMessage.value = err.message;
+		if (_scoreError || _criteriaError || _participantsError) {
+			errorMessage.value = "Internal server error. Please try again.";
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-		} finally {
-			isLoading.value = false;
 		}
+
+		participantOptions.value = _scoreData
+		criteriaList.value = _criteriaData;
+		participantOptions.value = _participants.filter(
+			(participant) =>
+				participant.registration_status.toLowerCase() === "registered"
+		);
+
+		isLoading.value = false;
 	};
 
-	await InitializedData();
+	onMounted(async () => {
+		await LoadData();
+	})
 
 	const payload = computed(() => {
-		if (result.value.participant_id === 0) {
-			return [];
+		if (result.value?.participant_id === 0) {
+			return null;
 		}
 
-		return Object.entries(result.value?.scores).map(([criteria_id, score]) => ({
+		return {
 			participant_id: result.value?.participant_id,
-			event_id: eventData.value?.id,
-			criteria_id: parseInt(criteria_id, 10),
-			score,
-		}));
+			event_id: result.value?.event_id,
+			scores: Object.entries(result.value?.scores).map(([criteria_id, score]) => ({
+				criteria_id: Number(criteria_id), // Convert key to number if needed
+				score,
+			})),
+		};
 	});
-
-	const { data: _resultData, execute: SaveEvaluation } = await useFetch(
-		`/api/event-results`,
-		{
-			method: "POST",
-			body: payload,
-			immediate: false,
-			watch: false,
-		}
-	);
 
 	const OnSaveEvaluation = async () => {
 		isLoading.value = true;
-		try {
-			if (payload.value.length === 0) {
-				console.warn("No evaluation data to save.");
-				errorMessage.value = "Invalid input. Please try again.";
-				setTimeout(() => {
-					errorMessage.value = "";
-				}, 3000);
-			}
-
-			await SaveEvaluation();
-
-			if (_resultData.value?.error) {
-				throw new Error(_resultData.value.error);
-			}
-
-			emit("onCreate");
-			resetInput();
-			createResultRef.value.closeDialog();
-		} catch (error) {
-			console.error(error);
-
-			errorMessage.value = error.message;
-
+		if (result.value?.scores.length === 0) {
+			console.warn("No evaluation data to save.");
+			errorMessage.value = "Invalid input. Please try again.";
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
-		} finally {
 			isLoading.value = false;
+			return
 		}
+
+		const { error } = await $fetch(
+			`/api/event-results`,
+			{
+				method: "POST",
+				body: payload.value,
+			}
+		);
+
+		if (error) {
+			console.error(error);
+			errorMessage.value = error;
+			setTimeout(() => {
+				errorMessage.value = "";
+			}, 3000);
+			isLoading.value = false;
+			return
+		}
+
+		emit("onCreate");
+		resetInput();
+		createResultRef.value.closeDialog();
+		isLoading.value = false;
 	};
 
 	// A function to reset the `scores` property of `evaluation.value` to an empty object

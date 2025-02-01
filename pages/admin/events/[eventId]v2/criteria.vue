@@ -40,9 +40,10 @@
           :event="EventDetails"
           @onCreate="HandleReload"
         />
-		  <div v-else class="fs-7 text-success">
-			Event criteria has reached its limit (100%.
-		  </div>
+		  <NuxtLink v-else :to="`/admin/events/${eventId}v2/results`"
+      class="bg-success bg-opacity-25 border border-success rounded-3 fs-7 text-success px-3 py-2">
+			Ready to evaluate participants.
+		  </NuxtLink>
       </div>
       <br />
       <div class="table-responsive">

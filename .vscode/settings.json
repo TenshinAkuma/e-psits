@@ -10,7 +10,7 @@
    "editor.tabSize": 3,
    "editor.tabFocusMode": false,
    "[vue]": {
-      "editor.defaultFormatter": "Vue.volar"
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
    },
    "editor.formatOnSave": true,
    "editor.formatOnPaste": false,

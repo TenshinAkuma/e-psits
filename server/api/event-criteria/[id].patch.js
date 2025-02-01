@@ -17,6 +17,11 @@ export default defineEventHandler(async (event) => {
 			throw new Error(criteriaError.message);
 		}
 
+		const { error: DeleteError } = await client
+			.from("event_results")
+			.delete()
+			.eq("event_id", criteriaData.event_id);
+
 		return {
 			success: true,
 			data: criteriaData,
