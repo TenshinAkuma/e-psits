@@ -206,7 +206,7 @@
 			return;
 		}
 		isSaving.value = false;
-		await LoadData();
+		navigateTo(`/admin/participants/${participantId}`)
 	}
 
 	const GetFullname = () =>

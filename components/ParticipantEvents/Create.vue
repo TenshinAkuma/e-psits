@@ -58,7 +58,6 @@
 					</div>
 				</div>
 			</div>
-         {{ newRegistration }}
 		</template>
 
 		<template #Submit>

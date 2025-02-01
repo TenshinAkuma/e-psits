@@ -54,16 +54,16 @@
 			<p class="text-secondary text-center fs-7 lh-sm">
 				No data available. Register to an event.
 			</p>
-			<!-- <EventRulesCreate
-				:event="EventDetails"
-				@onCreate="HandleReload" /> -->
+			<ParticipantEventsCreate
+					:participant="ParticipantData"
+					@onCreate="HandleReload" />
 		</article>
 
 		<article v-else>
 			<br />
 			<div class="d-flex justify-content-between align-items-center">
 				<h4 class="fw-bold">Participant Events</h4>
-				<LazyParticipantEventsCreate
+				<ParticipantEventsCreate
 					:participant="ParticipantData"
 					@onCreate="HandleReload" />
 			</div>
@@ -109,6 +109,9 @@
 									<ParticipantEventsEdit
 										:registration="event"
 										@onEdit="HandleReload" />
+									<ParticipantEventsDelete
+										:registration="event"
+										@onDelete="HandleReload" />
 								</div>
 							</td>
 						</tr>
