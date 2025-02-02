@@ -2,19 +2,18 @@
 	<section class="pb-5">
 		<article class="d-flex justify-content-between align-items-center">
 			<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
-			<EventsCreate />
 		</article>
 
 		<br />
 		<EventsTabs activeTab="settings" />
 		<br />
 
-		<h4 class="fw-bold">Edit Event Details</h4>
-		<br />
-
+		<section class="col-lg-8 col-md-12">
+			<h4 class="fw-bold">Edit Event Details</h4>
+		<hr />
+		
 		<form
 			:id="`create-event-form-${EventDetails.id}`"
-			class="col-lg-8 col-md-12"
 			@submit.prevent="OnSaveEventEdit">
 			<dl class="row g-2">
 				<dt class="col-sm-3">Title</dt>
@@ -159,17 +158,23 @@
 		<br />
 		<br />
 		<br />
-		<article class="col-lg-8 col-md-12">
+		<article>
 			<h4 class="fw-bold">Danger Zone</h4>
-			<br />
+			<hr />
+
 			<div
-				class="bg-danger bg-opacity-10 border border-danger rounded rounded-3 p-3">
+				class="d-flex justify-content-between align-items-center bg-danger bg-opacity-10 border border-danger rounded rounded-3 p-4">
 				<p class="m-0">
 					<b>Delete this event</b> <br />
-					<span>Once this event is deleted, it cannot be undone.</span>
+					<span
+						>Once this event is deleted, it cannot be
+						undone.</span
+					>
 				</p>
+				<EventsDelete :event="EventDetails" />
 			</div>
 		</article>
+		</section>
 	</section>
 </template>
 

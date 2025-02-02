@@ -37,7 +37,7 @@
 				<div
 					v-for="event in EventsList"
 					:key="event.id"
-					class="col-6 p-3">
+					class="col-lg-6 col-md-12 p-3">
 					<div
 						class="row event-card rounded-3 p-3" style="height: 360px;">
 						<div class="col-2 text-center">
