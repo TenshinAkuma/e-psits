@@ -87,8 +87,8 @@
 			route: "institutions",
 		},
 		{
-			selection: "Registration",
-			route: "registration",
+			selection: "Memberships",
+			route: "memberships",
 		},
 		{
 			selection: "Forms",

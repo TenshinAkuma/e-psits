@@ -1,37 +1,34 @@
 <template>
 	<Dialog
-		dialogId="createEvent"
+		dialogId="create-event"
 		dialogTitle="Add New Event"
-		openButtonStyle="btn-primary"
+		openButtonStyle="btn-primary hstack gap-2"
 		ref="createEventRef">
-		<template #ButtonLabel> New Event </template>
+		<template #ButtonLabel>
+			<i class="bi bi-plus-lg" /> Add New Event
+		</template>
+
 		<template #Body>
-			<form @submit.prevent="OnSaveNewEvent" id="createEvent">
+			<form @submit.prevent="CreateEvent" id="create-event">
 				<input
 					type="text"
 					placeholder="Event name"
-					class="form-control mb-3"
+					class="form-control border-secondary mb-3"
 					v-model="eventDetails.title" />
 
-				<div class="d-flex gap-2 mb-2">
-					<div class="w-100">
-						<label class="text-secondary" for="eventDate"
-							>Date</label
-						>
+				<div class="hstack gap-2 mb-2">
+					<div class="w-75">
+						<label class="fw-bold">Date</label>
 						<input
 							type="date"
-							class="form-control"
-							id="eventDate"
+							class="form-control border-secondary"
 							v-model="dateInput" />
 					</div>
-					<div>
-						<label class="text-secondary" for="eventTime"
-							>Time</label
-						>
+					<div class="w-25">
+						<label class="fw-bold">Time</label>
 						<input
 							type="time"
-							class="form-control w-100"
-							id="eventTime"
+							class="form-control border-secondary"
 							v-model="timeInput" />
 					</div>
 				</div>
@@ -41,8 +38,12 @@
 					This event will start on
 					{{ formatDateString(eventDetails.date) }}
 				</p>
+
+				<hr />
+
+				<label class="fw-bold mb-2">Attendance type</label>
 				<select
-					class="form-select mb-3"
+					class="form-select border-secondary mb-2"
 					v-model="eventDetails.type">
 					<option hidden selected disabled value="">
 						Choose an event type
@@ -55,35 +56,46 @@
 					</option>
 				</select>
 
-				<input
-					v-if="eventDetails.type == 'Virtual'"
-					type="text"
-					placeholder="Meeting link"
-					class="form-control mb-3"
-					v-model="eventDetails.link" />
+				<div v-if="eventDetails.type == 'Virtual'" class="mb-3">
+					<input
+						type="text"
+						placeholder="Meeting link"
+						class="form-control border-secondary mb-2"
+						v-model="eventDetails.link" />
+					<p
+						style="font-size: 0.75rem"
+						class="fst-italic text-secondary">
+						This event will be held on a virtual meeting
+						platform.
+					</p>
+				</div>
 
-				<div v-else>
+				<div v-else class="mb-3">
 					<input
 						type="text"
 						placeholder="Venue"
-						class="form-control mb-3"
+						class="form-control border-secondary mb-2"
 						v-model="eventDetails.venue" />
-
 					<input
 						type="text"
 						placeholder="Address"
-						class="form-control mb-3"
+						class="form-control border-secondary mb-2"
 						v-model="eventDetails.address" />
+					<p
+						style="font-size: 0.75rem"
+						class="fst-italic text-secondary">
+						{{`This event will be held at ${eventDetails.venue}, ${eventDetails.address}.`}}
+					</p>
 				</div>
 
 				<select
-					class="form-select mb-3"
+					class="form-select border-secondary mb-3"
 					v-model="eventDetails.category">
 					<option value="" hidden selected>
 						Choose category
 					</option>
 					<option
-						v-for="(category, index) in eventCategories"
+						v-for="(category, index) in EventCategories"
 						:key="index"
 						:value="category">
 						{{ category }}
@@ -91,7 +103,7 @@
 				</select>
 
 				<textarea
-					class="form-control mb-3"
+					class="form-control border-secondary mb-3"
 					placeholder="Description"
 					rows="5"
 					style="max-height: 288px; resize: vertical"
@@ -105,11 +117,11 @@
 		<template #Submit>
 			<button
 				type="submit"
-				form="createEvent"
+				form="create-event"
 				class="d-flex align-items-center btn btn-primary gap-2"
-				:disabled="_eventsStatus === 'pending'">
+				:disabled="isLoading">
 				<span
-					v-if="_eventsStatus === 'pending'"
+					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
 				<span role="status">Create event</span>
@@ -119,11 +131,12 @@
 </template>
 
 <script setup>
-	const createEventRef = ref(null);
-	const events = useEvents();
+	let createEventRef = ref(null);
+	const isLoading = ref(false);
 	const errorMessage = ref("");
+	const { EventCategories } = useInputOptions();
 
-	const eventDetails = reactive({
+	const eventDetails = ref({
 		title: "",
 		date: new Date().toISOString(),
 		type: "",
@@ -137,45 +150,28 @@
 	const dateInput = ref(new Date().toISOString().split("T")[0]);
 	const timeInput = ref(new Date().toTimeString().slice(0, 5));
 
-	const eventCategories = [
-		"Competition",
-		"Workshop",
-		"Career fair",
-		"Keynote speech",
-	];
-
 	const eventTypes = ["Face-to-face", "Virtual"];
 
-	const {
-		data: _eventsData,
-		status: _eventsStatus,
-		execute: SaveNewEvent,
-	} = await useFetch(`/api/events`, {
-		method: "POST",
-		body: eventDetails,
-		immediate: false,
-		watch: false,
-	});
+	async function CreateEvent() {
+		isLoading.value = true;
+		const { data, error } = await $fetch(`/api/events`, {
+			method: "POST",
+			body: eventDetails.value,
+		});
 
-	const OnSaveNewEvent = async () => {
-		try {
-			await SaveNewEvent();
-			if (_eventsData.value?.error) {
-				throw new Error(_eventsData.value?.error);
-			}
+		if (error) {
+			console.log("Error loading events: ", error);
 
-			events.value?.push(_eventsData.value?.data);
-			navigateTo(`/admin/events/${_eventsData.value?.data.id}`)
-			createEventRef.value?.closeDialog();
-		} catch (err) {
-			console.log("Failed adding new event", err.value);
-
-			errorMessage.value = err.message;
+			errorMessage.value = error;
 			setTimeout(() => {
 				errorMessage.value = "";
 			}, 3000);
 		}
-	};
+
+		isLoading.value = false;
+		navigateTo(`/admin/events/${data.id}v2`);
+		createEventRef.value?.closeDialog();
+	}
 
 	// Watchers to sync changes to dateInput and timeInput with eventDetails.date
 	watch([dateInput, timeInput], ([newDate, newTime]) => {

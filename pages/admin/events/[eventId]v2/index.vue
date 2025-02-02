@@ -11,16 +11,16 @@
 				<dt class="col-sm-2">Schedule</dt>
 				<dd class="col-sm-10">
 					<p>
-						{{ formatDate(EventDetails.date) }}
+						{{ formatDate(EventDetails.date) || "No data provided." }}
 						<br />
-						{{ formatTime(EventDetails.date) }}
+						{{ formatTime(EventDetails.date) || "No time provided"}}
 					</p>
 				</dd>
 
 				<dt class="col-sm-2">Category</dt>
 				<dd class="col-sm-10">
 					<p>
-						{{ EventDetails.category }}
+						{{ EventDetails.category || "No category available."}}
 					</p>
 				</dd>
 
@@ -52,31 +52,30 @@
 					v-if="EventDetails.type.toLowerCase() == 'in-person'"
 					class="col-sm-10">
 					<p>
-						{{ EventDetails.venue }} <br />
-						{{ EventDetails.address }}
+						{{ EventDetails.venue || "No data provided."}} <br />
+						{{ EventDetails.address || "No data provided."}}
 					</p>
 				</dd>
 
 				<dt class="col-sm-2">Registration period</dt>
-				<dd
-					v-if="EventDetails.type.toLowerCase() == 'in-person'"
-					class="col-sm-10">
-					<p>
-						{{ formatDate(EventDetails.registration_start) }}
+				<dd class="col-sm-10">
+					<p v-if="EventDetails.type.toLowerCase() == 'in-person'">
+						{{ formatDate(EventDetails.registration_start)}}
 						<i class="bi bi-arrow-right mx-2" />
-						{{ formatDate(EventDetails.registration_end) }}
+						{{ formatDate(EventDetails.registration_end)}}
 					</p>
+					<p v-else>No data provided.</p>
 				</dd>
 
 				<dt class="col-sm-2">Description</dt>
 				<dd class="col-sm-10">
-					{{ EventDetails.description }}
+					{{ EventDetails.description || "No data provided."}}
 				</dd>
 			</dl>
 			<br />
 			<br />
 			<NuxtLink
-				:to="`/admin/events/${eventId}v2/edit`"
+				:to="`/admin/events/${eventId}v2/settings`"
 				class="btn btn-success px-3">
 				<i class="bi bi-pencil fs-7 me-3" />
 				Edit details

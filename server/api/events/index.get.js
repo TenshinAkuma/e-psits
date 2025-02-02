@@ -3,26 +3,17 @@ import { serverSupabaseClient } from "#supabase/server";
 export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 
-	try {
-		const { data: eventsData, error: eventsError } = await client
-			.from("events")
-			.select()
-			.order("date");
+	const { data, error } = await client.from("events").select().order("date");
 
-		if (eventsError) {
-			throw new Error(eventsError.message);
-		}
-
+	if (error) {
+		console.error("Error fetching all events: ", error.message);
 		return {
-			success: true,
-			data: eventsData,
-		};
-	} catch (error) {
-		console.error("Error while fetching events", error.message);
-
-		return {
-			success: false,
-			error: error.message,
+			data: null,
+			error,
 		};
 	}
+
+	return {
+		data: data,
+	};
 });

@@ -1,31 +1,25 @@
 import { serverSupabaseClient } from "#supabase/server";
 
 export default defineEventHandler(async (event) => {
-	
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
-	try {
-		const { data: eventsData, error: eventsError } = await client
-			.from("events")
-			.insert(body)
-			.select("*")
-			.single();
+	const { data, error } = await client
+		.from("events")
+		.insert(body)
+		.select("*")
+		.maybeSingle();
 
-		if (eventsError) {
-			throw new Error(eventsError.message);
-		}
+	if (error) {
+		console.error("Error creating event: ", error.message);
 
 		return {
-			success: true,
-			data: eventsData,
-		};
-	} catch (error) {
-		console.error("Error occurred while saving new event", error.message);
-
-		return {
-			success: false,
+			data: null,
 			error: error.message,
 		};
 	}
+
+	return {
+		data: data,
+	};
 });

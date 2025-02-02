@@ -32,12 +32,12 @@
 
 		<article
 			v-else
-			class="row g-2 overflow-y-auto pb-3"
+			class="row overflow-y-auto pb-3"
 			style="height: 720px">
 			<div
 				v-for="institution in InstitutionsData"
 				:key="institution.id"
-				class="col-6 p-1">
+				class="col-6 p-2">
 				<div
 					class="institution-card d-flex flex-column justify-content-between p-4 rounded-3"
 					style="height: 240px">
