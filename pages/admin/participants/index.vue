@@ -62,7 +62,6 @@
 			class="d-flex flex-column justify-content-center align-items-center"
 			style="height: 576px">
 			<p class="fs-7">No Participants.</p>
-			<EventsCreateModal />
 		</div>
 	</div>
 </template>

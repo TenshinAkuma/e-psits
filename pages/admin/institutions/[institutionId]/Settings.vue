@@ -20,6 +20,7 @@
 
 		<h4 class="fw-bold">Edit Institution Info</h4>
 		<br />
+		
 		<form
 			:id="`institution-edit-form-${InstitutionData.id}`"
 			class="col-lg-8 col-md-12"

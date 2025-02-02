@@ -2,67 +2,49 @@
 	<Dialog
 		:dialogId="`delete-event-${eventId}`"
 		:dialogTitle="`Delete ${eventData.title}`"
-		openButtonStyle="btn-danger hstack gap-3">
+		openButtonStyle="btn-danger hstack gap-3"
+		ref="deleteEventRef">
 		<template #ButtonLabel>
 			<i class="bi bi-trash" /> Delete this event
 		</template>
 
-		<div
-			class="modal fade"
-			id="deleteEvent"
-			tabindex="-1"
-			aria-labelledby="deleteEventModal"
-			aria-hidden="true"
-			ref="deleteEventRef">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title fw-bold">DELETE EVENT</h5>
-						<button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
+		<template #Body>
+			<p class="m-0">
+				<strong>This action cannot be undone</strong> <br />
+				<span class="text-secondary">
+					Are you sure to remove this guideline?
+				</span>
+			</p>
+			<p class="fs-7 text-danger text-center my-2">
+				{{ errMsg }}
+			</p>
+		</template>
 
-					<div class="modal-body">
-						<p class="text-secondary">
-							This will permanently delete this event.
-						</p>
-					</div>
-
-					<div class="modal-footer">
-						<button
-							class="btn btn-outline-secondary border-0"
-							@click="closeDeleteModal">
-							Cancel
-						</button>
-						<button
-							type="button"
-							class="btn btn-danger d-flex align-items-center gap-2"
-							:disabled="status === 'pending'"
-							@click="DeleteEvent">
-							<span
-								v-if="status === 'pending'"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true" />
-							<span role="status">Delete</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<template #Submit>
+			<button
+				@click="DeleteEvent"
+				type="button"
+				class="btn btn-danger hstack gap-3"
+				:disabled="isLoading">
+				<span
+					v-if="isLoading"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+					<i v-else class="bi bi-trash-fill"></i>
+					<span role="status">Confirm delete</span>
+			</button>
+		</template>
 	</Dialog>
 </template>
 
 <script setup>
 	let deleteEventRef = ref(null);
 
-	const props = ({
+	const props = defineProps({
 		event: {
 			type: Object,
 			required: true,
-		}
+		},
 	})
 
 	const eventData = toRef(props, "event")

@@ -86,7 +86,7 @@
 									{{ event.address }}
 								</p>
 								<p
-									class="fs-7 text-secondary mb-0">
+									class="fs-7 text-secondary mb-0" style="max-width: 56ch;">
 									{{ event.description }}
 								</p>
 							</div>

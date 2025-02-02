@@ -49,7 +49,7 @@
 						Choose an event type
 					</option>
 					<option
-						v-for="(type, index) in eventTypes"
+						v-for="(type, index) in EventTypes"
 						:key="index"
 						:value="type">
 						{{ type }}
@@ -63,8 +63,7 @@
 						class="form-control border-secondary mb-2"
 						v-model="eventDetails.link" />
 					<p
-						style="font-size: 0.75rem"
-						class="fst-italic text-secondary">
+						class="fs-7 fst-italic text-secondary">
 						This event will be held on a virtual meeting
 						platform.
 					</p>
@@ -82,8 +81,7 @@
 						class="form-control border-secondary mb-2"
 						v-model="eventDetails.address" />
 					<p
-						style="font-size: 0.75rem"
-						class="fst-italic text-secondary">
+						class="fst-italic text-secondary fs-7">
 						{{`This event will be held at ${eventDetails.venue}, ${eventDetails.address}.`}}
 					</p>
 				</div>
@@ -103,11 +101,16 @@
 				</select>
 
 				<textarea
-					class="form-control border-secondary mb-3"
+					class="form-control border-secondary mb-2"
 					placeholder="Description"
 					rows="5"
+					maxlength="400"
 					style="max-height: 288px; resize: vertical"
 					v-model="eventDetails.description" />
+					<p
+						class="fs-7 text-secondary">
+						Create a brief description about the event. Limit of 400 characters.
+					</p>
 			</form>
 			<p class="fs-7 text-danger text-center m-0">
 				{{ errorMessage }}
@@ -134,7 +137,7 @@
 	let createEventRef = ref(null);
 	const isLoading = ref(false);
 	const errorMessage = ref("");
-	const { EventCategories } = useInputOptions();
+	const { EventCategories, EventTypes } = useInputOptions();
 
 	const eventDetails = ref({
 		title: "",
@@ -149,8 +152,6 @@
 
 	const dateInput = ref(new Date().toISOString().split("T")[0]);
 	const timeInput = ref(new Date().toTimeString().slice(0, 5));
-
-	const eventTypes = ["Face-to-face", "Virtual"];
 
 	async function CreateEvent() {
 		isLoading.value = true;
