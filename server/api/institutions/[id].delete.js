@@ -4,14 +4,21 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 
-	try {
-		const { data, error } = await client
-			.from("institutions")
-			.delete()
-			.eq("id", institutionID)
-			.single();
-	} catch {
-		console.error("Error fetching all institutions: ");
-		return {};
+	const { data, error } = await client
+		.from("institutions")
+		.delete()
+		.eq("id", id);
+
+	if (error) {
+		console.error("Error deleting institutions: ", error.message);
+		return {
+			error: error.message,
+			data: null,
+		};
 	}
+
+	return {
+		data,
+		error: null,
+	};
 });

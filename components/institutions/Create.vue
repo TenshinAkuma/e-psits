@@ -2,7 +2,8 @@
 	<Dialog
 		dialogId="create-institution"
 		dialogTitle="Add New Institution"
-		openButtonStyle="btn-primary hstack gap-3">
+		openButtonStyle="btn-primary hstack gap-3"
+		ref="createInstitutionRef">
 		<template #ButtonLabel>
 			<i class="bi bi-plus-lg" /> Add New Institution
 		</template>
@@ -11,57 +12,72 @@
 			<form
 				@submit.prevent="OnAddNewInstitution"
 				id="create-institution-form">
-				<p class="fw-bold text-secondary">
-					Institution Information
-				</p>
+				<p class="fw-bold mb-1">Institution Information</p>
 				<input
 					type="text"
 					placeholder="Name"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newInstitution.name"
+					class="form-control border-secondary mb-2"
+					v-model="newInstitution.institution.name"
 					required />
 				<input
 					type="text"
 					placeholder="Email"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newInstitution.email"
+					class="form-control border-secondary mb-2"
+					v-model="newInstitution.institution.email"
 					required />
 				<input
 					type="text"
 					placeholder="Address"
-					class="form-control border-secondary text-dark mb-4"
-					v-model="newInstitution.address"
+					class="form-control border-secondary mb-4"
+					v-model="newInstitution.institution.address"
 					required />
 
 				<hr />
 
-				<p class="fw-bold text-secondary">
-					Coordinator Information
-				</p>
-				<input
-					type="text"
-					placeholder="Name"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newCoordinator.name"
-					required />
+				<p class="fw-bold mb-1">Coordinator Information</p>
+				<div class="d-flex gap-2 mb-2">
+					<input
+						type="text"
+						placeholder="First name"
+						class="form-control border-secondary w-50"
+						v-model="newInstitution.coordinator.first_name"
+						required />
+					<input
+						type="text"
+						placeholder="Last name"
+						class="form-control border-secondary w-50"
+						v-model="newInstitution.coordinator.last_name"
+						required />
+				</div>
 				<input
 					type="text"
 					placeholder="Position"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newCoordinator.position"
+					class="form-control border-secondary mb-2"
+					v-model="newInstitution.coordinator.position"
 					required />
 				<input
 					type="text"
 					placeholder="Email"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newCoordinator.email"
+					class="form-control border-secondary mb-2"
+					v-model="newInstitution.coordinator.email"
 					required />
-				<input
-					type="text"
-					placeholder="Contact number"
-					class="form-control border-secondary text-dark mb-4"
-					v-model="newCoordinator.contact_number"
-					required />
+				<div class="d-flex gap-2 mb-4">
+					<input
+						type="text"
+						placeholder="Contact number"
+						class="form-control border-secondary w-75"
+						v-model="
+							newInstitution.coordinator.contact_number
+						"
+						required />
+
+					<select
+						class="form-select border-secondary w-25"
+						v-model="newInstitution.coordinator.sex">
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
+					</select>
+				</div>
 			</form>
 		</template>
 
@@ -94,10 +110,11 @@
 			coordinator_id: Int8Array,
 		},
 		coordinator: {
-			name: "",
-			position: "",
+			first_name: "",
+			last_name: "",
 			email: "",
 			contact_number: "",
+			sex: "Male",
 		},
 	});
 
@@ -105,7 +122,7 @@
 		isLoading.value = true;
 		const { data, error } = await $fetch(`/api/institutions`, {
 			method: "POST",
-			body: newInstitution,
+			body: newInstitution.value,
 		});
 
 		if (error) {

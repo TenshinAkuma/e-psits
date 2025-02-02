@@ -4,12 +4,14 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
+	console.log("Body: ", body);
 	const { data: coordinator, error: coordinatorError } = await client
 		.from("coordinators")
 		.insert(body.coordinator)
 		.select()
 		.single();
 
+	console.log("Coordinator: ", coordinator);
 	if (coordinatorError) {
 		console.error(
 			"Error inserting institution coordinator: ",
@@ -23,6 +25,8 @@ export default defineEventHandler(async (event) => {
 	}
 
 	body.institution.coordinator_id = coordinator.id;
+
+	console.log("Institution: ", body.institution);
 
 	const { data: institution, error: institutionError } = await client
 		.from("institutions")
