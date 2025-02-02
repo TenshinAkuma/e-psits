@@ -4,10 +4,7 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 
-	const { data, error } = await client
-		.from("institutions")
-		.delete()
-		.eq("id", id);
+	const { error } = await client.from("coordinators").delete().eq("id", id);
 
 	if (error) {
 		console.error("Error deleting institutions: ", error.message);
@@ -18,7 +15,7 @@ export default defineEventHandler(async (event) => {
 	}
 
 	return {
-		data,
+		data: "Participant deleted successfully.",
 		error: null,
 	};
 });

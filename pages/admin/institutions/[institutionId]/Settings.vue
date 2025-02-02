@@ -138,9 +138,23 @@
 
 			<br />
 			<br />
+			<br />
+			<article>
+				<h4 class="fw-bold">Danger Zone</h4>
+				<hr />
 
-			<h4 class="fw-bold">Danger zone</h4>
-			<hr />
+				<div
+					class="d-flex justify-content-between align-items-center bg-danger bg-opacity-10 border border-danger rounded rounded-3 p-4">
+					<p class="m-0">
+						<b>Delete this institution</b> <br />
+						<span
+							>Once this institution is deleted, it cannot be
+							undone.</span
+						>
+					</p>
+					<InstitutionsDelete :institution="InstitutionData" />
+				</div>
+			</article>
 		</section>
 	</section>
 </template>

@@ -1,104 +1,78 @@
 <template>
-	<div>
-		<button
-			type="button"
-			data-bs-toggle="modal"
-			data-bs-target="#deleteInstitution"
-			class="btn btn-sm btn-outline-danger">
-			<i class="bi bi-trash" />
-		</button>
+	<Dialog
+		:dialogId="`delete-institution-${InstitutionData.id}`"
+		:dialogTitle="`Delete ${InstitutionData.name}`"
+		openButtonStyle="btn-danger hstack gap-3"
+		ref="deleteInstitutionRef">
+		<template #ButtonLabel>
+			<i class="bi bi-trash" /> Delete this institution
+		</template>
 
-		<div
-			class="modal fade"
-			id="deleteInstitution"
-			tabindex="-1"
-			aria-labelledby="deleteInstitutionModal"
-			aria-hidden="true"
-			ref="deleteInstitutionModalRef">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title fw-bold">
-							Remove Institution
-						</h5>
-						<button
-							type="button"
-							class="btn-close"
-							data-bs-dismiss="modal"
-							aria-label="Close" />
-					</div>
+		<template #Body>
+			<p class="m-0">
+				<strong>This action cannot be undone</strong> <br />
+				<span class="text-secondary">
+					Are you sure to delete this institution?
+				</span>
+			</p>
+			<p class="fs-7 text-danger text-center my-2">
+				{{ errMsg }}
+			</p>
+		</template>
 
-					<div class="modal-body">
-						<p class="text-secondary">
-							This action cannot be undone. Are you sure to
-							delete this institution?
-						</p>
-					</div>
-
-					<div class="modal-footer">
-						<button
-							class="btn btn-outline-secondary border-0"
-							@click="closeDeleteModal">
-							Cancel
-						</button>
-						<button
-							type="button"
-							class="btn btn-danger d-flex align-items-center gap-2"
-							:disabled="status === 'pending'"
-							@click="OnDeleteInstitution">
-							<span
-								v-if="status === 'pending'"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true" />
-							<span role="status">Delete</span>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+		<template #Submit>
+			<button
+				@click="DeleteInstitution"
+				type="button"
+				class="btn btn-danger hstack gap-3"
+				:disabled="isLoading">
+				<span
+					v-if="isLoading"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+				<i v-else class="bi bi-trash-fill"></i>
+				<span role="status">Confirm delete</span>
+			</button>
+		</template>
+	</Dialog>
 </template>
 
 <script setup>
-	const institutionID = useRoute().params.institutionID;
-	const deleteInstitutionModalRef = ref(null);
-	let deleteInstitutionModal;
+	let deleteInstitutionRef = ref(null);
 
-	const { status, error, execute } = await useFetch(
-		`/api/institutions/${institutionID}`,
-		{
-			headers: useRequestHeaders(["cookie"]),
-			method: "DELETE",
-			immediate: false,
-			watch: false,
-		}
-	);
-
-	const OnDeleteInstitution = async () => {
-		try {
-			await execute();
-			if (status.value == "success") {
-				closeDeleteModal();
-				navigateTo("/admin/institutions");
-			}
-		} catch {
-			console.log("Failed deleting participant", error.message);
-		}
-	};
-
-	const closeDeleteModal = () => {
-		if (deleteInstitutionModal) {
-			deleteInstitutionModal.hide();
-		}
-	};
-
-	onMounted(() => {
-		if (deleteInstitutionModalRef.value) {
-			deleteInstitutionModal = new bootstrap.Modal(
-				deleteInstitutionModalRef.value
-			);
-		}
+	const props = defineProps({
+		institution: {
+			type: Object,
+			required: true,
+		},
 	});
-</script>
 
-<style></style>
+	const InstitutionData = toRef(props, "institution");
+	const isLoading = ref(false);
+	const errMsg = ref("");
+
+	async function DeleteInstitution() {
+		isLoading.value = true;
+		const { data, error } = await $fetch(
+			`/api/institutions/${InstitutionData.value?.coordinator_id}`,
+			{
+				method: "DELETE",
+			}
+		);
+
+		if (error) {
+			console.error("Error deleting institution: ", error);
+			errMsg.value = "Internal server error. Please try again later.";
+			setTimeout(() => {
+				errMsg.value = "";
+			}, 3000);
+		}
+
+		isLoading.value = false;
+
+		if (data) {
+			navigateTo(`/admin/institutions`);
+			deleteInstitutionRef.value?.closeDialog();
+		}
+	}
+</script>
