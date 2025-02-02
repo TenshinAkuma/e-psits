@@ -2,7 +2,7 @@
 	<article
 		v-if="isLoading"
 		class="d-flex flex-column justify-content-center align-items-center"
-		style="height: 720px">
+		style="height: 576px">
 		<p>Loading institution...</p>
 		<div class="spinner-border" role="status">
 			<span class="visually-hidden">Loading...</span>
@@ -18,125 +18,130 @@
 		<InstitutionsTabs activeTab="settings" />
 		<br />
 
-		<h4 class="fw-bold">Edit Institution Info</h4>
-		<br />
-		
-		<form
-			:id="`institution-edit-form-${InstitutionData.id}`"
-			class="col-lg-8 col-md-12"
-			@submit.prevent="SaveInstitutionEdit">
-			<dl class="row gy-2">
-				<dt class="col-sm-3">Name</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="institutionEdit.name" />
-				</dd>
+		<section class="col-lg-8 col-md-12">
+			<h4 class="fw-bold">Edit Institution Info</h4>
+			<hr />
 
-				<dt class="col-sm-3">Address</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="institutionEdit.address" />
-				</dd>
+			<form
+				:id="`institution-edit-form-${InstitutionData.id}`"
+				@submit.prevent="SaveInstitutionEdit">
+				<dl class="row g-2">
+					<dt class="col-sm-3">Name</dt>
+					<dd class="col-sm-9">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="institutionEdit.name" />
+					</dd>
 
-				<dt class="col-sm-3">Email</dt>
-				<dd class="col-sm-9">
-					<input
-						type="email"
-						class="form-control border-secondary"
-						v-model="institutionEdit.email" />
-				</dd>
+					<dt class="col-sm-3">Address</dt>
+					<dd class="col-sm-9">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="institutionEdit.address" />
+					</dd>
 
-				<dt class="col-sm-3">Telephone num.</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="institutionEdit.contact_number" />
-				</dd>
-			</dl>
-			<div class="d-flex justify-content-end">
-				<button
-					type="submit"
-					:form="`institution-edit-form-${InstitutionData.id}`"
-					class="d-flex align-items-center btn btn-success gap-3 px-3"
-					:disabled="isSavingInstitution">
-					<span
-						v-if="isSavingInstitution"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true"></span>
-					<span role="status">Save edit</span>
-				</button>
-			</div>
-		</form>
+					<dt class="col-sm-3">Email</dt>
+					<dd class="col-sm-9">
+						<input
+							type="email"
+							class="form-control border-secondary"
+							v-model="institutionEdit.email" />
+					</dd>
 
-		<br />
-		<hr class="col-lg-8" />
-		<br />
+					<dt class="col-sm-3">Telephone num.</dt>
+					<dd class="col-sm-9">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="institutionEdit.contact_number" />
+					</dd>
+				</dl>
+				<div class="d-flex justify-content-end">
+					<button
+						type="submit"
+						:form="`institution-edit-form-${InstitutionData.id}`"
+						class="d-flex align-items-center btn btn-success gap-3 px-3"
+						:disabled="isSavingInstitution">
+						<span
+							v-if="isSavingInstitution"
+							class="spinner-border spinner-border-sm"
+							aria-hidden="true"></span>
+						<span role="status">Save edit</span>
+					</button>
+				</div>
+			</form>
 
-		<h4 class="fw-bold">Edit Coordinator Info</h4>
-		<br />
+			<br />
+			<br />
 
-		<form
-			:id="`coordinator-edit-form-${InstitutionData.coordinator_id}`"
-			@submit.prevent="SaveCoordinatorEdit"
-			class="col-lg-8 col-md-12">
-			<dl class="row gy-2">
-				<dt class="col-sm-3">Name</dt>
-				<dd class="col-sm-5">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="coordinatorEdit.first_name" />
-				</dd>
-				<dd class="col-sm-4">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="coordinatorEdit.last_name" />
-				</dd>
+			<h4 class="fw-bold">Edit Coordinator Info</h4>
+			<hr />
 
-				<dt class="col-sm-3">Position</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="coordinatorEdit.position" />
-				</dd>
+			<form
+				:id="`coordinator-edit-form-${InstitutionData.coordinator_id}`"
+				@submit.prevent="SaveCoordinatorEdit">
+				<dl class="row g-2">
+					<dt class="col-sm-3">Name</dt>
+					<dd class="col-sm-5">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="coordinatorEdit.first_name" />
+					</dd>
+					<dd class="col-sm-4">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="coordinatorEdit.last_name" />
+					</dd>
 
-				<dt class="col-sm-3">Email</dt>
-				<dd class="col-sm-9">
-					<input
-						type="email"
-						class="form-control border-secondary"
-						v-model="coordinatorEdit.email" />
-				</dd>
+					<dt class="col-sm-3">Position</dt>
+					<dd class="col-sm-9">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="coordinatorEdit.position" />
+					</dd>
 
-				<dt class="col-sm-3">Contact num.</dt>
-				<dd class="col-sm-9">
-					<input
-						type="text"
-						class="form-control border-secondary"
-						v-model="coordinatorEdit.contact_number" />
-				</dd>
-			</dl>
-			<div class="d-flex justify-content-end">
-				<button
-					type="submit"
-					:form="`coordinator-edit-form-${InstitutionData.coordinator_id}`"
-					class="d-flex align-items-center btn btn-success gap-3 px-3"
-					:disabled="isSavingCoordinator">
-					<span
-						v-if="isSavingCoordinator"
-						class="spinner-border spinner-border-sm"
-						aria-hidden="true"></span>
-					<span role="status">Save edit</span>
-				</button>
-			</div>
-		</form>
+					<dt class="col-sm-3">Email</dt>
+					<dd class="col-sm-9">
+						<input
+							type="email"
+							class="form-control border-secondary"
+							v-model="coordinatorEdit.email" />
+					</dd>
+
+					<dt class="col-sm-3">Contact num.</dt>
+					<dd class="col-sm-9">
+						<input
+							type="text"
+							class="form-control border-secondary"
+							v-model="coordinatorEdit.contact_number" />
+					</dd>
+				</dl>
+				<div class="d-flex justify-content-end">
+					<button
+						type="submit"
+						:form="`coordinator-edit-form-${InstitutionData.coordinator_id}`"
+						class="d-flex align-items-center btn btn-success gap-3 px-3"
+						:disabled="isSavingCoordinator">
+						<span
+							v-if="isSavingCoordinator"
+							class="spinner-border spinner-border-sm"
+							aria-hidden="true"></span>
+						<span role="status">Save edit</span>
+					</button>
+				</div>
+			</form>
+
+			<br />
+			<br />
+
+			<h4 class="fw-bold">Danger zone</h4>
+			<hr />
+		</section>
 	</section>
 </template>
 
@@ -147,7 +152,7 @@
 
 	const institutionId = useRoute().params.institutionId;
 	const InstitutionData = ref({});
-	const isLoading = ref(false)
+	const isLoading = ref(false);
 	const isSavingInstitution = ref(false);
 	const isSavingCoordinator = ref(false);
 	const errorMsg = ref("");
@@ -207,7 +212,7 @@
 			}, 3000);
 		}
 		await LoadData();
-		isSavingInstitution.value = false
+		isSavingInstitution.value = false;
 	}
 
 	async function SaveCoordinatorEdit() {
@@ -227,7 +232,7 @@
 			}, 3000);
 		}
 		await LoadData();
-		isSavingCoordinator.value = false
+		isSavingCoordinator.value = false;
 	}
 
 	const GetFullname = () =>
