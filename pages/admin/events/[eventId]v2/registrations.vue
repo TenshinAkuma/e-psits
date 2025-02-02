@@ -68,8 +68,7 @@
             </td>
             <td>
               <NuxtLink
-                :to="`/admin/institutions/${registration.participants.institution_id}`"
-              >
+                :to="`/admin/institutions/${registration.participants.institution_id}`">
                 {{ registration.participants.institutions.name }}
               </NuxtLink>
             </td>

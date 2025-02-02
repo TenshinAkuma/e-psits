@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 			await client
 				.from("event_registrations")
 				.select(
-					"*, participants(first_name, last_name, email, institutions(name)), events(title))"
+					"*, participants(first_name, last_name, email, institution_id, institutions(name)), events(title))"
 				)
 				.eq("event_id", id);
 

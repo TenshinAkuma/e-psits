@@ -11,6 +11,14 @@
 		<li class="nav-item">
 			<NuxtLink
 				class="nav-link"
+				:class="{ active: isActive('participants') }"
+				:to="`/admin/institutions/${institutionId}/participants`"
+				>Participants</NuxtLink
+			>
+		</li>
+		<li class="nav-item">
+			<NuxtLink
+				class="nav-link"
 				:class="{ active: isActive('settings') }"
 				:to="`/admin/institutions/${institutionId}/settings`"
 				>Settings</NuxtLink

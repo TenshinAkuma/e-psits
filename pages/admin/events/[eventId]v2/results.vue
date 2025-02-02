@@ -32,7 +32,7 @@
 		</div>
 
 		<div
-			v-else-if="EventResults.length <= 0 || EventResults == null"
+			v-else-if="EventResults == null || EventResults.length <= 0"
 			class="d-flex flex-column justify-content-center align-items-center"
 			style="height: 432px">
 			<h4 class="fw-bold m-0">Event Results</h4>

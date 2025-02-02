@@ -4,25 +4,22 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const { id } = event.context.params;
 
-	console.log(id);
 	const { data, error } = await client
 		.from("participants")
-		.select(
-			"*, event_registrations(id, registration_status, event_id, events(title))"
-		)
-		.eq("institution_id", id)
-		.order("first_name", { ascending: true });
+		.delete()
+		.eq("id", id);
 
 	if (error) {
-		console.error("Error fetching participants: ", error.message);
-
+		console.error(
+			"Error deleting institution participant: ",
+			error.message
+		);
 		return {
-			data: null,
-			error: error.message,
+			error,
 		};
 	}
 
 	return {
-		data,
+		data: "Participant deleted.",
 	};
 });
