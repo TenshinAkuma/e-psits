@@ -64,14 +64,6 @@
 				{{ InstitutionData.coordinators.contact_number }}
 			</dd>
 		</dl>
-
-		<br />
-		<br />
-		<br />
-		<NuxtLink class="btn btn-success px-3">
-			<i class="bi bi-pencil fs-7 me-3" />
-			Edit details
-		</NuxtLink>
 	</section>
 </template>
 

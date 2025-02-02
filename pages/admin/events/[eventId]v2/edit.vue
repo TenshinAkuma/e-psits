@@ -166,7 +166,7 @@
 						<button
 							type="submit"
 							class="d-flex align-items-center btn btn-success gap-3 px-3"
-							:disabled="_eventEditStatus === 'pending'">
+							:disabled="isLoading">
 							<span
 								v-if="isLoading"
 								class="spinner-border spinner-border-sm"

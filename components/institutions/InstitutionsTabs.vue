@@ -8,6 +8,14 @@
 				>Details</NuxtLink
 			>
 		</li>
+		<li class="nav-item">
+			<NuxtLink
+				class="nav-link"
+				:class="{ active: isActive('settings') }"
+				:to="`/admin/institutions/${institutionId}/settings`"
+				>Settings</NuxtLink
+			>
+		</li>
 	</ul>
 </template>
 
