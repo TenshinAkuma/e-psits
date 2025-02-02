@@ -16,6 +16,14 @@
 				>Events</NuxtLink
 			>
 		</li>
+      <li class="nav-item">
+			<NuxtLink
+				class="nav-link"
+				:class="{ active: isActive('settings') }"
+				:to="`/admin/participants/${participantId}/settings`"
+				>Settings</NuxtLink
+			>
+		</li>
 	</ul>
 </template>
 

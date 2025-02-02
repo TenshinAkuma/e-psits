@@ -1,18 +1,19 @@
 <template>
 	<Dialog
-		:dialogId="`delete-event-${eventId}`"
-		:dialogTitle="`Delete ${eventData.title}`"
+		:dialogId="`delete-participant-${ParticipantData.id}`"
+		:dialogTitle="`Delete ${Fullname()}'s data.'`"
 		openButtonStyle="btn-danger hstack gap-3"
-		ref="deleteEventRef">
+		ref="deleteParticipantRef">
+		
 		<template #ButtonLabel>
-			<i class="bi bi-trash" /> Delete this event
+			<i class="bi bi-trash" /> Delete this participant
 		</template>
 
 		<template #Body>
 			<p class="m-0">
 				<strong>This action cannot be undone</strong> <br />
 				<span class="text-secondary">
-					Are you sure to delete this event?
+					Are you sure to delete this participant?
 				</span>
 			</p>
 			<p class="fs-7 text-danger text-center my-2">
@@ -22,7 +23,7 @@
 
 		<template #Submit>
 			<button
-				@click="DeleteEvent"
+				@click="DeleteParticipant"
 				type="button"
 				class="btn btn-danger hstack gap-3"
 				:disabled="isLoading">
@@ -38,37 +39,39 @@
 </template>
 
 <script setup>
-	let deleteEventRef = ref(null);
-
+	let deleteParticipantRef = ref(null);
 	const props = defineProps({
-		event: {
+		participant: {
 			type: Object,
 			required: true,
 		},
-	})
+	});
 
-	const eventData = toRef(props, "event")
-	const eventId = useRoute().params.eventId;
+	const ParticipantData = toRef(props, "participant");
 	const isLoading = ref(false);
 	const errMsg = ref("");
 
-	async function DeleteEvent() {
+	async function DeleteParticipant() {
 		isLoading.value = true;
-		const { error } = await $fetch(`/api/events/${eventId}`, {
-			method: "DELETE",
-		});
+		const { error } = await $fetch(
+			`/api/participants/${ParticipantData.value?.id}`,
+			{
+				method: "DELETE",
+			}
+		);
 
 		if (error) {
+			console.error("Error deleting participant: ", error);
 			errMsg.value = error;
 			setTimeout(() => {
 				errMsg.value = "";
 			}, 3000);
 		}
 
-		isLoading.value = false;
-		navigateTo(`/admin/events`);
-		deleteEventRef.value?.closeDialog();
+		navigateTo(`/admin/participants`);
+		deleteParticipantRef.value?.closeDialog();
 	}
-</script>
 
-<style></style>
+	const Fullname = () =>
+		`${ParticipantData.value?.first_name} ${ParticipantData.value?.last_name}`;
+</script>

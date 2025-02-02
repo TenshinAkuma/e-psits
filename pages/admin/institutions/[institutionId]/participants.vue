@@ -93,7 +93,6 @@
 						</tr>
 					</tbody>
 				</table>
-				{{ ParticipantsList }}
 			</div>
 		</article>
 	</section>

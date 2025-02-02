@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
 		.select()
 		.maybeSingle();
 
-	if (eventError) {
+	if (error) {
 		console.error("Error fetching event: ", error.message);
 		return {
 			data: null,

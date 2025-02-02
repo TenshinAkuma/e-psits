@@ -1,17 +1,17 @@
 <template>
 	<Dialog
-		dialogId="createParticipant"
+		dialogId="create-participant"
 		dialogTitle="Add New Participant"
 		openButtonStyle="btn-primary"
-		ref="createParticipantModalRef">
+		ref="createParticipantRef">
 		<template #ButtonLabel>
 			<i class="bi bi-plus-lg" /> Add new participant
 		</template>
 
 		<template #Body>
 			<form
-				@submit.prevent="OnSaveNewParticipant"
-				id="createEvent"
+				@submit.prevent="SaveParticipant"
+				id="create-participant-form"
 				ref="createForm">
 				<p class="fw-bold mb-2">Personal Information</p>
 				<div class="hstack gap-2 mb-3">
@@ -47,8 +47,8 @@
 						class="form-select border-secondary w-25"
 						v-model="newParticipant.sex">
 						<option value="" selected hidden>Sex</option>
-						<option value="male">Male</option>
-						<option value="female">Female</option>
+						<option value="Male">Male</option>
+						<option value="Female">Female</option>
 					</select>
 				</div>
 
@@ -80,7 +80,9 @@
 					class="select form-select border-secondary mb-3"
 					v-model="newParticipant.institution_id"
 					required>
-					<option value="0" selected hidden>Choose institution</option>
+					<option value="0" selected hidden>
+						Choose institution
+					</option>
 					<option
 						v-for="institution in institutionsOptions.data"
 						:key="institution.id"
@@ -102,10 +104,10 @@
 						min="1"
 						placeholder="Year"
 						class="form-control border-secondary text-dark w-25"
-						v-model="newParticipant.year" />
+						v-model="newParticipant.year_level" />
 				</div>
 				<p class="fs-7 text-danger text-center m-0">
-					{{ errorMessage }}
+					{{ errMsg }}
 				</p>
 			</form>
 		</template>
@@ -113,14 +115,13 @@
 		<template #Submit>
 			<button
 				type="submit"
-				form="createEvent"
+				form="create-participant-form"
 				class="d-flex align-items-center btn btn-primary gap-2"
 				:disabled="isLoading">
 				<span
 					v-if="isLoading"
 					class="spinner-border spinner-border-sm"
 					aria-hidden="true" />
-					<i v-else class="bi bi-plus-lg" />
 				<span role="status">Add participant</span>
 			</button>
 		</template>
@@ -128,11 +129,11 @@
 </template>
 
 <script setup>
-	let createParticipantModalRef = ref(null);
+	let createParticipantRef = ref(null);
 	let createForm = ref(null);
 
 	const isLoading = ref(false);
-	const errorMessage = ref("");
+	const errMsg = ref("");
 
 	const newParticipant = ref({
 		first_name: "",
@@ -142,9 +143,9 @@
 		address: "",
 		email: "",
 		phone_number: "",
-		institution_id: Number(0),
+		institution_id: 0,
 		course: "",
-		year_level: Number,
+		year_level: 1,
 	});
 
 	const { data: institutionsOptions } = await useFetch(
@@ -154,30 +155,36 @@
 		}
 	);
 
-	const OnSaveNewParticipant = async () => {
+	async function SaveParticipant() {
 		isLoading.value = true;
+
 		if (newParticipant.value?.institution_id == 0) {
-			throw new Error("Please specify institution.");
+			errMsg.value = "Invalid data. Please fill all fields.";
+			setTimeout(() => {
+				errMsg.value = "";
+			}, 3000);
+			isLoading.value = false;
+			return;
 		}
 
-		const { data, error } = await useFetch(`/api/participants`, {
+		const { data, error } = await $fetch(`/api/participants`, {
 			method: "POST",
-			body: newParticipant,
+			body: newParticipant.value,
 		});
 
 		if (error) {
-			console.error(err.message);
-			errorMessage.value = err.message;
+			console.error("Error creating participant: ", error);
+			errMsg.value = error;
 			setTimeout(() => {
-				errorMessage.value = "";
-				isLoading.value = false;
-				return;
+				errMsg.value = "";
 			}, 3000);
 		}
 
-		createForm.value?.reset();
-		navigateTo(`/admin/participants/${data.id}`)
-		createParticipantModalRef.value?.closeDialog();
 		isLoading.value = false;
-	};
+		if (data) {
+			createForm.value?.reset();
+			navigateTo(`/admin/participants/${data.id}`);
+			createParticipantRef.value?.closeDialog();
+		}
+	}
 </script>

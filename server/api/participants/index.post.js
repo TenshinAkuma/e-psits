@@ -4,32 +4,25 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
-	console.log(body);
-	try {
-		const { data: participantData, error: participantError } =
-			await client
-				.from("participants")
-				.insert(body)
-				.select("*, institutions(name)")
-				.single();
+	const { data, error } = await client
+		.from("participants")
+		.insert(body)
+		.select()
+		.single();
 
-		if (participantError) {
-			throw new Error(participantError.message);
-		}
-
-		return {
-			success: true,
-			data: participantError,
-		};
-	} catch (error) {
+	if (error) {
 		console.error(
 			"Error occurred while saving participant",
 			error.message
 		);
 
 		return {
-			success: false,
+			data: null,
 			error: error.message,
 		};
 	}
+
+	return {
+		data,
+	};
 });

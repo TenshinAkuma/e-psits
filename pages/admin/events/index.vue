@@ -1,6 +1,14 @@
 <template>
 	<section class="">
 		<article
+			class="d-flex justify-content-between align-items-center gap-3">
+			<h4 class="fw-bold m-0">EVENTS</h4>
+			<EventsCreate />
+		</article>
+
+		<hr />
+
+		<article
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
 			style="height: 720px">
@@ -25,21 +33,14 @@
 		</article>
 
 		<div v-else>
-			<article
-				class="d-flex justify-content-between align-items-center gap-3">
-				<h4 class="fw-bold m-0">EVENTS</h4>
-				<EventsCreate />
-			</article>
-
-			<hr />
-
-			<article class="row overflow-y-auto" style="height: 720px;">
+			<article class="row overflow-y-auto" style="height: 720px">
 				<div
 					v-for="event in EventsList"
 					:key="event.id"
 					class="col-lg-6 col-md-12 p-3">
 					<div
-						class="row event-card rounded-3 p-3" style="height: 360px;">
+						class="row event-card rounded-3 p-3"
+						style="height: 360px">
 						<div class="col-2 text-center">
 							<div class="fw-bold text-secondary">
 								{{
@@ -86,7 +87,8 @@
 									{{ event.address }}
 								</p>
 								<p
-									class="fs-7 text-secondary mb-0" style="max-width: 56ch;">
+									class="fs-7 text-secondary mb-0"
+									style="max-width: 56ch">
 									{{ event.description }}
 								</p>
 							</div>

@@ -89,14 +89,6 @@
 				{{ ParticipantData.course }}
 			</dd>
 		</dl>
-		<br />
-		<br />
-		<NuxtLink
-			:to="`/admin/participants/${participantId}/edit`"
-			class="btn btn-success px-3">
-			<i class="bi bi-pencil fs-7 me-3" />
-			Edit details
-		</NuxtLink>
 	</section>
 </template>
 

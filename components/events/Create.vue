@@ -63,7 +63,7 @@
 						class="form-control border-secondary mb-2"
 						v-model="eventDetails.link" />
 					<p
-						class="fs-7 fst-italic text-secondary">
+						class="fs-7 	fst-italic text-secondary">
 						This event will be held on a virtual meeting
 						platform.
 					</p>

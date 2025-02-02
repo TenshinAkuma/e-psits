@@ -1,5 +1,15 @@
 <template>
-	<section class="pb-5">
+	<article
+		v-if="isLoading"
+		class="d-flex flex-column justify-content-center align-items-center"
+		style="height: 576px">
+		<p>Loading data...</p>
+		<div class="spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</article>
+
+	<section v-else class="pb-5">
 		<article class="d-flex justify-content-between align-items-center">
 			<h1 class="fw-bold m-0">{{ EventDetails.title }}</h1>
 		</article>
@@ -147,9 +157,9 @@
 					type="submit"
 					:form="`create-event-form-${EventDetails.id}`"
 					class="d-flex align-items-center btn btn-success gap-3 px-3 ms-auto"
-					:disabled="isLoading">
+					:disabled="isSaving">
 					<span
-						v-if="isLoading"
+						v-if="isSaving"
 						class="spinner-border spinner-border-sm"
 						aria-hidden="true"></span>
 					<i v-else class="bi bi-floppy2-fill"></i>
@@ -190,6 +200,7 @@
 	const { EventCategories, EventTypes } = useInputOptions();
 	const errorMessage = ref("");
 	const isLoading = ref(false);
+	const isSaving = ref(false);
 
 	const LoadData = async () => {
 		isLoading.value = true;
@@ -244,14 +255,14 @@
 		EventEdit.value.date = updatedDate;
 	});
 
-	async function OnSaveEventEdit(){
-		isLoading.value = true;
+	async function OnSaveEventEdit() {
+		isSaving.value = true;
 		const { error } = await useFetch(`/api/events/${eventId}`, {
 			method: "PATCH",
 			body: EventEdit.value,
 		});
 
-		if (_eventData.value?.error) {
+		if (error) {
 			console.error("Error updating event: ", error);
 
 			errorMessage.value = error;
@@ -260,7 +271,7 @@
 			}, 3000);
 		}
 
-		isLoading.value = false;
+		isSaving.value = false;
 		await LoadData();
-	};
+	}
 </script>
