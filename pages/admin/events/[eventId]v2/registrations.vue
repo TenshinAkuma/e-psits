@@ -52,7 +52,7 @@
           <tr
             v-for="registration in EventRegistrations"
             :key="registration.id"
-            style="height: 56px"
+            style="min-height: 56px"
           >
             <td>
               <NuxtLink

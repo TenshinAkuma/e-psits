@@ -57,7 +57,7 @@
 			<div class="d-flex justify-content-between">
 				<p class="fw-bold m-0">Institutions memberships</p>
 				<NuxtLink
-					:to="`/admin/memberships`"
+					:to="`/admin/memberships/institutions`"
 					class="fw-bold fs-7 text-decoration-none m-0"
 					>See full list</NuxtLink
 				>

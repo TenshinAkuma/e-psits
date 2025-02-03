@@ -5,7 +5,8 @@ export default defineEventHandler(async (event) => {
 
 	const { data, count, error } = await client
 		.from("participants")
-		.select("*", { count: "exact" });
+		.select("*, institutions(name)", { count: "exact" })
+		.order("created_at", { ascending: false });
 
 	if (error) {
 		console.error("Error fetching members: ", error.message);
