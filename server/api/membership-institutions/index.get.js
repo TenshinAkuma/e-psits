@@ -5,10 +5,11 @@ export default defineEventHandler(async (event) => {
 
 	const { data, error } = await client
 		.from("institutions", { count: "exact" })
-		.select();
+		.select("*, coordinators(first_name, last_name)")
+		.order("created_at", { ascending: false });
 
 	if (error) {
-		console.error("Error fetching member institutions: ", error.message);
+		console.error("Error fetching member institutions: ", error);
 	}
 
 	return {

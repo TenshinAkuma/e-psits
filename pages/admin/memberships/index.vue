@@ -1,6 +1,6 @@
 <template>
 	<section>
-		<h4 class="fw-bold m-0">PSITS MEMBERS</h4>
+		<h1 class="fw-bold m-0">PSITS MEMBERS</h1>
 
 		<div
 			v-if="isLoading"
@@ -16,17 +16,14 @@
 			v-else-if="StudentMembers == null || StudentMembers.length <= 0"
 			class="d-flex flex-column justify-content-center align-items-center"
 			style="height: 432px">
-			<h4 class="fw-bold m-0">Event Registrations</h4>
+			<h4 class="fw-bold m-0">Student Members</h4>
 			<br />
 			<br />
 			<br />
 			<p class="text-secondary text-center fs-7 lh-sm">
-				No data available. <br />
-				Please register some participants.
+				No data available. Please add some members.
 			</p>
-			<EventRegistrationsCreate
-				:event="EventDetails"
-				@onRegister="HandleReload" />
+			<MembershipStudentsCreate />
 		</div>
 
 		<section v-else>
