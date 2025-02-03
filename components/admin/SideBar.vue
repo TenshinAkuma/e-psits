@@ -72,7 +72,7 @@
 	const Menus = [
 		{
 			selection: "Dashboard",
-			route: "#",
+			route: "",
 		},
 		{
 			selection: "Events",
