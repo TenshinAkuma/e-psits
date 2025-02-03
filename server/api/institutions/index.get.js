@@ -6,7 +6,8 @@ export default defineEventHandler(async (event) => {
 	const { data, error } = await client
 		.from("institutions")
 		.select("*, coordinators (*)")
-		.order("name", { ascending: true });
+		.order("name", { ascending: true })
+		.eq("membership_status", "Member");
 
 	if (error) {
 		console.error("Error fetching all institutions: ", error.message);
