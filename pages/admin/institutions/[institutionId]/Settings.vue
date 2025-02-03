@@ -9,7 +9,7 @@
 		</div>
 	</article>
 
-	<section v-else class="mb-5">
+	<section v-else class="pb-5">
 		<article>
 			<h1 class="fw-bold">{{ InstitutionData.name }}</h1>
 		</article>

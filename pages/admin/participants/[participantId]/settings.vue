@@ -9,7 +9,7 @@
 		</div>
 	</article>
 
-	<section v-else>
+	<section v-else class="pb-5">
 		<article class="d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2">
 				<Avatar
