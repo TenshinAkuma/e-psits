@@ -9,7 +9,8 @@ export default defineEventHandler(async (event) => {
 				.from("participants")
 				.select(
 					"*, institutions(id, name), event_registrations(registration_status, events(id, title))"
-				);
+				)
+				.eq("membership_status", "Member");
 
 		if (participantsError) {
 			throw new Error(participantsError.message);
