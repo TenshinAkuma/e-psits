@@ -4,11 +4,11 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 
 	const { data, error } = await client
-		.from("participants", { count: "exact" })
+		.from("institutions", { count: "exact" })
 		.select();
 
 	if (error) {
-		console.error("Error fetching members: ", error.message);
+		console.error("Error fetching member institutions: ", error.message);
 	}
 
 	return {

@@ -4,16 +4,17 @@ export default defineEventHandler(async (event) => {
 	const client = await serverSupabaseClient(event);
 	const body = await readBody(event);
 
-	const { data, error } = await client
+   console.log(body);
+   const { data, error } = await client
 		.from("participants")
 		.insert(body)
 		.select()
 		.single();
 
-	if (error) {
-		console.error("Error fetching members: ", error.message);
-	}
-
+   if (error) {
+		console.error("Error creating member: ", error.message);
+   }
+   
 	return {
 		data,
 		error,
