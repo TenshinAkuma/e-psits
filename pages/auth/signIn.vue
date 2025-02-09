@@ -35,10 +35,10 @@
 					required />
 			</div>
 
-			<p class="fw-bold text-center" style="font-size: 0.8rem">
+			<!-- <p class="fw-bold text-center" style="font-size: 0.8rem">
 				Don't have an account yet?
 				<NuxtLink to="/auth/signUp">Sign up here.</NuxtLink>
-			</p>
+			</p> -->
 
 			<button type="submit" class="btn btn-primary w-100">
 				Sign in
