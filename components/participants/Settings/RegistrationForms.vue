@@ -5,103 +5,54 @@
 		<dl class="row gy-5">
 			<!-- Entry Form -->
 			<dt class="col-sm-4">Entry Form</dt>
-			<dd class="col-sm-8 d-flex gap-2">
-				<div class="w-100">
-					<div class="hstack gap-2">
-						<input
-							class="form-control"
-							type="file"
-							@change="
-								HandleFileChange($event, 'entry_form')
-							"
-							accept=".pdf" />
-						<button
-							class="btn btn-success hstack gap-3"
-							:disabled="!files.entry_form"
-							@click="UploadFile('entry_form')">
-							<span
-								v-if="buttonsLoading.entry_form"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true"></span>
-							<span role="status">Upload</span>
-						</button>
-					</div>
-				</div>
+			<dd class="col-sm-8 gap-2">
+				<input
+					class="form-control border-secondary"
+					type="file"
+					@change="HandleFileChange($event, 'entry_form')"
+					accept=".pdf" />
 			</dd>
 
 			<!-- coe of Registration -->
 			<dt class="col-sm-4">coe of Registration</dt>
-			<dd class="col-sm-8 d-flex gap-2">
-				<div class="w-100">
-					<div class="hstack gap-2">
-						<input
-							class="form-control"
-							type="file"
-							@change="HandleFileChange($event, 'coe')" />
-						<button
-							class="btn btn-success hstack gap-3"
-							:disabled="!files.coe"
-							@click="UploadFile('coe')">
-							<span
-								v-if="buttonsLoading.coe"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true"></span>
-							<span role="status">Upload</span>
-						</button>
-					</div>
+			<dd class="col-sm-8 gap-2">
+				<input
+					class="form-control border-secondary"
+					type="file"
+					@change="HandleFileChange($event, 'coe')" />
 
-					<br />
+				<br />
 
-					<img
-						v-if="previews.coe"
-						:src="previews.coe"
-						class="rounded-3 w-100" />
-					<p
-						v-if="previews.coe && !isImage(files.coe)"
-						class="text-danger fs-7">
-						📄 {{ files.coe.name }}
-					</p>
-				</div>
+				<img
+					v-if="previews.coe"
+					:src="previews.coe"
+					class="border border-success rounded-3 w-100" />
+				<p
+					v-if="previews.coe && !isImage(files.coe)"
+					class="text-danger fs-7">
+					📄 {{ files.coe.name }}
+				</p>
 			</dd>
 
 			<!-- School ID -->
 			<dt class="col-sm-4">School ID</dt>
-			<dd class="col-sm-8 d-flex gap-2">
-				<div class="w-100">
-					<div class="hstack gap-2">
-						<input
-							class="form-control"
-							type="file"
-							@change="
-								HandleFileChange($event, 'school_id')
-							" />
-						<button
-							class="btn btn-success hstack gap-3"
-							:disabled="!files.school_id"
-							@click="UploadFile('school_id')">
-							<span
-								v-if="buttonsLoading.school_id"
-								class="spinner-border spinner-border-sm"
-								aria-hidden="true"></span>
-							<span role="status">Upload</span>
-						</button>
-					</div>
+			<dd class="col-sm-8 gap-2">
+				<input
+					class="form-control border-secondary"
+					type="file"
+					@change="HandleFileChange($event, 'school_id')" />
 
-					<br />
+				<br />
 
-					<img
-						v-if="previews.school_id"
-						:src="previews.school_id"
-						class="rounded-3 w-100" />
-					<p
-						v-if="
-							previews.school_id &&
-							!isImage(files.school_id)
-						"
-						class="text-danger fs-7">
-						📄 {{ files.school_id.name }}
-					</p>
-				</div>
+				<img
+					v-if="previews.school_id"
+					:src="previews.school_id"
+					class="border border-success rounded-3 w-100" />
+				<p
+					v-if="previews.school_id && !isImage(files.school_id)"
+					class="text-danger fs-7">
+					📄 {{ files.school_id.name }}
+				</p>
 			</dd>
 		</dl>
 	</section>
@@ -144,7 +95,9 @@
 			return;
 		}
 
-		const filePath = `${fieldName}/${Date.now()}-${ParticipantData.value?.id}_${fieldName}`;
+		const filePath = `${fieldName}/${Date.now()}-${
+			ParticipantData.value?.id
+		}_${fieldName}`;
 
 		const { data: uploadData, error: uploadError } = await client.storage
 			.from("registration_files")
