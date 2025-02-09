@@ -8,7 +8,7 @@
 			<span class="visually-hidden">Loading...</span>
 		</div>
 	</div>
-	
+
 	<section v-else>
 		<article class="d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2">
@@ -28,15 +28,15 @@
 					<p class="hstack gap-3 m-0">
 						<i
 							class="bi bi-building-fill text-secondary fs-7" />
-							<NuxtLink :to="`/admin/institutions/${ParticipantData.institution_id}`">{{ ParticipantData.institutions.name }}</NuxtLink>
+						<NuxtLink
+							:to="`/admin/institutions/${ParticipantData.institution_id}`"
+							>{{
+								ParticipantData.institutions.name
+							}}</NuxtLink
+						>
 					</p>
 				</div>
 			</div>
-
-			<!-- <button class="btn btn-primary fw-bold">
-				<i class="bi bi-plus-lg me-3" />
-				<span>Register participant</span>
-			</button> -->
 		</article>
 
 		<br />
@@ -48,47 +48,92 @@
 		<br />
 
 		<dl class="row">
-			<dt class="col-sm-2">Date of birth</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Date of birth</dt>
+			<dd class="col-sm-8">
 				{{ formatDate(ParticipantData.dob) }}
 			</dd>
 
-			<dt class="col-sm-2">Address</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Address</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.address }}
 			</dd>
 
 			<br />
 			<br />
 
-			<dt class="col-sm-2">Email</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Email</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.email }}
 			</dd>
 
-			<dt class="col-sm-2">Contact number</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Contact number</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.phone_number }}
 			</dd>
 
 			<br />
 			<br />
 
-			<dt class="col-sm-2">Institution</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Institution</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.institutions.name }}
 			</dd>
 
-			<dt class="col-sm-2">Year level</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Year level</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.year_level }}
 			</dd>
 
-			<dt class="col-sm-2">Course</dt>
-			<dd class="col-sm-10">
+			<dt class="col-sm-4">Course</dt>
+			<dd class="col-sm-8">
 				{{ ParticipantData.course }}
 			</dd>
+
+			<dt class="col-sm-4">Entry form</dt>
+			<dd class="col-sm-8">
+				<a :href="ParticipantData.entry_form" target="_blank">View entry form</a>
+			</dd>
 		</dl>
+
+		<br />
+
+		<div class="row">
+			<div class="col-lg-4">
+				<p class="fw-bold">Certificate of enrollment</p>
+				<a
+					v-if="ParticipantData.coe"
+					:href="ParticipantData.coe"
+					target="_blank">
+					<img
+						v-if="ParticipantData.coe"
+						:src="ParticipantData.coe"
+						:alt="`participant-${ParticipantData.id}-coe`"
+						class="border rounded-3 w-100" />
+				</a>
+
+				<NuxtLink
+					v-else
+					:to="`/admin/participants/${ParticipantData.id}/settings`">
+					Upload image of certificate of enrollment
+				</NuxtLink>
+			</div>
+			<div class="col-lg-4">
+				<p class="fw-bold">School ID</p>
+				<a
+					v-if="ParticipantData.school_id"
+					:href="ParticipantData.school_id">
+					<img
+						:src="ParticipantData.school_id"
+						:alt="`participant-${ParticipantData.id}-school_id`"
+						class="border rounded-3 w-100" />
+				</a>
+				<NuxtLink
+					v-else
+					:to="`/admin/participants/${ParticipantData.id}/settings`">
+					Upload image of school id
+				</NuxtLink>
+			</div>
+		</div>
 	</section>
 </template>
 

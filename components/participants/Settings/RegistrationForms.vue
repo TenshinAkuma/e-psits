@@ -104,7 +104,6 @@
 				</div>
 			</dd>
 		</dl>
-		{{ ParticipantData }}
 	</section>
 </template>
 
@@ -145,18 +144,15 @@
 			return;
 		}
 
-		const filePath = `${fieldName}/${ParticipantData.value?.id}_${fieldName}`;
+		const filePath = `${fieldName}/${Date.now()}-${ParticipantData.value?.id}_${fieldName}`;
 
 		const { data: uploadData, error: uploadError } = await client.storage
 			.from("registration_files")
-			.upload(filePath, file, { upsert: true });
+			.upload(filePath, file, { upsert: true, cacheControl: "0" });
 
 		const { data: fileData, error: fileError } = client.storage
 			.from("registration_files")
 			.getPublicUrl(uploadData.path);
-
-		// const registrationFile = {};
-		// registrationFile[fieldName] = fileData.publicUrl;
 
 		const { error: participantFileError } = await client
 			.from("participants")
@@ -173,33 +169,4 @@
 	}
 
 	const isImage = (file) => file && file.type.startsWith("image/");
-
-	// // Upload File to Supabase Storage
-	// async function UploadFile(fieldName) {
-	// 	const file = files.value[fieldName];
-	// 	if (!file) return;
-
-	// 	const filePath = `uploads/${Date.now()}_${file.name}`;
-
-	// 	const { data: uploadData, error: uploadError } = await client.storage
-	// 		.from("registration_files")
-	// 		.upload(filePath, file);
-
-	// 	const { data: fileData, error: fileError } = await client.storage
-	// 		.from("registration_files")
-	// 		.getPublicUrl(uploadData.path);
-
-	// 	const { error: participantFileError } = await client
-	// 		.from("participants")
-	// 		.update({ [fieldName]: fileData.getPublicUrl })
-	// 		.eq("id", ParticipantData.value?.id);
-
-	// 	if (error) {
-	// 		alert("Upload Failed: " + error.message);
-	// 	} else {
-	// 		alert("File Uploaded Successfully!");
-	// 	}
-	// }
 </script>
-
-<style></style>

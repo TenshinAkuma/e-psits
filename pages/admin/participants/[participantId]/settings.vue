@@ -9,7 +9,7 @@
 		</div>
 	</article>
 
-	<section v-else class="pb-5">
+	<section v-else class="pb-5" data-bs-spy="scroll">
 		<article class="d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2">
 				<Avatar
@@ -164,7 +164,9 @@
 			<br />
 			<br />
 
-			<ParticipantsSettingsRegistrationForms :participant="ParticipantData"/>
+			<ParticipantsSettingsRegistrationForms
+				id="registration_files"
+				:participant="ParticipantData" />
 
 			<br />
 			<br />
