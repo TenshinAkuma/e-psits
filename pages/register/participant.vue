@@ -93,19 +93,24 @@
 					v-for="event in eventOptions.data"
 					:key="event.id"
 					:value="event.id">
-					{{ `${event.title} - ${event.type}` }}
+					{{ event.title }}
 				</option>
 			</select>
 
 			<br />
 
-			<div v-if="EventInfo?.event_rules?.length > 0">
-				<p class="fw-bold">Guidelines</p>
-				<li
-					v-for="rule in EventInfo.event_rules ?? []"
-					:key="rule.name">
-					{{ rule.description }}
-				</li>
+			<div class="fs-7">
+				<label class="fw-bold">Attendance type</label>
+				<p>{{ EventInfo.type }}</p>
+
+				<div v-if="EventInfo?.event_rules?.length > 0">
+					<label class="fw-bold">Guidelines</label>
+					<li
+						v-for="rule in EventInfo.event_rules ?? []"
+						:key="rule.name">
+						{{ rule.description }}
+					</li>
+				</div>
 			</div>
 
 			<br />
