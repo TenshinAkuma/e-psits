@@ -35,13 +35,15 @@
 					required />
 			</div>
 
-			<!-- <p class="fw-bold text-center" style="font-size: 0.8rem">
-				Don't have an account yet?
-				<NuxtLink to="/auth/signUp">Sign up here.</NuxtLink>
-			</p> -->
-
-			<button type="submit" class="btn btn-primary w-100">
-				Sign in
+			<button
+				type="submit"
+				class="btn btn-primary w-100 d-flex justify-content-center align-items-center gap-3"
+				:disabled="isLoading">
+				<span
+					v-if="isLoading"
+					class="spinner-border spinner-border-sm"
+					aria-hidden="true" />
+				<span role="status">Sign in</span>
 			</button>
 		</form>
 	</div>
@@ -59,18 +61,15 @@
 	const email = ref("");
 	const password = ref("");
 	const errMsg = ref("");
-
-	watchEffect(async () => {
-		if (user.value) {
-			await navigateTo("/admin");
-		}
-	});
+	const isLoading = ref(false);
 
 	const handleSignIn = async () => {
+		isLoading.value = true;
 		const { data, error } = await client.auth.signInWithPassword({
 			email: email.value,
 			password: password.value,
 		});
+
 		if (error) {
 			errMsg.value = error.message;
 			setTimeout(() => {
@@ -79,7 +78,10 @@
 		} else {
 			console.log(data);
 		}
+
+		if (data) {
+			await navigateTo("/admin");
+		}
+		isLoading.value = false;
 	};
 </script>
-
-<style scoped></style>

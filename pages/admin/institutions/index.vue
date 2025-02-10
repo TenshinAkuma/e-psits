@@ -3,7 +3,7 @@
 		<article
 			class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">INSTITUTIONS</h4>
-			<InstitutionsCreate />
+			<InstitutionsCreate v-if="InstitutionsData.length > 0" />
 		</article>
 
 		<hr />
@@ -23,7 +23,7 @@
 				InstitutionsData == null || InstitutionsData.length <= 0
 			"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
-			style="height: 720px">
+			style="height: 576px">
 			<InstitutionsCreate />
 			<p class="text-secondary fs-7">
 				There are currently no data. Let's add some institutions.

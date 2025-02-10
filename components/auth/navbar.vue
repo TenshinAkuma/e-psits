@@ -7,16 +7,16 @@
 				style="font-size: 1.5rem"
 				>E-PSITS</NuxtLink
 			>
-			<div class="d-flex align-items-center gap-5">
-				<NuxtLink to="/" class="nav-link fw-bold text-secondary"
-					>Home</NuxtLink
-				>
-				<NuxtLink class="nav-link fw-bold text-secondary"
-					>Events</NuxtLink
-				>
-				<NuxtLink class="nav-link fw-bold text-secondary"
-					>About</NuxtLink
-				>
+			<div class="hstack gap-5">
+				<NuxtLink
+				to="/auth/signIn"
+				class="nav-link fw-bold"
+				>Sign in</NuxtLink
+			><NuxtLink
+				to="/register"
+				class="nav-link fw-bold rounded-pill bg-primary px-4 py-2 text-light"
+				>Create account</NuxtLink
+			>
 			</div>
 		</div>
 	</nav>

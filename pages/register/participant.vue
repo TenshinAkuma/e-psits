@@ -88,7 +88,7 @@
 			<select
 				class="form-select border-secondary"
 				v-model="registration.event_id">
-				<option selected hidden>Choose your event</option>
+				<option value="null" selected hidden>Choose your event</option>
 				<option
 					v-for="event in eventOptions.data"
 					:key="event.id"
@@ -201,10 +201,10 @@
 	};
 
 	const EventInfo = computed(() => {
-
 		if (!registration.value.event_id) {
-			return null
+			return null;
 		}
+
 		return (
 			eventOptions.value?.data.find(
 				(e) => e.id === registration.value?.event_id

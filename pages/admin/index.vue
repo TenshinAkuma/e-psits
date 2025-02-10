@@ -136,7 +136,7 @@
 		{
 			shortcut: "Event results",
 			icon: "material-symbols:award-star-outline-rounded",
-			link: "/admin",
+			link: "/admin/results",
 		},
 	];
 </script>

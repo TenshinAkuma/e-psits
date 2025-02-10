@@ -91,7 +91,12 @@
 
 			<dt class="col-sm-4">Entry form</dt>
 			<dd class="col-sm-8">
-				<a :href="ParticipantData.entry_form" target="_blank">View entry form</a>
+				<NuxtLink v-if="ParticipantData.entry_form" :to="ParticipantData.entry_form" target="_blank">
+					View entry form
+				</NuxtLink>
+				<NuxtLink v-else :to="`/admin/participants/${ParticipantData.id}/settings`" target="_blank">
+					Upload entry form
+				</NuxtLink>
 			</dd>
 		</dl>
 

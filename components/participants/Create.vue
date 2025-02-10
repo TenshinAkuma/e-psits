@@ -183,7 +183,7 @@
 		isLoading.value = false;
 		if (data) {
 			createForm.value?.reset();
-			navigateTo(`/admin/participants/${data.id}`);
+			navigateTo(`/admin/memberships`);
 			createParticipantRef.value?.closeDialog();
 		}
 	}

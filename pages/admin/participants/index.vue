@@ -2,7 +2,7 @@
 	<section class="">
 		<div class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">ParticipantsList</h4>
-			<ParticipantsCreate />
+			<ParticipantsCreate v-if="ParticipantsList.length > 0" />
 		</div>
 
 		<hr />
@@ -21,17 +21,12 @@
 			v-else-if="
 				ParticipantsList == null || ParticipantsList.length <= 0
 			"
-			class="d-flex flex-column justify-content-around align-items-center gap-2 m-auto"
-			style="height: 720px">
-			<h4 class="fw-bold m-0">ParticipantsList</h4>
-
-			<div class="d-flex flex-column align-items-center">
-				<p class="text-center text-secondary fs-7 lh-sm">
-					There are currently no data. Let's add some
-					ParticipantsList.
-				</p>
-				<ParticipantsCreate />
-			</div>
+			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
+			style="height: 576px">
+			<ParticipantsCreate />
+			<p class="text-center text-secondary fs-7 lh-sm">
+				There are currently no data. Add participants.
+			</p>
 		</article>
 
 		<section v-else class="row overflow-y-auto" style="height: 720px">
@@ -41,7 +36,7 @@
 				class="col-lg-6 col-md-12 p-3">
 				<article
 					class="participant-card d-flex justify-content-between align-items-center rounded-3 p-3"
-					style="height: 144px;">
+					style="height: 144px">
 					<Avatar
 						:gender="participant.sex"
 						:id="`participant-${participant.id}`"

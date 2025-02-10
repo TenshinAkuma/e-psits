@@ -9,7 +9,7 @@
 		<div
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center"
-			style="height: 576px">
+			style="height: 360px">
 			<p>Loading data...</p>
 			<div class="spinner-border" role="status">
 				<span class="visually-hidden">Loading...</span>
@@ -20,12 +20,16 @@
 			v-else-if="
 				InstitutionMembers == null || InstitutionMembers.length <= 0
 			"
-			class="d-flex flex-column justify-content-evenly align-items-center"
-			style="height: 576px">
+			class="d-flex flex-column justify-content-center align-items-center"
+			style="height: 360px">
 			<h4 class="fw-bold m-0">Institution Members</h4>
+
+			<br />
+			<br />
+			<br />
+
 			<p class="text-secondary text-center fs-7 lh-sm">
-				No data available. <br />
-				Please add some institutions.
+				No data available. Add some institutions.
 			</p>
 			<MembershipInstitutionsCreate />
 		</div>

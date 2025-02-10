@@ -6,21 +6,37 @@
 			<!-- Entry Form -->
 			<dt class="col-sm-4">Entry Form</dt>
 			<dd class="col-sm-8 gap-2">
-				<input
-					class="form-control border-secondary"
-					type="file"
-					@change="HandleFileChange($event, 'entry_form')"
-					accept=".pdf" />
+				<div class="hstack gap-3">
+					<input
+						class="form-control border-secondary"
+						type="file"
+						@change="HandleFileChange($event, 'entry_form')"
+						accept=".pdf" />
+					<div
+						v-if="buttonsLoading['entry_form']"
+						class="spinner-border spinner-border-sm"
+						role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
 			</dd>
 
 			<!-- coe of Registration -->
 			<dt class="col-sm-4">coe of Registration</dt>
 			<dd class="col-sm-8 gap-2">
-				<input
-					class="form-control border-secondary"
-					type="file"
-					@change="HandleFileChange($event, 'coe')" />
+				<div class="hstack gap-3">
+					<input
+						class="form-control border-secondary"
+						type="file"
+						@change="HandleFileChange($event, 'coe')" />
 
+					<div
+						v-if="buttonsLoading['coe']"
+						class="spinner-border spinner-border-sm"
+						role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
 				<br />
 
 				<img
@@ -37,11 +53,18 @@
 			<!-- School ID -->
 			<dt class="col-sm-4">School ID</dt>
 			<dd class="col-sm-8 gap-2">
-				<input
-					class="form-control border-secondary"
-					type="file"
-					@change="HandleFileChange($event, 'school_id')" />
-
+				<div class="hstack gap-3">
+					<input
+						class="form-control border-secondary"
+						type="file"
+						@change="HandleFileChange($event, 'school_id')" />
+					<div
+						v-if="buttonsLoading['coe']"
+						class="spinner-border spinner-border-sm"
+						role="status">
+						<span class="visually-hidden">Loading...</span>
+					</div>
+				</div>
 				<br />
 
 				<img
@@ -55,6 +78,7 @@
 				</p>
 			</dd>
 		</dl>
+		{{ ParticipantData.coe }}
 	</section>
 </template>
 
@@ -99,6 +123,7 @@
 			ParticipantData.value?.id
 		}_${fieldName}`;
 
+		buttonsLoading.value[fieldName] = true;
 		const { data: uploadData, error: uploadError } = await client.storage
 			.from("registration_files")
 			.upload(filePath, file, { upsert: true, cacheControl: "0" });
@@ -119,6 +144,7 @@
 		} else {
 			previews.value[fieldName] = null;
 		}
+		buttonsLoading.value[fieldName] = false;
 	}
 
 	const isImage = (file) => file && file.type.startsWith("image/");
