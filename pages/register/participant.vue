@@ -88,7 +88,7 @@
 			<select
 				class="form-select border-secondary"
 				v-model="registration.event_id">
-				<option value="" selected hidden>Choose your event</option>
+				<option selected hidden>Choose your event</option>
 				<option
 					v-for="event in eventOptions.data"
 					:key="event.id"
@@ -99,7 +99,7 @@
 
 			<br />
 
-			<div class="fs-7">
+			<div v-if="registration.event_id" class="fs-7">
 				<label class="fw-bold">Attendance type</label>
 				<p>{{ EventInfo.type }}</p>
 
@@ -158,7 +158,7 @@
 			year_level: "",
 			address: "",
 		},
-		event_id: "",
+		event_id: null,
 	});
 
 	const { data: institutionOptions } = await useFetch(
@@ -201,6 +201,10 @@
 	};
 
 	const EventInfo = computed(() => {
+
+		if (!registration.value.event_id) {
+			return null
+		}
 		return (
 			eventOptions.value?.data.find(
 				(e) => e.id === registration.value?.event_id
