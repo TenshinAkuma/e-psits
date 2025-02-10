@@ -5,13 +5,6 @@
 			<NuxtLink class="nav-link fw-bold" style="font-size: 1.5rem"
 				>E-PSITS</NuxtLink
 			>
-			<NuxtLink class="nav-link fw-bold text-secondary">Home</NuxtLink>
-			<NuxtLink class="nav-link fw-bold text-secondary"
-				>Events</NuxtLink
-			>
-			<NuxtLink class="nav-link fw-bold text-secondary"
-				>About</NuxtLink
-			>
 		</div>
 		<div class="hstack gap-3">
 			<button class="btn fw-bold p-3" @click="ToSignIn">

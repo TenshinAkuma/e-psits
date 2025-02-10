@@ -2,6 +2,10 @@
 	<section>
 		<h1 class="fw-bold m-0">PSITS MEMBERS</h1>
 
+		<br />
+		<MembershipsTabs activeTab="students" />
+		<br />
+
 		<div
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center"
@@ -15,11 +19,13 @@
 		<div
 			v-else-if="StudentMembers == null || StudentMembers.length <= 0"
 			class="d-flex flex-column justify-content-center align-items-center"
-			style="height: 432px">
+			style="height: 360px">
 			<h4 class="fw-bold m-0">Student Members</h4>
+
 			<br />
 			<br />
 			<br />
+
 			<p class="text-secondary text-center fs-7 lh-sm">
 				No data available. Please add some members.
 			</p>
@@ -27,10 +33,6 @@
 		</div>
 
 		<section v-else>
-			<br />
-			<MembershipsTabs activeTab="students" />
-			<br />
-
 			<div class="d-flex justify-content-between align-item-center">
 				<h4 class="fw-bold m-0">Student Members</h4>
 				<MembershipStudentsCreate />
@@ -44,7 +46,9 @@
 							<th scope="col">Name</th>
 							<th scope="col">Email</th>
 							<th scope="col">Institution</th>
-							<th scope="col" class="text-center">Membership status</th>
+							<th scope="col" class="text-center">
+								Membership status
+							</th>
 							<th scope="col" class="text-center">
 								Actions
 							</th>
@@ -66,12 +70,15 @@
 							</td>
 							<td>{{ student.email }}</td>
 							<td>
-								<NuxtLink :to="`/admin/institutions/${student.institution_id}`"
-								class="text-dark">
+								<NuxtLink
+									:to="`/admin/institutions/${student.institution_id}`"
+									class="text-dark">
 									{{ student.institutions.name }}
 								</NuxtLink>
 							</td>
-							<td class="text-center">{{ student.membership_status }}</td>
+							<td class="text-center">
+								{{ student.membership_status }}
+							</td>
 							<td>
 								<div
 									class="d-flex justify-content-center align-items-center">

@@ -9,7 +9,7 @@
 		</div>
 	</article>
 
-	<section v-else class="pb-5">
+	<section v-else class="pb-5" data-bs-spy="scroll">
 		<article class="d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2">
 				<Avatar
@@ -37,18 +37,13 @@
 					</p>
 				</div>
 			</div>
-
-			<!-- <button class="btn btn-primary fw-bold">
-				<i class="bi bi-plus-lg me-3"/>
-				<span>Register participant</span>
-			</button> -->
 		</article>
 
 		<br />
 		<ParticipantsTabs activeTab="settings" />
 		<br />
 
-		<section class="col-lg-8 col-md-12">
+		<section class="col-lg-8">
 			<h4 class="fw-bold">Edit Participant Info</h4>
 			<hr />
 
@@ -146,9 +141,11 @@
 							v-model="ParticipantEdit.course" />
 					</dd>
 				</dl>
+
 				<br />
 				<br />
-				<article class="d-flex justify-content-end">
+
+				<div class="d-flex justify-content-end">
 					<button
 						type="submit"
 						:form="`edit-participant-form-${participantId}`"
@@ -160,8 +157,16 @@
 							aria-hidden="true"></span>
 						<span role="status">Save edit</span>
 					</button>
-				</article>
+				</div>
 			</form>
+
+			<br />
+			<br />
+			<br />
+
+			<ParticipantsSettingsRegistrationForms
+				id="registration_files"
+				:participant="ParticipantData" />
 
 			<br />
 			<br />
@@ -174,8 +179,8 @@
 					<p class="m-0">
 						<b>Delete this participant</b> <br />
 						<span
-							>Once this participant is deleted, it cannot be
-							undone.</span
+							>Once this participant is deleted, it cannot
+							be undone.</span
 						>
 					</p>
 					<ParticipantsDelete :participant="ParticipantData" />

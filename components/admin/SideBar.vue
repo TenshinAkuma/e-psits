@@ -91,8 +91,8 @@
 			route: "memberships",
 		},
 		{
-			selection: "Forms",
-			route: "entryForms",
+			selection: "Results",
+			route: "results",
 		},
 	];
 </script>
