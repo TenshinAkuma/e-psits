@@ -15,7 +15,7 @@
 			><NuxtLink
 				to="/register"
 				class="nav-link fw-bold rounded-pill bg-primary px-4 py-2 text-light"
-				>Create account</NuxtLink
+				>Register</NuxtLink
 			>
 			</div>
 		</div>
