@@ -3,7 +3,7 @@
 		<article
 			class="d-flex justify-content-between align-items-center gap-3">
 			<h4 class="fw-bold m-0">EVENTS</h4>
-			<EventsCreate />
+			<EventsCreate v-if="EventsList.length > 0"/>
 		</article>
 
 		<hr />
@@ -11,7 +11,7 @@
 		<article
 			v-if="isLoading"
 			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
-			style="height: 720px">
+			style="height: 576px">
 			<div class="spinner-border text-secondary" role="status">
 				<span class="visually-hidden">Loading...</span>
 			</div>
@@ -20,16 +20,12 @@
 
 		<article
 			v-else-if="EventsList == null || EventsList.length <= 0"
-			class="d-flex flex-column justify-content-around align-items-center gap-2 m-auto"
-			style="height: 720px">
-			<h4 class="fw-bold m-0">EVENTS</h4>
-
-			<div class="d-flex flex-column align-items-center">
-				<p class="text-center text-secondary fs-7 lh-sm">
-					There are currently no data. Let's add some events.
-				</p>
-				<EventsCreate />
-			</div>
+			class="d-flex flex-column justify-content-center align-items-center gap-2 m-auto"
+			style="height: 576px">
+			<EventsCreate />
+			<p class="text-center text-secondary fs-7 lh-sm">
+				There are currently no data. Add some events.
+			</p>
 		</article>
 
 		<div v-else>
