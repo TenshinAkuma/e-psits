@@ -56,12 +56,9 @@ export default defineNuxtConfig({
 		redirect: false,
 	},
 
-	// runtimeConfig: {
-	// 	public: {
-	// 		supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-	// 	},
-	// 	supabaseKey: process.env.NUXT_SUPABASE_KEY,
-	// },
+	runtimeConfig: {
+		semaphoreApiKey: "",
+	},
 
 	imports: {
 		dirs: ["./types", "composables/**"],
