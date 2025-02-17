@@ -5,18 +5,49 @@ export default defineEventHandler(async (event) => {
 	const { id } = event.context.params;
 	const body = await readBody(event);
 
-	const { data, error } = await client
-		.from("participants")
-		.update(body)
-		.eq("id", id)
-		.select();
+	try {
+		const { data, error } = await client
+			.from("participants")
+			.update(body)
+			.eq("id", id)
+			.select()
+			.single();
 
-	if (error) {
+		if (error) {
+			throw new Error(error.message);
+		}
+
+		if (!data.membership_status) {
+			return {
+				success: false,
+				error: "Internal server error. Invalid membership status.",
+			};
+		}
+
+		console.log(data.membership_status);
+
+		if (data.membership_status.toLowerCase().trim() == "member") {
+			var user = {
+				id: body.email,
+				email: body.email,
+				number: body.phone_number,
+			};
+
+			await $fetch(`/api/sms`, {
+				method: "POST",
+				body: user,
+			});
+		}
+
+		return {
+			success: true,
+			data,
+		};
+	} catch (error) {
 		console.error("Error updating membership status: ", error.message);
+		return {
+			success: false,
+			error: error.message,
+		};
 	}
-
-	return {
-		data,
-		error,
-	};
 });
