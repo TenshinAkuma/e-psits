@@ -9,9 +9,8 @@
 		await $fetch(`/api/sms`, {
 			method: "POST",
 			body: {
-				id: "tenshinakuma022501@gmail.com",
-				email: "tenshinakuma022501@gmail.com",
-				number: "+639670289112",
+				id: "hansclarkolino@sksu.edu.ph",
+				number: "+639996737611",
 			},
 		});
 	}

@@ -4,7 +4,6 @@
 		:dialogTitle="`Update ${StudentData.first_name}'s membership.`"
 		openButtonStyle="btn-sm"
 		ref="editStudentMemberRef">
-
 		<template #ButtonLabel>
 			<i class="bi bi-pencil-fill fs-7 text-secondary" />
 		</template>
@@ -65,30 +64,41 @@
 		membership_status: StudentData.value?.membership_status,
 	});
 
-	async function SaveMembershipUpdate(){
+	async function SaveMembershipUpdate() {
 		isLoading.value = true;
-		const { error } = await $fetch(
-			`/api/membership-participants/${StudentData.value?.id}`,
-			{
-				method: "PATCH",
-				body: membershipUpdate.value,
-			}
-		);
+		try {
+			const { data, error } = await $fetch(
+				`/api/membership-participants/${StudentData.value?.id}`,
+				{
+					method: "PATCH",
+					body: membershipUpdate.value,
+				}
+			);
 
-		if (error) {
+			if (error) {
+				throw new Error(error);
+			}
+
+			if (data.membership_status.toLowerCase() == "member") {
+				await $fetch(`/api/sms`, {
+					method: "POST",
+					body: {
+						id: data.email,
+						number: data.phone_number,
+					},
+				});
+			}
+
+			emit("onEdit");
+			editStudentMemberRef.value.closeDialog();
+		} catch (error) {
 			console.error(error);
 			errorMessage.value = "Internal server error. Please try again.";
-			setTimeout(() => {
-				errorMessage.value = "";
-			}, 3000);
-
+			setTimeout(() => (errorMessage.value = ""), 3000);
+		} finally {
 			isLoading.value = false;
-			return;
 		}
-
-		emit("onEdit");
-		editStudentMemberRef.value.closeDialog();
-	};
+	}
 </script>
 
 <style></style>

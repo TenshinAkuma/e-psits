@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
 			notificationId: "epsits",
 			user: {
 				id: body.id,
-				email: body.email,
+				// email: body.email,
 				number: body.number, // Replace with your phone number
 			},
 			mergeTags: {},
