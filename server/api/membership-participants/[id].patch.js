@@ -26,19 +26,6 @@ export default defineEventHandler(async (event) => {
 
 		console.log(data.membership_status);
 
-		// if (data.membership_status.toLowerCase().trim() == "member") {
-		// 	var user = {
-		// 		id: body.email,
-		// 		email: body.email,
-		// 		number: body.phone_number,
-		// 	};
-
-		// 	await $fetch(`/api/sms`, {
-		// 		method: "POST",
-		// 		body: user,
-		// 	});
-		// }
-
 		return {
 			success: true,
 			data,
