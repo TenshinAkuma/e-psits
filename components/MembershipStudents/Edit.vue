@@ -86,6 +86,17 @@
 			return;
 		}
 
+		if(membershipUpdate.value.membership_status == 'Member'){
+			await $fetch(`/api/sms`,{
+				method: "POST",
+				body:{
+					id: StudentData.value?.email,
+					email: StudentData.value?.email,
+					number: StudentData.value?.phone_number
+				}
+			})
+		}
+
 		emit("onEdit");
 		editStudentMemberRef.value.closeDialog();
 	};

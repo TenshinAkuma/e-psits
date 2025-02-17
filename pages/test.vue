@@ -1,9 +1,13 @@
 <template>
-	<div>
-		<Dialogs />
-	</div>
+  <div>
+    <button class="btn btn-primary" @click="SendSms">SEND SMS</button>
+  </div>
 </template>
 
-<script setup></script>
-
-<style></style>
+<script setup>
+async function SendSms() {
+  await $fetch(`/api/sms`, {
+    method: "POST",
+  });
+}
+</script>
