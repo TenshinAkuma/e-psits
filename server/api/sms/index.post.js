@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     const notificationOpts = {
       body: "Hello this is EPSITS",
       from: "+14128705101",
-      to: "+639996737611",
+      to: "+639670289112",
     };
 
     // Send SMS

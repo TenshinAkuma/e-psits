@@ -57,7 +57,7 @@ export default defineNuxtConfig({
 	},
 
 	runtimeConfig: {
-		accountSid: process.env.TWILIO_AACCOUNT_SID,
+		accountSid: process.env.TWILIO_ACCOUNT_SID,
 		authToken: process.env.TWILIO_AUTH_TOKEN,
 	},
 
