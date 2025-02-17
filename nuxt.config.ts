@@ -56,12 +56,10 @@ export default defineNuxtConfig({
 		redirect: false,
 	},
 
-	// runtimeConfig: {
-	// 	public: {
-	// 		supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-	// 	},
-	// 	supabaseKey: process.env.NUXT_SUPABASE_KEY,
-	// },
+	runtimeConfig: {
+		moviderApiKey: process.env.NUXT_MOVIDER_API_KEY,
+		moviderApiSecret: process.env.NUXT_MOVIDER_API_SECRET,
+	},
 
 	imports: {
 		dirs: ["./types", "composables/**"],

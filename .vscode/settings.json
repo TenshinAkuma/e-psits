@@ -3,6 +3,7 @@
       "firstname",
       "hstack",
       "lastname",
+      "movider",
       "supabase",
       "vstack"
    ],
