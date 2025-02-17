@@ -50,8 +50,6 @@
 </template>
 
 <script setup>
-	import { ref } from "vue";
-
 	definePageMeta({
 		layout: "auth",
 	});

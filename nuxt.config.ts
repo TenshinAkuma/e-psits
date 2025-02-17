@@ -56,12 +56,10 @@ export default defineNuxtConfig({
 		redirect: false,
 	},
 
-	// runtimeConfig: {
-	// 	public: {
-	// 		supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-	// 	},
-	// 	supabaseKey: process.env.NUXT_SUPABASE_KEY,
-	// },
+	runtimeConfig: {
+		accountSid: process.env.TWILIO_AACCOUNT_SID,
+		authToken: process.env.TWILIO_AUTH_TOKEN,
+	},
 
 	imports: {
 		dirs: ["./types", "composables/**"],
