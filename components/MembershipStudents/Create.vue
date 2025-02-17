@@ -5,7 +5,7 @@
 		openButtonStyle="btn-primary"
 		ref="createParticipantRef">
 		<template #ButtonLabel>
-			<i class="bi bi-plus-lg" /> Add student member 
+			<i class="bi bi-plus-lg" /> Add student member
 		</template>
 
 		<template #Body>
@@ -63,15 +63,24 @@
 				<p class="fw-bold mb-2">Contact Information</p>
 				<input
 					type="email"
-					placeholder="Email"
+					placeholder="user@epsits.org"
 					class="form-control border-secondary text-dark mb-3"
-					v-model="newParticipant.email" />
+					v-model="newParticipant.email"
+					required />
 
-				<input
-					type="tel"
-					placeholder="Phone number"
-					class="form-control border-secondary text-dark mb-3"
-					v-model="newParticipant.phone_number" />
+				<div class="input-group mb-3">
+					<span class="input-group-text border-secondary"
+						>+63</span
+					>
+					<input
+						type="tel"
+						placeholder="9263298127"
+						class="form-control border-secondary text-dark"
+						maxlength="10"
+						v-model="phoneNumberInput"
+						required />
+				</div>
+				{{ phoneNumberInput }}
 
 				<hr />
 
@@ -134,6 +143,7 @@
 
 	const isLoading = ref(false);
 	const errMsg = ref("");
+	const phoneNumberInput = ref();
 
 	const newParticipant = ref({
 		first_name: "",
@@ -156,35 +166,34 @@
 	);
 
 	async function SaveParticipant() {
+		console.log(newParticipant.value);
 		isLoading.value = true;
 
-		if (newParticipant.value?.institution_id == 0) {
-			errMsg.value = "Invalid data. Please fill all fields.";
-			setTimeout(() => {
-				errMsg.value = "";
-			}, 3000);
-			isLoading.value = false;
-			return;
-		}
+		try {
+			if (newParticipant.value?.institution_id == 0) {
+				throw new Error("Invalid institution.");
+			}
 
-		const { data, error } = await $fetch(`/api/participants`, {
-			method: "POST",
-			body: newParticipant.value,
-		});
+			newParticipant.value.phone_number = `+63${phoneNumberInput.value}`;
 
-		if (error) {
-			console.error("Error creating participant: ", error);
-			errMsg.value = error;
-			setTimeout(() => {
-				errMsg.value = "";
-			}, 3000);
-		}
+			const { data, error } = await $fetch(`/api/participants`, {
+				method: "POST",
+				body: newParticipant.value,
+			});
 
-		isLoading.value = false;
-		if (data) {
+			if (error) {
+				throw new Error("Error creating participant: ", error);
+			}
+
 			createForm.value?.reset();
 			navigateTo(`/admin/participants/${data.id}`);
 			createParticipantRef.value?.closeDialog();
+		} catch (error) {
+			console.error("Error creating student member: ", error.message);
+			errMsg.value = error.message;
+			setTimeout(() => (errMsg.value = ""), 3000);
+		} finally {
+			isLoading.value = false;
 		}
 	}
 </script>
